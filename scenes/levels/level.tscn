@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://dckgfion02a5s"]
+
+[ext_resource type="Script" path="res://scripts/Level.cs" id="1_nsupi"]
+[ext_resource type="Texture2D" uid="uid://ob1tlvhcwu10" path="res://graphics/Backdrop.png" id="1_qljo0"]
+[ext_resource type="PackedScene" uid="uid://ddl0cqe35gcc0" path="res://scenes/blueprints/tower.tscn" id="2_23jk4"]
+
+[node name="Level" type="Node2D" node_paths=PackedStringArray("mSpawnAreas")]
+script = ExtResource("1_nsupi")
+mSpawnAreas = [NodePath("PlayField/SpawnLines/SpawnLine")]
+
+[node name="SpellBook" type="Node" parent="."]
+
+[node name="PlayField" type="Node" parent="."]
+
+[node name="Tower" parent="PlayField" instance=ExtResource("2_23jk4")]
+position = Vector2(500, 500)
+
+[node name="Camera2D" type="Camera2D" parent="PlayField/Tower"]
+
+[node name="Background" type="Area2D" parent="PlayField"]
+
+[node name="underground" type="Sprite2D" parent="PlayField/Background"]
+z_index = -1
+texture = ExtResource("1_qljo0")
+centered = false
+
+[node name="SpawnLines" type="Node" parent="PlayField"]
+
+[node name="SpawnLine" type="Line2D" parent="PlayField/SpawnLines"]
+points = PackedVector2Array(7, 992, 992, 996, 992, 8, 5, 6)
+closed = true
+width = 0.0
+default_color = Color(1, 1, 1, 0)
+
+[connection signal="TowerShootsBolt" from="PlayField/Tower" to="." method="HandleTowerShootsBolt"]

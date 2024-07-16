@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://ddl0cqe35gcc0"]
+
+[ext_resource type="Script" path="res://scripts/Tower.cs" id="1_gm533"]
+[ext_resource type="Texture2D" uid="uid://dmqsjcqidpkle" path="res://graphics/Tower.png" id="1_qd5lo"]
+[ext_resource type="Texture2D" uid="uid://dxbfpb25m6ssg" path="res://graphics/direction_indicator.png" id="3_28moy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_x4hky"]
+radius = 29.0689
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3dso8"]
+radius = 41.0122
+
+[node name="Tower" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_gm533")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_x4hky")
+
+[node name="TowerSprite" type="Sprite2D" parent="."]
+z_index = 1
+texture = ExtResource("1_qd5lo")
+
+[node name="HurtArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea"]
+shape = SubResource("CircleShape2D_3dso8")
+
+[node name="DirectionIndicator" type="Node2D" parent="."]
+
+[node name="DirectionIndicatorSprite" type="Sprite2D" parent="DirectionIndicator"]
+modulate = Color(1, 1, 1, 0.517647)
+scale = Vector2(0.705, 0.705)
+texture = ExtResource("3_28moy")
+offset = Vector2(63.325, 1.17)

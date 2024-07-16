@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dh0yvsc5riinq"]
+
+[ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_p5xfv"]
+[ext_resource type="Texture2D" uid="uid://bpvrv2isrhfvw" path="res://graphics/fork.png" id="2_is8qo"]
+[ext_resource type="Texture2D" uid="uid://d4amuqgf8b21b" path="res://graphics/straw_hat.png" id="3_p5e4a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b7rvt"]
+radius = 14.0
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 15
+script = ExtResource("1_p5xfv")
+
+[node name="Weapon" type="Sprite2D" parent="."]
+position = Vector2(3, -12)
+scale = Vector2(0.770053, 0.436364)
+texture = ExtResource("2_is8qo")
+
+[node name="Body" type="Sprite2D" parent="."]
+scale = Vector2(0.618182, 0.618182)
+texture = ExtResource("3_p5e4a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_b7rvt")
