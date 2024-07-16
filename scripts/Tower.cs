@@ -43,12 +43,11 @@ public partial class Tower : StaticBody2D
 		GD.Print("HandleBoltFire");
 
 		Bolt lBolt = mBoltBlueprint.Instantiate<Bolt>();
+		
 		// Velocity magnitude will be overridden
 		lBolt.Velocity = lClickDirection;
 		lBolt.Position = Position;
 		lBolt.Rotation = lClickDirection.Angle();
-
-		// apply all modifiers
 
 		EmitSignal(SignalName.TowerShootsBolt, lBolt);
 	}

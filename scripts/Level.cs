@@ -14,7 +14,7 @@ public partial class Level : Node2D
 	private Random mRng = new Random();
 
 	private double mSpawnCooldown = 2;
-	private double mSpawnCooldownRemaining = 100;
+	private double mSpawnCooldownRemaining = 0;
 	private Node mPlayFieldNode;
 	private Tower mTower;
 	private IList<Vector2[]> mSpawnLines;
@@ -24,6 +24,7 @@ public partial class Level : Node2D
 	{
 		mPlayFieldNode = GetNode("PlayField");
 		mTower = mPlayFieldNode.GetNode<Tower>("Tower");
+		mModifiers = new List<IEffectSource>();
 		
 		mSpawnLines = new List<Vector2[]>();
 		foreach (Line2D lLine in mSpawnAreas)
@@ -71,27 +72,27 @@ public partial class Level : Node2D
 		Bolt.SpawnModifiers lMods = new();
 		foreach (IEffectSource lEffects in mModifiers)
 		{
-            lEffects.OnBoltSpawn(aBolt, lMods);
+			lEffects.OnBoltSpawn(aBolt, lMods);
 		}
 
 		lMods.Apply(aBolt);
 		mPlayFieldNode.AddChild(aBolt);
 	}
 
-    private void HandleBoltCollision(Bolt aBolt, Enemy aEnemy)
-    {
+	private void HandleBoltCollision(Bolt aBolt, Enemy aEnemy)
+	{
 		GD.Print("HandleBoltCollision");
 
 		Enemy.CollisionModifiers lMods = new();
 		foreach (IEffectSource lMod in mModifiers)
 		{
-            lMod.OnEnemyBoltCollision(aBolt, aEnemy, lMods);
+			lMod.OnEnemyBoltCollision(aBolt, aEnemy, lMods);
 		}
 		
 		lMods.Apply(aEnemy);
-    }
+	}
 
-    private Vector2 GenerateSpawnLocation()
+	private Vector2 GenerateSpawnLocation()
 	{
 		float lRandomSpot = mRng.NextSingle() * mSpawnLines.Count;
 		int lIndex = (int)lRandomSpot;

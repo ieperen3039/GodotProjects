@@ -26,6 +26,10 @@ public partial class Bolt : CharacterBody2D
 			{
 				EmitSignal(SignalName.BoltHitsEnemy, this, lEnemy);
 			}
+			else
+			{
+				GD.Print("Collided with non-enemy " + lCollidedObject);
+			}
 		}
 	}
 
