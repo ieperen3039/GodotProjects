@@ -4,12 +4,12 @@ using System;
 public partial class Enemy : CharacterBody2D
 {
 	[Export]
-	public int mHitpoints { get; private set; }
+	public int Hitpoints { get; private set; }
 
-	public bool mIsDead { get; private set; }
+	public bool IsDead { get; private set; }
 
-	public Vector2 mMovementTarget;
-	public float mSpeed;
+	public Vector2 MovementTarget;
+	public float Speed;
 
 	public override void _Ready() {
 
@@ -17,18 +17,18 @@ public partial class Enemy : CharacterBody2D
 
     public void ApplyDamage(int aTotalDamage)
     {
-		mHitpoints -= aTotalDamage;
+		Hitpoints -= aTotalDamage;
 
-		if (mHitpoints < 0) 
+		if (Hitpoints < 0) 
 		{
             CollisionShape2D collider = GetNode<CollisionShape2D>("CollisionShape2D");
             collider.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
 		}
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _PhysicsProcess(double aDelta)
 	{
-		Vector2 lNewVelocity = (mMovementTarget - Position).LimitLength(mSpeed);
+		Vector2 lNewVelocity = (MovementTarget - Position).LimitLength(Speed);
 		MoveAndCollide(lNewVelocity);
 	}
 
@@ -38,12 +38,12 @@ public partial class Enemy : CharacterBody2D
 
 	public class CollisionModifiers {
 		public const float BaseDamage = 1.0f;
-		public float mDamageAdditive = BaseDamage;
-		public float mDamageMultiplicative = 1;
+		public float DamageAdditive = BaseDamage;
+		public float DamageMultiplicative = 1;
 
 		internal void Apply(Enemy aEnemy)
 		{
-			int lTotalDamage = (int) (mDamageAdditive * mDamageMultiplicative);
+			int lTotalDamage = (int) (DamageAdditive * DamageMultiplicative);
 			aEnemy.ApplyDamage(lTotalDamage);
 		}
 	}

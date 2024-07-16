@@ -6,44 +6,44 @@ public partial class Tower : StaticBody2D
 	[Signal]
 	public delegate void TowerShootsBoltEventHandler(Bolt aBolt);
 
-	private double mCooldown = 0.5f;
-	private double mCooldownRemaining = 0;
+	private double cooldown = 0.5f;
+	private double cooldownRemaining = 0;
 
-	private PackedScene mBoltBlueprint;
+	private PackedScene boltBlueprint;
 
-	private Node2D mDirectionIndicator;
+	private Node2D directionIndicator;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		mDirectionIndicator = GetNode<Node2D>("DirectionIndicator");
-		mBoltBlueprint = GD.Load<PackedScene>("res://scenes/blueprints/bolt.tscn");
+		directionIndicator = GetNode<Node2D>("DirectionIndicator");
+		boltBlueprint = GD.Load<PackedScene>("res://scenes/blueprints/bolt.tscn");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	public override void _Process(double aDelta)
 	{
 		Vector2 lMousePosition = GetGlobalMousePosition();
 		Vector2 lMouseDirection = lMousePosition - Position;
 
-		mDirectionIndicator.Rotation = lMouseDirection.Angle();
-		mCooldownRemaining -= delta;
+		directionIndicator.Rotation = lMouseDirection.Angle();
+		cooldownRemaining -= aDelta;
 
-		if (Input.IsActionPressed("fire") && mCooldownRemaining <= 0)
+		if (Input.IsActionPressed("fire") && cooldownRemaining <= 0)
 		{
 			HandleBoltFire(lMouseDirection);
-			mCooldownRemaining += mCooldown;
+			cooldownRemaining += cooldown;
 		}
 
-		if (mCooldownRemaining < 0) mCooldownRemaining = 0;
+		if (cooldownRemaining < 0) cooldownRemaining = 0;
 	}
 
 	private void HandleBoltFire(Vector2 lClickDirection)
 	{
 		GD.Print("HandleBoltFire");
 
-		Bolt lBolt = mBoltBlueprint.Instantiate<Bolt>();
-		
+		Bolt lBolt = boltBlueprint.Instantiate<Bolt>();
+
 		// Velocity magnitude will be overridden
 		lBolt.Velocity = lClickDirection;
 		lBolt.Position = Position;
@@ -57,7 +57,7 @@ public partial class Tower : StaticBody2D
 		public float mCooldownReductionAdditive = 0;
 
 		public void Apply(Tower aTower) {
-			aTower.mCooldownRemaining -= mCooldownReductionAdditive;
+			aTower.cooldownRemaining -= mCooldownReductionAdditive;
 		}
 	}
 }

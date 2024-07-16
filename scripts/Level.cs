@@ -58,7 +58,7 @@ public partial class Level : Node2D
 		Vector2 lSpawnPosition = GenerateSpawnLocation();
 
 		lEnemy.Position = lSpawnPosition;
-		lEnemy.mMovementTarget = mTower.Position;
+		lEnemy.MovementTarget = mTower.Position;
 
 		AddChild(lEnemy);
 	}
