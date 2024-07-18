@@ -34,7 +34,7 @@ public partial class Bolt : CharacterBody2D
 	}
 
 	public class SpawnModifiers {
-		public const float BaseBoltSpeed = 3.0f;
+		public const float BaseBoltSpeed = 10.0f;
 		public float SpeedAdditive = BaseBoltSpeed;
 		public float SpeedMultiplicative = 1;
 		public ProjectileElementType Type = ProjectileElementType.Air;

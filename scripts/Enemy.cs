@@ -5,7 +5,7 @@ using System.Diagnostics;
 public partial class Enemy : CharacterBody2D
 {
 	[Export]
-	public int MaxHitpoints { get; private set; } = 10;
+	public int MaxHitpoints { get; private set; } = 5;
 
 	[Export]
 	public float Speed = 1.0f;
@@ -14,26 +14,24 @@ public partial class Enemy : CharacterBody2D
 	public int DamagePerAttack = 1;
 
 	[Export]
-	public double AttacksPerSecond = 1.0;
+	public double AttacksPerSecond = 0.25f;
 
 	public bool IsDead => state is Dieing;
 
 	public Vector2 MovementTarget;
 
 	private AnimationPlayer animationPlayer;
-	private Polygon2D healthbar;
-
+	private Healthbar healthbar;
 	private int currentHitpoints;
 	private EnemyState state;
 
 	public override void _Ready()
 	{
-		state = new Walking();
 		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-		healthbar = GetNode<Polygon2D>("Healthbar/Fill");
+		healthbar = GetNode<Healthbar>("Healthbar");
 		currentHitpoints = MaxHitpoints;
 
-		state.Ready(this);
+		state = new Walking(animationPlayer);
 	}
 
 	public void ApplyDamage(int aTotalDamage)
@@ -44,12 +42,15 @@ public partial class Enemy : CharacterBody2D
 	public override void _PhysicsProcess(double aDelta)
 	{
 		state.Process(this, aDelta);
-		healthbar.Rotation = -Rotation;
+		healthbar.GlobalRotation = 0;
 	}
 
 	private void HandleInTowerArea(Tower aTower)
 	{
-		state = new Attacking(aTower, 1.0 / AttacksPerSecond);
+		if (IsDead) return;
+		if (state is Attacking) return;
+
+		state = new Attacking(animationPlayer, aTower, 1.0 / AttacksPerSecond);
 	}
 
 	void SetHealth(int aNewHitpoints)
@@ -57,12 +58,11 @@ public partial class Enemy : CharacterBody2D
 		if (aNewHitpoints < 0) aNewHitpoints = 0;
 
 		currentHitpoints = aNewHitpoints;
-		float fraction = (float)currentHitpoints / MaxHitpoints;
-		healthbar.Scale = new Vector2(fraction, 1);
+		healthbar.SetHealth((float)currentHitpoints / MaxHitpoints);
 
 		if (currentHitpoints == 0)
 		{
-			state = new Dieing();
+			state = new Dieing(animationPlayer, healthbar);
 			CollisionShape2D collider = GetNode<CollisionShape2D>("CollisionShape2D");
 			collider.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
 		}
@@ -70,24 +70,27 @@ public partial class Enemy : CharacterBody2D
 
 	private interface EnemyState
 	{
-		void Ready(Enemy aThis);
 		void Process(Enemy aThis, double aDelta);
 	}
 
 	private class Walking : EnemyState
 	{
-		public void Ready(Enemy aThis)
+		public Walking(AnimationPlayer animationPlayer)
 		{
-			aThis.animationPlayer.Queue("walk");
+			animationPlayer.Queue("walk");
 		}
 
 		public void Process(Enemy aThis, double aDelta)
 		{
 			if (aThis.Speed > 0)
 			{
-				Vector2 NewVelocity = (aThis.MovementTarget - aThis.Position).LimitLength(aThis.Speed);
-				aThis.Rotation = NewVelocity.Angle();
-				aThis.MoveAndCollide(NewVelocity);
+				aThis.Velocity = (aThis.MovementTarget - aThis.Position).LimitLength(aThis.Speed);
+				aThis.MoveAndCollide(aThis.Velocity);
+			}
+
+			if (aThis.Velocity.LengthSquared() > 0)
+			{
+				aThis.Rotation = aThis.Velocity.Angle();
 			}
 		}
 	}
@@ -97,15 +100,11 @@ public partial class Enemy : CharacterBody2D
 		private double cooldownRemaining;
 		public Tower target;
 
-		public Attacking(Tower aTarget, double aCooldown)
+		public Attacking(AnimationPlayer animationPlayer, Tower aTarget, double aCooldown)
 		{
 			target = aTarget;
 			cooldownRemaining = aCooldown;
-		}
-
-		public void Ready(Enemy aThis)
-		{
-			aThis.animationPlayer.Queue("attack");
+			animationPlayer.Queue("attack");
 		}
 
 		public void Process(Enemy aThis, double aDelta)
@@ -122,11 +121,10 @@ public partial class Enemy : CharacterBody2D
 
 	private class Dieing : EnemyState
 	{
-		public void Ready(Enemy aThis)
+		public Dieing(AnimationPlayer animationPlayer, Healthbar healthbar)
 		{
-			aThis.animationPlayer.Queue("die");
-			aThis.healthbar.Visible = false;
-			// aThis.Healthbar.SetDeferred(CanvasItem.PropertyName.Visible, false);
+			animationPlayer.Queue("die");
+			healthbar.Fading = true;
 		}
 
 		public void Process(Enemy aThis, double aDelta) { }
