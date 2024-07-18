@@ -14,7 +14,7 @@ public partial class Enemy : CharacterBody2D
 	public int DamagePerAttack = 1;
 
 	[Export]
-	public float AttacksPerSecond = 0.25f;
+	public float AttacksPerSecond = 1.0f;
 
 	public bool IsDead => state is Dieing;
 
@@ -98,14 +98,16 @@ public partial class Enemy : CharacterBody2D
 
 	private class Attacking : EnemyState
 	{
+		private float cooldown;
 		private float cooldownRemaining;
 		public Tower target;
 
 		public Attacking(AnimationPlayer animationPlayer, Tower aTarget, float aCooldown)
 		{
 			target = aTarget;
-			cooldownRemaining = aCooldown;
-			animationPlayer.Play("attack", -1, cooldownRemaining);
+			cooldownRemaining = aCooldown * 0.5f;
+			cooldown = aCooldown;
+			animationPlayer.Play("attack", -1, 1.0f / aCooldown);
 		}
 
 		public void Process(Enemy aThis, double aDelta)
@@ -115,7 +117,7 @@ public partial class Enemy : CharacterBody2D
 			if (cooldownRemaining <= 0)
 			{
 				target.ApplyDamage(aThis.DamagePerAttack);
-				cooldownRemaining += 1.0f / aThis.AttacksPerSecond;
+				cooldownRemaining += cooldown;
 			}
 		}
 	}
