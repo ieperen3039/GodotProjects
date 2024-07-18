@@ -23,6 +23,8 @@ z_index = 1
 texture = ExtResource("1_qd5lo")
 
 [node name="HurtArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea"]
 shape = SubResource("CircleShape2D_3dso8")
@@ -34,3 +36,5 @@ modulate = Color(1, 1, 1, 0.517647)
 scale = Vector2(0.705, 0.705)
 texture = ExtResource("3_28moy")
 offset = Vector2(63.325, 1.17)
+
+[connection signal="body_entered" from="HurtArea" to="." method="HandleBodyEntersHurtArea"]

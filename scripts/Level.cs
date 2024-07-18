@@ -53,8 +53,6 @@ public partial class Level : Node2D
 
 	public void HandleEnemySpawn()
 	{
-		GD.Print("HandleEnemySpawn");
-
 		Enemy lEnemy = mEnemyBlueprint.Instantiate<Enemy>();
 
 		Vector2 lSpawnPosition = GenerateSpawnLocation();
@@ -67,8 +65,6 @@ public partial class Level : Node2D
 
 	private void HandleTowerShootsBolt(Bolt aBolt)
 	{
-		GD.Print("HandleTowerShootsBolt");
-		
 		aBolt.BoltHitsEnemy += HandleBoltCollision;
 
 		Bolt.SpawnModifiers lMods = new();
@@ -83,8 +79,6 @@ public partial class Level : Node2D
 
 	private void HandleBoltCollision(Bolt aBolt, Enemy aEnemy)
 	{
-		GD.Print("HandleBoltCollision");
-
 		Enemy.CollisionModifiers lEnemyMod = new();
 		Bolt.CollisionModifiers lBoltMod = new();
 		foreach (IEffectSource lEffect in mModifiers)

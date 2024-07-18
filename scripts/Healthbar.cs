@@ -30,7 +30,6 @@ public partial class Healthbar : Node2D
 
 	public void SetHealth(float aFraction)
 	{
-		GD.Print(aFraction);
 		fill.Scale = new Vector2(aFraction, 1);
 	}
 }

@@ -6,7 +6,7 @@ public partial class Tower : StaticBody2D
 	[Signal]
 	public delegate void TowerShootsBoltEventHandler(Bolt aBolt);
 
-	private double cooldown = 0.5f;
+	private double cooldown = 0.2f;
 	private double cooldownRemaining = 0;
 
 	private PackedScene boltBlueprint;
@@ -40,8 +40,6 @@ public partial class Tower : StaticBody2D
 
 	private void HandleBoltFire(Vector2 lClickDirection)
 	{
-		GD.Print("HandleBoltFire");
-
 		Bolt lBolt = boltBlueprint.Instantiate<Bolt>();
 
 		// Velocity magnitude will be overridden
@@ -50,6 +48,16 @@ public partial class Tower : StaticBody2D
 		lBolt.Velocity = lClickDirection;
 
 		EmitSignal(SignalName.TowerShootsBolt, lBolt);
+	}
+
+	private void HandleBodyEntersHurtArea(Node2D body)
+	{
+		GD.Print("HandleBodyEntersHurtArea");
+
+		if (body is Enemy enemy)
+		{
+			enemy.HandleEnterTowerArea(this);
+		}
 	}
 
 	public void ApplyDamage(int aDamage)

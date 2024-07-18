@@ -14,7 +14,7 @@ public partial class Enemy : CharacterBody2D
 	public int DamagePerAttack = 1;
 
 	[Export]
-	public double AttacksPerSecond = 0.25f;
+	public float AttacksPerSecond = 0.25f;
 
 	public bool IsDead => state is Dieing;
 
@@ -45,12 +45,13 @@ public partial class Enemy : CharacterBody2D
 		healthbar.GlobalRotation = 0;
 	}
 
-	private void HandleInTowerArea(Tower aTower)
+	public void HandleEnterTowerArea(Tower aTower)
 	{
-		if (IsDead) return;
-		if (state is Attacking) return;
+		GD.Print("HandleEnterTowerArea");
 
-		state = new Attacking(animationPlayer, aTower, 1.0 / AttacksPerSecond);
+		if (IsDead) return;
+
+		state = new Attacking(animationPlayer, aTower, 1.0f / AttacksPerSecond);
 	}
 
 	void SetHealth(int aNewHitpoints)
@@ -64,7 +65,7 @@ public partial class Enemy : CharacterBody2D
 		{
 			state = new Dieing(animationPlayer, healthbar);
 			CollisionShape2D collider = GetNode<CollisionShape2D>("CollisionShape2D");
-			collider.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
+			collider.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
 		}
 	}
 
@@ -97,24 +98,24 @@ public partial class Enemy : CharacterBody2D
 
 	private class Attacking : EnemyState
 	{
-		private double cooldownRemaining;
+		private float cooldownRemaining;
 		public Tower target;
 
-		public Attacking(AnimationPlayer animationPlayer, Tower aTarget, double aCooldown)
+		public Attacking(AnimationPlayer animationPlayer, Tower aTarget, float aCooldown)
 		{
 			target = aTarget;
 			cooldownRemaining = aCooldown;
-			animationPlayer.Play("attack");
+			animationPlayer.Play("attack", -1, cooldownRemaining);
 		}
 
 		public void Process(Enemy aThis, double aDelta)
 		{
-			cooldownRemaining -= aDelta;
+			cooldownRemaining -= (float) aDelta;
 
 			if (cooldownRemaining <= 0)
 			{
 				target.ApplyDamage(aThis.DamagePerAttack);
-				cooldownRemaining += 1.0 / aThis.AttacksPerSecond;
+				cooldownRemaining += 1.0f / aThis.AttacksPerSecond;
 			}
 		}
 	}
