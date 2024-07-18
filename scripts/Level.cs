@@ -1,10 +1,12 @@
-using Godot;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Godot;
 
 public partial class Level : Node2D
 {
+	[Export]
+	public Marker2D FixedSpawn;
+
 	[Export]
 	public Line2D[] mSpawnAreas;
 
@@ -13,7 +15,7 @@ public partial class Level : Node2D
 	private PackedScene mEnemyBlueprint = GD.Load<PackedScene>("res://scenes/blueprints/enemies/enemy_farmer.tscn");
 	private Random mRng = new Random();
 
-	private double mSpawnCooldown = 2;
+	private double mSpawnCooldown = 5;
 	private double mSpawnCooldownRemaining = 0;
 	private Node mPlayFieldNode;
 	private Tower mTower;
@@ -96,6 +98,8 @@ public partial class Level : Node2D
 
 	private Vector2 GenerateSpawnLocation()
 	{
+		if (FixedSpawn != null) return FixedSpawn.Position;
+
 		float lRandomSpot = mRng.NextSingle() * mSpawnLines.Count;
 		int lIndex = (int)lRandomSpot;
 		float lPositionOnSpot = lRandomSpot - lIndex;

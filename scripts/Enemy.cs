@@ -77,7 +77,7 @@ public partial class Enemy : CharacterBody2D
 	{
 		public Walking(AnimationPlayer animationPlayer)
 		{
-			animationPlayer.Queue("walk");
+			animationPlayer.Play("walk");
 		}
 
 		public void Process(Enemy aThis, double aDelta)
@@ -104,7 +104,7 @@ public partial class Enemy : CharacterBody2D
 		{
 			target = aTarget;
 			cooldownRemaining = aCooldown;
-			animationPlayer.Queue("attack");
+			animationPlayer.Play("attack");
 		}
 
 		public void Process(Enemy aThis, double aDelta)
@@ -123,7 +123,7 @@ public partial class Enemy : CharacterBody2D
 	{
 		public Dieing(AnimationPlayer animationPlayer, Healthbar healthbar)
 		{
-			animationPlayer.Queue("die");
+			animationPlayer.Play("die");
 			healthbar.Fading = true;
 		}
 

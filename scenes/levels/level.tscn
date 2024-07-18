@@ -4,8 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://ob1tlvhcwu10" path="res://graphics/Backdrop.png" id="1_qljo0"]
 [ext_resource type="PackedScene" uid="uid://ddl0cqe35gcc0" path="res://scenes/blueprints/tower.tscn" id="2_23jk4"]
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("mSpawnAreas")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("FixedSpawn", "mSpawnAreas")]
 script = ExtResource("1_nsupi")
+FixedSpawn = NodePath("FixedSpawn")
 mSpawnAreas = [NodePath("PlayField/SpawnLines/SpawnLine")]
 
 [node name="SpellBook" type="Node" parent="."]
@@ -32,5 +33,8 @@ points = PackedVector2Array(7, 992, 992, 996, 992, 8, 5, 6)
 closed = true
 width = 0.0
 default_color = Color(1, 1, 1, 0)
+
+[node name="FixedSpawn" type="Marker2D" parent="."]
+position = Vector2(818, 415)
 
 [connection signal="TowerShootsBolt" from="PlayField/Tower" to="." method="HandleTowerShootsBolt"]
