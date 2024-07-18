@@ -60,7 +60,7 @@ public partial class Level : Node2D
 		lEnemy.Position = lSpawnPosition;
 		lEnemy.MovementTarget = mTower.Position;
 
-		AddChild(lEnemy);
+		mPlayFieldNode.AddChild(lEnemy);
 	}
 
 	private void HandleTowerShootsBolt(Bolt aBolt)
@@ -83,13 +83,15 @@ public partial class Level : Node2D
 	{
 		GD.Print("HandleBoltCollision");
 
-		Enemy.CollisionModifiers lMods = new();
-		foreach (IEffectSource lMod in mModifiers)
+		Enemy.CollisionModifiers lEnemyMod = new();
+		Bolt.CollisionModifiers lBoltMod = new();
+		foreach (IEffectSource lEffect in mModifiers)
 		{
-			lMod.OnEnemyBoltCollision(aBolt, aEnemy, lMods);
+			lEffect.OnEnemyBoltCollision(aBolt, aEnemy, lBoltMod, lEnemyMod);
 		}
-		
-		lMods.Apply(aEnemy);
+
+		lBoltMod.Apply(aBolt);
+		lEnemyMod.Apply(aEnemy);
 	}
 
 	private Vector2 GenerateSpawnLocation()

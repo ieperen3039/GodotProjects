@@ -18,6 +18,7 @@ position = Vector2(500, 500)
 [node name="Camera2D" type="Camera2D" parent="PlayField/Tower"]
 
 [node name="Background" type="Area2D" parent="PlayField"]
+collision_mask = 10
 
 [node name="underground" type="Sprite2D" parent="PlayField/Background"]
 z_index = -1

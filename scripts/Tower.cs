@@ -45,11 +45,16 @@ public partial class Tower : StaticBody2D
 		Bolt lBolt = boltBlueprint.Instantiate<Bolt>();
 
 		// Velocity magnitude will be overridden
-		lBolt.Velocity = lClickDirection;
 		lBolt.Position = Position;
 		lBolt.Rotation = lClickDirection.Angle();
+		lBolt.Velocity = lClickDirection;
 
 		EmitSignal(SignalName.TowerShootsBolt, lBolt);
+	}
+
+	public void ApplyDamage(int aDamage)
+	{
+		GD.Print("Ow!");
 	}
 
 	public class ChangeModifiers

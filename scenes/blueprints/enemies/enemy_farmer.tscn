@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dh0yvsc5riinq"]
+[gd_scene load_steps=9 format=3 uid="uid://dh0yvsc5riinq"]
 
 [ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_p5xfv"]
 [ext_resource type="Texture2D" uid="uid://bpvrv2isrhfvw" path="res://graphics/fork.png" id="2_is8qo"]
@@ -7,19 +7,106 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_b7rvt"]
 radius = 14.0
 
-[node name="Enemy" type="CharacterBody2D"]
+[sub_resource type="Animation" id="Animation_1k8o0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Weapon:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -4.345)]
+}
+
+[sub_resource type="Animation" id="Animation_etfso"]
+resource_name = "attack"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Weapon:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -4.345), Vector2(-3, -2), Vector2(16, -2), Vector2(0, -4.345)]
+}
+
+[sub_resource type="Animation" id="Animation_hjb4y"]
+resource_name = "walk"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Weapon:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -4.345), Vector2(0, -4.345), Vector2(0, -4.345)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Weapon:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-0.322886, 0.148353, -0.322886]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j0vf6"]
+_data = {
+"RESET": SubResource("Animation_1k8o0"),
+"attack": SubResource("Animation_etfso"),
+"walk": SubResource("Animation_hjb4y")
+}
+
+[node name="Entity" type="CharacterBody2D"]
 collision_layer = 8
 collision_mask = 15
+motion_mode = 1
 script = ExtResource("1_p5xfv")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_b7rvt")
+
 [node name="Weapon" type="Sprite2D" parent="."]
-position = Vector2(3, -12)
+position = Vector2(0, -4.345)
+rotation = -0.322886
 scale = Vector2(0.770053, 0.436364)
 texture = ExtResource("2_is8qo")
+offset = Vector2(0, -15.735)
 
 [node name="Body" type="Sprite2D" parent="."]
 scale = Vector2(0.618182, 0.618182)
 texture = ExtResource("3_p5e4a")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_b7rvt")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Entity")
+libraries = {
+"": SubResource("AnimationLibrary_j0vf6")
+}
+next/attack = &"RESET"
+blend_times = [&"attack", &"attack", 0.1, &"attack", &"walk", 0.1]
+
+[node name="Healthbar" type="Polygon2D" parent="."]
+position = Vector2(-27, -26)
+color = Color(0.45148, 0.0931793, 0.0250135, 1)
+polygon = PackedVector2Array(0, 0, 54, 0, 54, 4, 0, 4)
+
+[node name="Fill" type="Polygon2D" parent="Healthbar"]
+z_index = 1
+color = Color(0, 0.512037, 0.0753454, 1)
+polygon = PackedVector2Array(0, 0, 54, 0, 54, 2.125, 54, 4, 0, 4)

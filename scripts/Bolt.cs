@@ -48,4 +48,16 @@ public partial class Bolt : CharacterBody2D
 			aTarget.Size = Size;
 		}
 	}
+
+	public class CollisionModifiers
+	{
+		public bool DoDespawn = true;
+
+		public void Apply(Bolt aTarget){
+			if (DoDespawn) {
+				aTarget.QueueFree();
+			}
+		}
+	}
+
 }
