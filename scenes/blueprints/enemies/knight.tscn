@@ -1,8 +1,8 @@
 [gd_scene load_steps=11 format=3 uid="uid://22ogfctme0ec"]
 
 [ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_4udb5"]
-[ext_resource type="Texture2D" uid="uid://mowv5yrspvl5" path="res://graphics/sword.png" id="2_6ht84"]
-[ext_resource type="Texture2D" uid="uid://cjdr12hwjyf8q" path="res://graphics/knight_head.png" id="3_h4soc"]
+[ext_resource type="Texture2D" uid="uid://mowv5yrspvl5" path="res://graphics/enemies/sword.png" id="2_6ht84"]
+[ext_resource type="Texture2D" uid="uid://cjdr12hwjyf8q" path="res://graphics/enemies/knight_head.png" id="3_h4soc"]
 [ext_resource type="PackedScene" uid="uid://skb5g2f0nvoq" path="res://scenes/blueprints/healthbar.tscn" id="4_gf3iq"]
 [ext_resource type="Animation" uid="uid://dpodcq04ky8up" path="res://animations/enemy/attack.res" id="5_uo3ms"]
 [ext_resource type="Animation" uid="uid://c1snu1j7vafgg" path="res://animations/enemy/die.res" id="6_g803g"]
