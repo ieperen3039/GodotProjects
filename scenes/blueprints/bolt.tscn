@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://dlhp2j0ph3ak0"]
+[gd_scene load_steps=5 format=3 uid="uid://dlhp2j0ph3ak0"]
 
 [ext_resource type="Script" path="res://scripts/Bolt.cs" id="1_f02mf"]
 [ext_resource type="Texture2D" uid="uid://cmimm3s4xf87n" path="res://graphics/Bolt.png" id="1_yoglp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cypgq"]
-radius = 8.0
+radius = 7.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ule5u"]
+radius = 225.036
 
 [node name="Bolt" type="CharacterBody2D"]
 collision_layer = 2
@@ -12,9 +15,61 @@ collision_mask = 9
 motion_mode = 1
 script = ExtResource("1_f02mf")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.325, 0.325)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+top_level = true
+shape = SubResource("CircleShape2D_cypgq")
+
+[node name="Appearance" type="Node2D" parent="."]
+
+[node name="Head" type="Sprite2D" parent="Appearance"]
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("1_yoglp")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_cypgq")
+[node name="1" type="Sprite2D" parent="Appearance"]
+position = Vector2(-16, 0)
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("1_yoglp")
+
+[node name="2" type="Sprite2D" parent="Appearance"]
+position = Vector2(-29, 0)
+scale = Vector2(0.19, 0.19)
+texture = ExtResource("1_yoglp")
+
+[node name="3" type="Sprite2D" parent="Appearance"]
+position = Vector2(-39, 0)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("1_yoglp")
+
+[node name="4" type="Sprite2D" parent="Appearance"]
+position = Vector2(-47, 0)
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("1_yoglp")
+
+[node name="5" type="Sprite2D" parent="Appearance"]
+position = Vector2(-54, 0)
+scale = Vector2(0.095, 0.095)
+texture = ExtResource("1_yoglp")
+
+[node name="6" type="Sprite2D" parent="Appearance"]
+position = Vector2(-59, 0)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("1_yoglp")
+
+[node name="7" type="Sprite2D" parent="Appearance"]
+position = Vector2(-63, 0)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("1_yoglp")
+
+[node name="8" type="Sprite2D" parent="Appearance"]
+position = Vector2(-66, 0)
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("1_yoglp")
+
+[node name="EnemySearchArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySearchArea"]
+position = Vector2(150, 0)
+shape = SubResource("CircleShape2D_ule5u")
+debug_color = Color(0, 0.6, 0.701961, 0.0784314)

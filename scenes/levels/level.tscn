@@ -16,8 +16,6 @@ mSpawnAreas = [NodePath("PlayField/SpawnLines/SpawnLine")]
 [node name="Tower" parent="PlayField" instance=ExtResource("2_23jk4")]
 position = Vector2(500, 500)
 
-[node name="Camera2D" type="Camera2D" parent="PlayField/Tower"]
-
 [node name="Background" type="Area2D" parent="PlayField"]
 collision_mask = 10
 
@@ -35,6 +33,6 @@ width = 0.0
 default_color = Color(1, 1, 1, 0)
 
 [node name="FixedSpawn" type="Marker2D" parent="."]
-position = Vector2(665, 504)
+position = Vector2(903, 108)
 
 [connection signal="TowerShootsBolt" from="PlayField/Tower" to="." method="HandleTowerShootsBolt"]

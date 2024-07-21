@@ -5,7 +5,7 @@ using System.Diagnostics;
 public partial class Enemy : CharacterBody2D
 {
 	[Export]
-	public int MaxHitpoints { get; private set; } = 5;
+	public int MaxHitpoints { get; private set; } = 1;
 
 	[Export]
 	public float Speed = 1.0f;
@@ -64,6 +64,7 @@ public partial class Enemy : CharacterBody2D
 		if (currentHitpoints == 0)
 		{
 			state = new Dieing(animationPlayer, healthbar);
+			// disable collisions
 			CollisionShape2D collider = GetNode<CollisionShape2D>("CollisionShape2D");
 			collider.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
 		}
