@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://skb5g2f0nvoq"]
+
+[ext_resource type="Script" path="res://scripts/Healthbar.cs" id="1_81sr6"]
+
+[node name="Healthbar" type="Node2D"]
+script = ExtResource("1_81sr6")
+
+[node name="RedBar" type="Polygon2D" parent="."]
+position = Vector2(-27, -23)
+color = Color(0.45148, 0.0931793, 0.0250135, 1)
+polygon = PackedVector2Array(0, 0, 54, 0, 54, 4, 0, 4)
+
+[node name="GreenBar" type="Polygon2D" parent="."]
+z_index = 1
+position = Vector2(-27, -23)
+color = Color(0, 0.512037, 0.0753454, 1)
+polygon = PackedVector2Array(0, 0, 54, 0, 54, 2.125, 54, 4, 0, 4)

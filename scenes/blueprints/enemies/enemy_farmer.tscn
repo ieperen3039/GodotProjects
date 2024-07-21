@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_p5xfv"]
 [ext_resource type="Texture2D" uid="uid://bpvrv2isrhfvw" path="res://graphics/fork.png" id="2_is8qo"]
 [ext_resource type="Texture2D" uid="uid://d4amuqgf8b21b" path="res://graphics/straw_hat.png" id="3_p5e4a"]
-[ext_resource type="Script" path="res://scripts/Healthbar.cs" id="4_5a0ju"]
+[ext_resource type="PackedScene" uid="uid://skb5g2f0nvoq" path="res://scenes/blueprints/healthbar.tscn" id="4_dqyxx"]
 [ext_resource type="Animation" uid="uid://5otcpi3yjqur" path="res://animations/enemy/walk.res" id="5_sv6b2"]
 [ext_resource type="Animation" uid="uid://dpodcq04ky8up" path="res://animations/enemy/attack.res" id="6_vwo7k"]
 [ext_resource type="Animation" uid="uid://c1snu1j7vafgg" path="res://animations/enemy/die.res" id="7_1vp12"]
@@ -51,6 +51,7 @@ collision_layer = 8
 collision_mask = 15
 motion_mode = 1
 script = ExtResource("1_p5xfv")
+MaxHitpoints = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_b7rvt")
@@ -65,19 +66,7 @@ offset = Vector2(0, -15.735)
 scale = Vector2(0.618182, 0.618182)
 texture = ExtResource("3_p5e4a")
 
-[node name="Healthbar" type="Node2D" parent="."]
-script = ExtResource("4_5a0ju")
-
-[node name="RedBar" type="Polygon2D" parent="Healthbar"]
-position = Vector2(-27, -23)
-color = Color(0.45148, 0.0931793, 0.0250135, 1)
-polygon = PackedVector2Array(0, 0, 54, 0, 54, 4, 0, 4)
-
-[node name="GreenBar" type="Polygon2D" parent="Healthbar"]
-z_index = 1
-position = Vector2(-27, -23)
-color = Color(0, 0.512037, 0.0753454, 1)
-polygon = PackedVector2Array(0, 0, 54, 0, 54, 2.125, 54, 4, 0, 4)
+[node name="Healthbar" parent="." instance=ExtResource("4_dqyxx")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

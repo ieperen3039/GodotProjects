@@ -15,7 +15,7 @@ public partial class Level : Node2D
 	private PackedScene mEnemyBlueprint = GD.Load<PackedScene>("res://scenes/blueprints/enemies/enemy_farmer.tscn");
 	private Random mRng = new Random();
 
-	private double mSpawnCooldown = 5;
+	private double mSpawnCooldown = 2;
 	private double mSpawnCooldownRemaining = 0;
 	private Node mPlayFieldNode;
 	private Tower mTower;

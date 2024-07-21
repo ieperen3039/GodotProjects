@@ -6,7 +6,7 @@ public partial class Tower : StaticBody2D
 	[Signal]
 	public delegate void TowerShootsBoltEventHandler(Bolt aBolt);
 
-	private double cooldown = 0.2f;
+	private double cooldown = 0.5f;
 	private double cooldownRemaining = 0;
 
 	private PackedScene boltBlueprint;
