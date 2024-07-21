@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=3 uid="uid://dh0yvsc5riinq"]
+
+[ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_uaftd"]
+[ext_resource type="Texture2D" uid="uid://bpvrv2isrhfvw" path="res://graphics/fork.png" id="2_le4k6"]
+[ext_resource type="Texture2D" uid="uid://d4amuqgf8b21b" path="res://graphics/straw_hat.png" id="3_4plbn"]
+[ext_resource type="PackedScene" uid="uid://skb5g2f0nvoq" path="res://scenes/blueprints/healthbar.tscn" id="4_mlinj"]
+[ext_resource type="Animation" uid="uid://dpodcq04ky8up" path="res://animations/enemy/attack.res" id="5_pfgli"]
+[ext_resource type="Animation" uid="uid://c1snu1j7vafgg" path="res://animations/enemy/die.res" id="6_4cycg"]
+[ext_resource type="Animation" uid="uid://5otcpi3yjqur" path="res://animations/enemy/walk.res" id="7_4u00e"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b7rvt"]
+radius = 14.0
+
+[sub_resource type="Animation" id="Animation_mkd8x"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Weapon:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -6)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Weapon:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qbpt8"]
+_data = {
+"RESET": SubResource("Animation_mkd8x"),
+"attack": ExtResource("5_pfgli"),
+"die": ExtResource("6_4cycg"),
+"walk": ExtResource("7_4u00e")
+}
+
+[node name="Entity" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 15
+motion_mode = 1
+script = ExtResource("1_uaftd")
+MaxHitpoints = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_b7rvt")
+
+[node name="Weapon" type="Sprite2D" parent="."]
+position = Vector2(0, -6)
+scale = Vector2(0.770053, 0.436364)
+texture = ExtResource("2_le4k6")
+offset = Vector2(0, -15.735)
+
+[node name="Body" type="Sprite2D" parent="."]
+scale = Vector2(0.618182, 0.618182)
+texture = ExtResource("3_4plbn")
+
+[node name="Healthbar" parent="." instance=ExtResource("4_mlinj")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qbpt8")
+}
