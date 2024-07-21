@@ -13,14 +13,16 @@ public partial class Bolt : CharacterBody2D
 
 	public bool IsDead => deathTime < ulong.MaxValue;
 
+	public ProjectileElementType Type;
+	public ProjectileSize Size;
+
 	private Node2D appearance;
 	private Area2D enemySearchArea;
 
 	private Queue<Tuple<ulong, Vector2>> positions;
 	private ulong maxTimeForPositions;
 
-	private ProjectileElementType type;
-	private ProjectileSize size;
+	private int damage;
 	private float rotationRadPerSecond;
 	private ulong deathTime = ulong.MaxValue;
 
@@ -187,17 +189,16 @@ public partial class Bolt : CharacterBody2D
 		public const float BaseBoltSpeed = 5.0f;
 		public float SpeedAdditive = BaseBoltSpeed;
 		public float SpeedMultiplicative = 1;
+		public int DamageAdditive = 0;
+		public float DamageMultiplicative = 1;
 		public float HomingDegPerSecond = 0;
-		public ProjectileElementType Type = ProjectileElementType.Air;
-		public ProjectileSize Size = ProjectileSize.Primary;
 
 		public void Apply(Bolt aTarget)
 		{
 			float lBoltSpeed = SpeedAdditive * SpeedMultiplicative;
 			aTarget.Velocity = aTarget.Velocity.LimitLength(lBoltSpeed);
 			aTarget.Rotation = aTarget.Velocity.Angle();
-			aTarget.type = Type;
-			aTarget.size = Size;
+			aTarget.damage = (int)(DamageAdditive * DamageMultiplicative);
 			aTarget.rotationRadPerSecond = Mathf.DegToRad(HomingDegPerSecond);
 		}
 	}

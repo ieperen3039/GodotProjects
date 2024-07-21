@@ -1,13 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://dckgfion02a5s"]
+[gd_scene load_steps=6 format=3 uid="uid://dckgfion02a5s"]
 
 [ext_resource type="Script" path="res://scripts/Level.cs" id="1_nsupi"]
 [ext_resource type="Texture2D" uid="uid://ob1tlvhcwu10" path="res://graphics/Backdrop.png" id="1_qljo0"]
 [ext_resource type="PackedScene" uid="uid://ddl0cqe35gcc0" path="res://scenes/blueprints/tower.tscn" id="2_23jk4"]
+[ext_resource type="PackedScene" uid="uid://dh0yvsc5riinq" path="res://scenes/blueprints/enemies/farmer.tscn" id="2_70gic"]
+[ext_resource type="PackedScene" uid="uid://22ogfctme0ec" path="res://scenes/blueprints/enemies/knight.tscn" id="3_p37ai"]
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("FixedSpawn", "mSpawnAreas")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("SpawnAreas")]
 script = ExtResource("1_nsupi")
-FixedSpawn = NodePath("FixedSpawn")
-mSpawnAreas = [NodePath("PlayField/SpawnLines/SpawnLine")]
+SpawnAreas = [NodePath("PlayField/SpawnLines/SpawnLine")]
+Enemies = Array[PackedScene]([ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("3_p37ai"), ExtResource("3_p37ai")])
 
 [node name="SpellBook" type="Node" parent="."]
 
@@ -16,8 +18,7 @@ mSpawnAreas = [NodePath("PlayField/SpawnLines/SpawnLine")]
 [node name="Tower" parent="PlayField" instance=ExtResource("2_23jk4")]
 position = Vector2(500, 500)
 
-[node name="Background" type="Area2D" parent="PlayField"]
-collision_mask = 10
+[node name="Background" type="Node2D" parent="PlayField"]
 
 [node name="underground" type="Sprite2D" parent="PlayField/Background"]
 z_index = -1

@@ -1,10 +1,8 @@
 
 public enum ProjectileElementType {
-    Air,
-    Water,
+    Arcane,
     Fire,
-    Electric,
-    Nature
+    Nature,
 }
 
 public enum ProjectileSize {
