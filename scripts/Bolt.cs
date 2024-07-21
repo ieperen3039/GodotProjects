@@ -33,6 +33,15 @@ public partial class Bolt : CharacterBody2D
 		positions = new Queue<Tuple<ulong, Vector2>>();
 		RecordPosition(Position);
 		maxTimeForPositions = TailElementDelayMs * (ulong) (appearance.GetChildren().Count + 1);
+		
+		// child nodes are spread for editor visuals. We reset the positions here
+		foreach (Node child in appearance.GetChildren())
+		{
+			if (child is Node2D tailSprite)
+			{
+				tailSprite.Position = Vector2.Zero;
+			}
+		}
 	}
 
 	void RecordPosition(Vector2 aPosition)
