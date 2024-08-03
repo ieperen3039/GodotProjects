@@ -18,7 +18,7 @@ public partial class Level : Node2D
 
 	private IList<IEffectSource> effectSources;
 
-	private Random rng = new Random();
+	private Random rng = new();
 
 	private double spawnCooldown = 2;
 	private double spawnCooldownRemaining = 0;

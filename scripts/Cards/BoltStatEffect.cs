@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class BoltStatEffect : Node2D, IEffectSource
+public partial class BoltStatEffect : IEffectSource
 {
 	[Export]
 	public bool OnlyOnPlayerFire = true;
@@ -16,11 +16,34 @@ public partial class BoltStatEffect : Node2D, IEffectSource
 	[Export]
 	public float HomingDegPerSecond = 0;
 
-
-	public override void _Ready()
+	public string GetCardTitle() 
 	{
-		RichTextLabel cardText = GetNode<RichTextLabel>("CardVisual/CardText");
-		cardText.Text = GetCardText();
+		return "Bolt Enhance";
+	}
+
+	public string GetCardText()
+	{
+		string text = OnlyOnPlayerFire ? "Player bolts" : "All bolts";
+		if (SpeedAdditive != 0) text += string.Format("\n+{0} projectile speed", SpeedAdditive);
+		if (SpeedMultiplicative != 1) text += string.Format("\n{0}x projectile speed", SpeedMultiplicative);
+		if (DamageAdditive != 0) text += string.Format("\n+{0} projectile damage", DamageAdditive);
+		if (DamageMultiplicative != 1) text += string.Format("\n{0}x projectile damage", DamageMultiplicative);
+
+		if (HomingDegPerSecond > 90)
+		{
+			
+			text += "\nmajor homing";
+		}
+		else if (HomingDegPerSecond > 45)
+		{
+			text += "\nmedium homing";
+		}
+		else if (HomingDegPerSecond > 0)
+		{
+			text += "\nminor homing";
+		}
+
+		return text;
 	}
 
 	public void OnBoltSpawn(in Bolt aBolt, Bolt.SpawnModifiers aMod, bool aPlayerFire)
@@ -38,28 +61,4 @@ public partial class BoltStatEffect : Node2D, IEffectSource
 		in Bolt aBolt, in Enemy aEnemy, Bolt.CollisionModifiers aBoltMod, Enemy.CollisionModifiers aEnemyMod, Level.CollisionModifiers aLevelMod
 	)
 	{ }
-
-	public string GetCardText()
-	{
-		string text = OnlyOnPlayerFire ? "Player bolts" : "All bolts";
-		if (SpeedAdditive != 0) text += string.Format("\n+{0} projectile speed", SpeedAdditive);
-		if (SpeedMultiplicative != 1) text += string.Format("\n{0}x projectile speed", SpeedMultiplicative);
-		if (DamageAdditive != 0) text += string.Format("\n+{0} projectile damage", DamageAdditive);
-		if (DamageMultiplicative != 1) text += string.Format("\n{0}x projectile damage", DamageMultiplicative);
-
-		if (HomingDegPerSecond > 90)
-		{
-			text += "\nmajor homing";
-		}
-		else if (HomingDegPerSecond > 45)
-		{
-			text += "\nmedium homing";
-		}
-		else if (HomingDegPerSecond > 0)
-		{
-			text += "\nminor homing";
-		}
-
-		return text;
-	}
 }
