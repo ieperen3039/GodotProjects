@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://dckgfion02a5s"]
 
-[ext_resource type="Script" path="res://scripts/Level.cs" id="1_nsupi"]
-[ext_resource type="Texture2D" uid="uid://ob1tlvhcwu10" path="res://graphics/Backdrop.png" id="1_qljo0"]
-[ext_resource type="PackedScene" uid="uid://ddl0cqe35gcc0" path="res://scenes/blueprints/tower.tscn" id="2_23jk4"]
-[ext_resource type="PackedScene" uid="uid://dh0yvsc5riinq" path="res://scenes/blueprints/enemies/farmer.tscn" id="2_70gic"]
-[ext_resource type="PackedScene" uid="uid://22ogfctme0ec" path="res://scenes/blueprints/enemies/knight.tscn" id="3_p37ai"]
+[ext_resource type="Script" path="res://classes/Level.cs" id="1_nsupi"]
+[ext_resource type="Texture2D" uid="uid://ob1tlvhcwu10" path="res://scenes/levels/0_test_level/Backdrop.png" id="1_qljo0"]
+[ext_resource type="PackedScene" uid="uid://ddl0cqe35gcc0" path="res://scenes/tower/tower.tscn" id="2_23jk4"]
+[ext_resource type="PackedScene" uid="uid://dh0yvsc5riinq" path="res://scenes/enemies/farmer/farmer.tscn" id="2_70gic"]
+[ext_resource type="PackedScene" uid="uid://22ogfctme0ec" path="res://scenes/enemies/knight/knight.tscn" id="3_p37ai"]
 
 [node name="Level" type="Node2D" node_paths=PackedStringArray("SpawnAreas")]
 script = ExtResource("1_nsupi")

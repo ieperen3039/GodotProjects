@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://j8pjsjloxyha"
-path="res://.godot/imported/mage_left.png-54dd1aee2db954c495c9cf3ae1252a95.ctex"
+uid="uid://dxbfpb25m6ssg"
+path="res://.godot/imported/direction_indicator.png-e6be20f4b55bc87025038f30627aa898.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/mage_left.png"
-dest_files=["res://.godot/imported/mage_left.png-54dd1aee2db954c495c9cf3ae1252a95.ctex"]
+source_file="res://scenes/tower/graphics/direction_indicator.png"
+dest_files=["res://.godot/imported/direction_indicator.png-e6be20f4b55bc87025038f30627aa898.ctex"]
 
 [params]
 

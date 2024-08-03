@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://14u1tfenvvvk"
-path="res://.godot/imported/mage_up.png-b3ca2f60a6bf85adc8ba793a4d8d44e3.ctex"
+uid="uid://cmimm3s4xf87n"
+path="res://.godot/imported/Bolt.png-0a96530fe1347c4200447d6c768f2253.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/mage_up.png"
-dest_files=["res://.godot/imported/mage_up.png-b3ca2f60a6bf85adc8ba793a4d8d44e3.ctex"]
+source_file="res://scenes/bolt/Bolt.png"
+dest_files=["res://.godot/imported/Bolt.png-0a96530fe1347c4200447d6c768f2253.ctex"]
 
 [params]
 

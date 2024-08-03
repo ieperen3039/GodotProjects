@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dxbfpb25m6ssg"
-path="res://.godot/imported/direction_indicator.png-9e3e95c1fca5bc5b8d1df5623963b615.ctex"
+uid="uid://bpvrv2isrhfvw"
+path="res://.godot/imported/fork.png-64b545e5e0ba6d22596c613c96c7333f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/direction_indicator.png"
-dest_files=["res://.godot/imported/direction_indicator.png-9e3e95c1fca5bc5b8d1df5623963b615.ctex"]
+source_file="res://scenes/enemies/farmer/fork.png"
+dest_files=["res://.godot/imported/fork.png-64b545e5e0ba6d22596c613c96c7333f.ctex"]
 
 [params]
 

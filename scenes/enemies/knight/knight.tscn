@@ -1,12 +1,12 @@
 [gd_scene load_steps=11 format=3 uid="uid://22ogfctme0ec"]
 
-[ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_4udb5"]
-[ext_resource type="Texture2D" uid="uid://mowv5yrspvl5" path="res://graphics/enemies/sword.png" id="2_6ht84"]
-[ext_resource type="Texture2D" uid="uid://cjdr12hwjyf8q" path="res://graphics/enemies/knight_head.png" id="3_h4soc"]
-[ext_resource type="PackedScene" uid="uid://skb5g2f0nvoq" path="res://scenes/blueprints/healthbar.tscn" id="4_gf3iq"]
-[ext_resource type="Animation" uid="uid://dpodcq04ky8up" path="res://animations/enemy/attack.res" id="5_uo3ms"]
-[ext_resource type="Animation" uid="uid://c1snu1j7vafgg" path="res://animations/enemy/die.res" id="6_g803g"]
-[ext_resource type="Animation" uid="uid://5otcpi3yjqur" path="res://animations/enemy/walk.res" id="7_8bytw"]
+[ext_resource type="Script" path="res://scenes/enemies/Enemy.cs" id="1_qbb3s"]
+[ext_resource type="Texture2D" uid="uid://mowv5yrspvl5" path="res://scenes/enemies/knight/sword.png" id="2_6ht84"]
+[ext_resource type="Texture2D" uid="uid://cjdr12hwjyf8q" path="res://scenes/enemies/knight/knight_head.png" id="3_h4soc"]
+[ext_resource type="PackedScene" uid="uid://skb5g2f0nvoq" path="res://scenes/healthbar/healthbar.tscn" id="4_qioc6"]
+[ext_resource type="Animation" uid="uid://dpodcq04ky8up" path="res://scenes/enemies/animations/attack.res" id="5_s2id0"]
+[ext_resource type="Animation" uid="uid://c1snu1j7vafgg" path="res://scenes/enemies/animations/die.res" id="6_r0p20"]
+[ext_resource type="Animation" uid="uid://5otcpi3yjqur" path="res://scenes/enemies/animations/walk.res" id="7_jv46i"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b7rvt"]
 radius = 14.0
@@ -41,16 +41,16 @@ tracks/1/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qbpt8"]
 _data = {
 "RESET": SubResource("Animation_mkd8x"),
-"attack": ExtResource("5_uo3ms"),
-"die": ExtResource("6_g803g"),
-"walk": ExtResource("7_8bytw")
+"attack": ExtResource("5_s2id0"),
+"die": ExtResource("6_r0p20"),
+"walk": ExtResource("7_jv46i")
 }
 
 [node name="Entity" type="CharacterBody2D"]
 collision_layer = 8
 collision_mask = 15
 motion_mode = 1
-script = ExtResource("1_4udb5")
+script = ExtResource("1_qbb3s")
 MaxHitpoints = 10
 Speed = 0.5
 DamagePerAttack = 2
@@ -70,7 +70,7 @@ position = Vector2(-8, 0)
 scale = Vector2(0.836364, 0.836364)
 texture = ExtResource("3_h4soc")
 
-[node name="Healthbar" parent="." instance=ExtResource("4_gf3iq")]
+[node name="Healthbar" parent="." instance=ExtResource("4_qioc6")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

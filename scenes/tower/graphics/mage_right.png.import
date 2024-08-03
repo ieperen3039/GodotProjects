@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cr7q5khamno37"
-path="res://.godot/imported/card_back.png-244d0aa50e6b51f3e73479df85fe4b1d.ctex"
+uid="uid://c7djdghdlgr71"
+path="res://.godot/imported/mage_right.png-5a0ea413f56beb9adf3bb82d88e0956d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/card_back.png"
-dest_files=["res://.godot/imported/card_back.png-244d0aa50e6b51f3e73479df85fe4b1d.ctex"]
+source_file="res://scenes/tower/graphics/mage_right.png"
+dest_files=["res://.godot/imported/mage_right.png-5a0ea413f56beb9adf3bb82d88e0956d.ctex"]
 
 [params]
 

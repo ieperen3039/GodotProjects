@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnl2w3gc18nhp"]
+
+[ext_resource type="Texture2D" uid="uid://cr7q5khamno37" path="res://scenes/cards/card_back.png" id="1_jv5xt"]
+[ext_resource type="Script" path="res://scenes/cards/card/Card.cs" id="1_sm006"]
+
+[node name="Card" type="Node2D"]
+script = ExtResource("1_sm006")
+
+[node name="CardVisual" type="Sprite2D" parent="."]
+scale = Vector2(2.56, 2.56)
+texture = ExtResource("1_jv5xt")
+centered = false
+
+[node name="CardOutline" type="ReferenceRect" parent="."]
+offset_right = 256.0
+offset_bottom = 358.0
+border_color = Color(0.143296, 0.52476, 0.980035, 1)
+border_width = 0.0
+
+[node name="CardMargin" type="MarginContainer" parent="CardOutline"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 17.0
+offset_top = 19.0
+offset_right = -18.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InnerArea" type="Control" parent="CardOutline/CardMargin"]
+layout_mode = 2
+
+[node name="CardTitle" type="Label" parent="CardOutline/CardMargin/InnerArea"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_type_variation = &"HeaderLarge"
+text = "Card Template"
+
+[node name="CardText" type="RichTextLabel" parent="CardOutline/CardMargin/InnerArea"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 53.161
+grow_horizontal = 2
+grow_vertical = 2
+text = "this card has no effect"
+scroll_active = false
+shortcut_keys_enabled = false
+meta_underlined = false

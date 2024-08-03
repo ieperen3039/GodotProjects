@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpvrv2isrhfvw"
-path="res://.godot/imported/fork.png-828d791cd94b9f5fb5de4a30d61c0846.ctex"
+uid="uid://ob1tlvhcwu10"
+path="res://.godot/imported/Backdrop.png-2160b4f34f184a3169cd5d9cab577058.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/enemies/fork.png"
-dest_files=["res://.godot/imported/fork.png-828d791cd94b9f5fb5de4a30d61c0846.ctex"]
+source_file="res://scenes/levels/0_test_level/Backdrop.png"
+dest_files=["res://.godot/imported/Backdrop.png-2160b4f34f184a3169cd5d9cab577058.ctex"]
 
 [params]
 

@@ -17,7 +17,7 @@ public partial class Tower : StaticBody2D
 	public override void _Ready()
 	{
 		directionIndicator = GetNode<Node2D>("DirectionIndicator");
-		boltBlueprint = GD.Load<PackedScene>("res://scenes/blueprints/bolt.tscn");
+		boltBlueprint = GD.Load<PackedScene>("res://scenes/bolt/bolt.tscn");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
