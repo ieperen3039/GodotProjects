@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cmlk8wpc8832d"
-path="res://.godot/imported/mage_down.png-61c24b3aec322b93c31ae9441df2dea7.ctex"
+path="res://.godot/imported/mage_down.png-6a1afa9c5312799a3cfa11b9a9427cda.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/tower/graphics/mage_down.png"
-dest_files=["res://.godot/imported/mage_down.png-61c24b3aec322b93c31ae9441df2dea7.ctex"]
+source_file="res://graphics/tower/mage_down.png"
+dest_files=["res://.godot/imported/mage_down.png-6a1afa9c5312799a3cfa11b9a9427cda.ctex"]
 
 [params]
 

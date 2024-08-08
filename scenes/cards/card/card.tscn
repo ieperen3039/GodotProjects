@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dnl2w3gc18nhp"]
 
-[ext_resource type="Texture2D" uid="uid://cr7q5khamno37" path="res://scenes/cards/card_back.png" id="1_jv5xt"]
+[ext_resource type="Texture2D" uid="uid://cr7q5khamno37" path="res://graphics/card_back.png" id="1_jv5xt"]
 [ext_resource type="Script" path="res://scenes/cards/card/Card.cs" id="1_sm006"]
 
 [node name="Card" type="Node2D" node_paths=PackedStringArray("cardTitle", "cardText")]

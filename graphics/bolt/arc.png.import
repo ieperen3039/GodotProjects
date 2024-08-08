@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cr7q5khamno37"
-path="res://.godot/imported/card_back.png-3d2b4d04c237ffe46f9118af35c6c99e.ctex"
+uid="uid://dyqmhfnb042kh"
+path="res://.godot/imported/arc.png-63a3fee541427aead17c569a9fb094c9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/cards/card_back.png"
-dest_files=["res://.godot/imported/card_back.png-3d2b4d04c237ffe46f9118af35c6c99e.ctex"]
+source_file="res://graphics/bolt/arc.png"
+dest_files=["res://.godot/imported/arc.png-63a3fee541427aead17c569a9fb094c9.ctex"]
 
 [params]
 

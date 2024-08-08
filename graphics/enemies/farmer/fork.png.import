@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjdr12hwjyf8q"
-path="res://.godot/imported/knight_head.png-e56c85b6f8e13862cd21a0aa204b3e20.ctex"
+uid="uid://bpvrv2isrhfvw"
+path="res://.godot/imported/fork.png-442388bdc57703b6bc67289e962a87bf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/enemies/knight/knight_head.png"
-dest_files=["res://.godot/imported/knight_head.png-e56c85b6f8e13862cd21a0aa204b3e20.ctex"]
+source_file="res://graphics/enemies/farmer/fork.png"
+dest_files=["res://.godot/imported/fork.png-442388bdc57703b6bc67289e962a87bf.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpvrv2isrhfvw"
-path="res://.godot/imported/fork.png-64b545e5e0ba6d22596c613c96c7333f.ctex"
+uid="uid://fmxn2yo3c0y8"
+path="res://.godot/imported/bastion_back.png-f7cc1bc9dc135b21d92362360535be8e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/enemies/farmer/fork.png"
-dest_files=["res://.godot/imported/fork.png-64b545e5e0ba6d22596c613c96c7333f.ctex"]
+source_file="res://graphics/tower/bastion_back.png"
+dest_files=["res://.godot/imported/bastion_back.png-f7cc1bc9dc135b21d92362360535be8e.ctex"]
 
 [params]
 

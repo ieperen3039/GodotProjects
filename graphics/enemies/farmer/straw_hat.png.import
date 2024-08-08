@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d4amuqgf8b21b"
-path="res://.godot/imported/straw_hat.png-38e12ebeb75f5ecc6fc2d0d1899748a7.ctex"
+path="res://.godot/imported/straw_hat.png-66c5b4e12e365c4502bc4a76187139c9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/enemies/farmer/straw_hat.png"
-dest_files=["res://.godot/imported/straw_hat.png-38e12ebeb75f5ecc6fc2d0d1899748a7.ctex"]
+source_file="res://graphics/enemies/farmer/straw_hat.png"
+dest_files=["res://.godot/imported/straw_hat.png-66c5b4e12e365c4502bc4a76187139c9.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ob1tlvhcwu10"
-path="res://.godot/imported/Backdrop.png-2160b4f34f184a3169cd5d9cab577058.ctex"
+uid="uid://cjdr12hwjyf8q"
+path="res://.godot/imported/knight_head.png-b408cee68eb130b0c4dc995f1f129902.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/levels/0_test_level/Backdrop.png"
-dest_files=["res://.godot/imported/Backdrop.png-2160b4f34f184a3169cd5d9cab577058.ctex"]
+source_file="res://graphics/enemies/knight/knight_head.png"
+dest_files=["res://.godot/imported/knight_head.png-b408cee68eb130b0c4dc995f1f129902.ctex"]
 
 [params]
 

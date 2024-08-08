@@ -1,12 +1,12 @@
 [gd_scene load_steps=11 format=3 uid="uid://dh0yvsc5riinq"]
 
 [ext_resource type="Script" path="res://scenes/enemies/Enemy.cs" id="1_o8prs"]
-[ext_resource type="Texture2D" uid="uid://bpvrv2isrhfvw" path="res://scenes/enemies/farmer/fork.png" id="2_le4k6"]
-[ext_resource type="Texture2D" uid="uid://d4amuqgf8b21b" path="res://scenes/enemies/farmer/straw_hat.png" id="3_4plbn"]
+[ext_resource type="Texture2D" uid="uid://bpvrv2isrhfvw" path="res://graphics/enemies/farmer/fork.png" id="2_le4k6"]
+[ext_resource type="Texture2D" uid="uid://d4amuqgf8b21b" path="res://graphics/enemies/farmer/straw_hat.png" id="3_4plbn"]
 [ext_resource type="PackedScene" uid="uid://skb5g2f0nvoq" path="res://scenes/healthbar/healthbar.tscn" id="4_x4alc"]
-[ext_resource type="Animation" uid="uid://dpodcq04ky8up" path="res://scenes/enemies/animations/attack.res" id="5_10aka"]
-[ext_resource type="Animation" uid="uid://c1snu1j7vafgg" path="res://scenes/enemies/animations/die.res" id="6_hdtrg"]
-[ext_resource type="Animation" uid="uid://5otcpi3yjqur" path="res://scenes/enemies/animations/walk.res" id="7_hkmwd"]
+[ext_resource type="Animation" uid="uid://dpodcq04ky8up" path="res://graphics/enemies/animations/attack.res" id="5_10aka"]
+[ext_resource type="Animation" uid="uid://c1snu1j7vafgg" path="res://graphics/enemies/animations/die.res" id="6_hdtrg"]
+[ext_resource type="Animation" uid="uid://5otcpi3yjqur" path="res://graphics/enemies/animations/walk.res" id="7_hkmwd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b7rvt"]
 radius = 14.0

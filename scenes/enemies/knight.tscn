@@ -1,12 +1,12 @@
 [gd_scene load_steps=11 format=3 uid="uid://22ogfctme0ec"]
 
 [ext_resource type="Script" path="res://scenes/enemies/Enemy.cs" id="1_qbb3s"]
-[ext_resource type="Texture2D" uid="uid://mowv5yrspvl5" path="res://scenes/enemies/knight/sword.png" id="2_6ht84"]
-[ext_resource type="Texture2D" uid="uid://cjdr12hwjyf8q" path="res://scenes/enemies/knight/knight_head.png" id="3_h4soc"]
+[ext_resource type="Texture2D" uid="uid://mowv5yrspvl5" path="res://graphics/enemies/knight/sword.png" id="2_6ht84"]
+[ext_resource type="Texture2D" uid="uid://cjdr12hwjyf8q" path="res://graphics/enemies/knight/knight_head.png" id="3_h4soc"]
 [ext_resource type="PackedScene" uid="uid://skb5g2f0nvoq" path="res://scenes/healthbar/healthbar.tscn" id="4_qioc6"]
-[ext_resource type="Animation" uid="uid://dpodcq04ky8up" path="res://scenes/enemies/animations/attack.res" id="5_s2id0"]
-[ext_resource type="Animation" uid="uid://c1snu1j7vafgg" path="res://scenes/enemies/animations/die.res" id="6_r0p20"]
-[ext_resource type="Animation" uid="uid://5otcpi3yjqur" path="res://scenes/enemies/animations/walk.res" id="7_jv46i"]
+[ext_resource type="Animation" uid="uid://dpodcq04ky8up" path="res://graphics/enemies/animations/attack.res" id="5_s2id0"]
+[ext_resource type="Animation" uid="uid://c1snu1j7vafgg" path="res://graphics/enemies/animations/die.res" id="6_r0p20"]
+[ext_resource type="Animation" uid="uid://5otcpi3yjqur" path="res://graphics/enemies/animations/walk.res" id="7_jv46i"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b7rvt"]
 radius = 14.0

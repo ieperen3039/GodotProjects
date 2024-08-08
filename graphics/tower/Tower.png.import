@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmimm3s4xf87n"
-path="res://.godot/imported/Bolt.png-0a96530fe1347c4200447d6c768f2253.ctex"
+uid="uid://dmqsjcqidpkle"
+path="res://.godot/imported/Tower.png-1fe26cc4d75dab4f6b97c21c857797f1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/bolt/Bolt.png"
-dest_files=["res://.godot/imported/Bolt.png-0a96530fe1347c4200447d6c768f2253.ctex"]
+source_file="res://graphics/tower/Tower.png"
+dest_files=["res://.godot/imported/Tower.png-1fe26cc4d75dab4f6b97c21c857797f1.ctex"]
 
 [params]
 
