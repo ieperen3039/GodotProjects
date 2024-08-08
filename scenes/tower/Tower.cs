@@ -1,13 +1,14 @@
 using Godot;
 using System;
+using System.Diagnostics;
 
 public partial class Tower : StaticBody2D
 {
 	[Signal]
 	public delegate void TowerShootsBoltEventHandler(Bolt aBolt);
 
-	private double cooldown = 0.5f;
-	private double cooldownRemaining = 0;
+	[Export]
+	private Marker2D boltFireStartPosition;
 
 	[Export]
 	private PackedScene boltBlueprint;
@@ -15,18 +16,20 @@ public partial class Tower : StaticBody2D
 	[Export]
 	private Node2D directionIndicator;
 
+	private double cooldown = 0.5f;
+	private double cooldownRemaining = 0;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		// directionIndicator = GetNode<Node2D>("DirectionIndicator");
-		// boltBlueprint = GD.Load<PackedScene>("res://scenes/bolt/bolt.tscn");
+		Debug.Assert(directionIndicator.GlobalPosition == boltFireStartPosition.GlobalPosition);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double aDelta)
 	{
 		Vector2 lMousePosition = GetGlobalMousePosition();
-		Vector2 lMouseDirection = lMousePosition - Position;
+		Vector2 lMouseDirection = lMousePosition - boltFireStartPosition.GlobalPosition;
 
 		directionIndicator.Rotation = lMouseDirection.Angle();
 		cooldownRemaining -= aDelta;
@@ -45,7 +48,7 @@ public partial class Tower : StaticBody2D
 		Bolt lBolt = boltBlueprint.Instantiate<Bolt>();
 
 		// Velocity magnitude will be overridden
-		lBolt.Position = Position;
+		lBolt.Position = boltFireStartPosition.GlobalPosition;
 		lBolt.Rotation = lClickDirection.Angle();
 		lBolt.Velocity = lClickDirection;
 		lBolt.Type = ProjectileElementType.Arcane;

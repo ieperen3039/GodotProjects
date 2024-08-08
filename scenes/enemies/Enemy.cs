@@ -47,8 +47,6 @@ public partial class Enemy : CharacterBody2D
 
 	public void HandleEnterTowerArea(Tower aTower)
 	{
-		GD.Print("HandleEnterTowerArea");
-
 		if (IsDead) return;
 
 		state = new Attacking(animationPlayer, aTower, 1.0f / AttacksPerSecond);
