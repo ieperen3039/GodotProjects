@@ -3,8 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://cr7q5khamno37" path="res://scenes/cards/card_back.png" id="1_jv5xt"]
 [ext_resource type="Script" path="res://scenes/cards/card/Card.cs" id="1_sm006"]
 
-[node name="Card" type="Node2D"]
+[node name="Card" type="Node2D" node_paths=PackedStringArray("cardTitle", "cardText")]
 script = ExtResource("1_sm006")
+cardTitle = NodePath("CardOutline/CardMargin/InnerArea/CardTitle")
+cardText = NodePath("CardOutline/CardMargin/InnerArea/CardText")
 
 [node name="CardVisual" type="Sprite2D" parent="."]
 scale = Vector2(2.56, 2.56)

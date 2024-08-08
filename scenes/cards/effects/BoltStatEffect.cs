@@ -1,19 +1,11 @@
-using Godot;
-using System;
 
 public partial class BoltStatEffect : IEffectSource
 {
-	[Export]
 	public bool OnlyOnPlayerFire = true;
-	[Export]
 	public float SpeedAdditive = 0;
-	[Export]
 	public float SpeedMultiplicative = 1;
-	[Export]
 	public int DamageAdditive = 0;
-	[Export]
 	public float DamageMultiplicative = 1;
-	[Export]
 	public float HomingDegPerSecond = 0;
 
 	public string GetCardTitle() 
@@ -58,7 +50,10 @@ public partial class BoltStatEffect : IEffectSource
 	}
 
 	public void OnEnemyBoltCollision(
-		in Bolt aBolt, in Enemy aEnemy, Bolt.CollisionModifiers aBoltMod, Enemy.CollisionModifiers aEnemyMod, Level.CollisionModifiers aLevelMod
+		in Bolt aBolt, in Enemy aEnemy, Bolt.CollisionModifiers aBoltMod, Enemy.CollisionModifiers aEnemyMod
 	)
+	{ }
+
+	public void AfterEnemyBoltCollision(in Bolt aBolt, in Enemy aEnemy, Level.CollisionModifiers aLevelMod)
 	{ }
 }

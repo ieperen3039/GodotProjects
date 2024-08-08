@@ -1,47 +1,36 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Godot;
 
 public partial class Level : Node2D
 {
 	[Export]
-	public Marker2D FixedSpawn;
+	private Marker2D FixedSpawn;
 
 	[Export]
-	public Line2D[] SpawnAreas;
+	private Line2D[] SpawnAreas;
 
 	[Export]
-	public PackedScene[] Enemies;
+	private PackedScene[] Enemies;
+
+	[Export]
+	private Node playFieldNode;
+	[Export]
+	private Tower tower;
 	
 	private int enemiesIndexToSpawn = 0;
 
 	private IList<IEffectSource> effectSources;
 
-	private Random rng = new();
-
 	private double spawnCooldown = 2;
 	private double spawnCooldownRemaining = 0;
-	private Node playFieldNode;
-	private Tower tower;
-	private IList<Vector2[]> spawnLines;
+
+	private SpawnLocations spawnLocations;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		playFieldNode = GetNode("PlayField");
-		tower = playFieldNode.GetNode<Tower>("Tower");
 		effectSources = new List<IEffectSource>();
-
-		spawnLines = new List<Vector2[]>();
-		foreach (Line2D lLine in SpawnAreas)
-		{
-			Vector2[] lLinePoints = lLine.Points;
-			for (int i = 0; i < (lLinePoints.Length - 1); i++)
-			{
-				spawnLines.Add(new Vector2[] { lLinePoints[i], lLinePoints[i + 1] });
-			}
-		}
+		spawnLocations = new SpawnLocations(SpawnAreas);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -58,11 +47,11 @@ public partial class Level : Node2D
 
 	public void HandleEnemySpawn()
 	{
-		if (enemiesIndexToSpawn > Enemies.Length) return;
+		if (enemiesIndexToSpawn >= Enemies.Length) return;
 		
 		Enemy lEnemy = (Enemy) Enemies[enemiesIndexToSpawn++].Instantiate();
 
-		Vector2 lSpawnPosition = GenerateSpawnLocation();
+		Vector2 lSpawnPosition = (FixedSpawn != null) ? FixedSpawn.Position : spawnLocations.GenerateSpawnLocation();
 
 		lEnemy.Position = lSpawnPosition;
 		lEnemy.MovementTarget = tower.Position;
@@ -90,29 +79,24 @@ public partial class Level : Node2D
 	{
 		Enemy.CollisionModifiers enemyMod = new();
 		Bolt.CollisionModifiers boltMod = new();
-		CollisionModifiers levelMod = new();
 
 		foreach (IEffectSource lEffect in effectSources)
 		{
-			lEffect.OnEnemyBoltCollision(aBolt, aEnemy, boltMod, enemyMod, levelMod);
+			lEffect.OnEnemyBoltCollision(aBolt, aEnemy, boltMod, enemyMod);
 		}
 
 		boltMod.Apply(aBolt);
 		enemyMod.Apply(aEnemy);
+
+		// After processing the enemy and bolt, we check for new spawns.
+		// Only now we know whether we made a kill (or whether the bolt has despawned)
+		
+		CollisionModifiers levelMod = new();
+		foreach (IEffectSource lEffect in effectSources)
+		{
+			lEffect.AfterEnemyBoltCollision(aBolt, aEnemy, levelMod);
+		}
 		levelMod.Apply(this);
-	}
-
-	private Vector2 GenerateSpawnLocation()
-	{
-		if (FixedSpawn != null) return FixedSpawn.Position;
-
-		float lRandomSpot = rng.NextSingle() * spawnLines.Count;
-		int lIndex = (int)lRandomSpot;
-		float lPositionOnSpot = lRandomSpot - lIndex;
-
-		Vector2[] lTargetLine = spawnLines[lIndex];
-		Vector2 lSpawnPosition = lTargetLine[0].Lerp(lTargetLine[1], lPositionOnSpot);
-		return lSpawnPosition;
 	}
 
 	public class CollisionModifiers

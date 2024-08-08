@@ -9,15 +9,17 @@ public partial class Tower : StaticBody2D
 	private double cooldown = 0.5f;
 	private double cooldownRemaining = 0;
 
+	[Export]
 	private PackedScene boltBlueprint;
 
+	[Export]
 	private Node2D directionIndicator;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		directionIndicator = GetNode<Node2D>("DirectionIndicator");
-		boltBlueprint = GD.Load<PackedScene>("res://scenes/bolt/bolt.tscn");
+		// directionIndicator = GetNode<Node2D>("DirectionIndicator");
+		// boltBlueprint = GD.Load<PackedScene>("res://scenes/bolt/bolt.tscn");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

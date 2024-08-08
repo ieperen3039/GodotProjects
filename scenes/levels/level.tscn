@@ -6,10 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://dh0yvsc5riinq" path="res://scenes/enemies/farmer/farmer.tscn" id="2_70gic"]
 [ext_resource type="PackedScene" uid="uid://22ogfctme0ec" path="res://scenes/enemies/knight/knight.tscn" id="3_p37ai"]
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("SpawnAreas")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("SpawnAreas", "playFieldNode", "tower")]
 script = ExtResource("1_nsupi")
 SpawnAreas = [NodePath("PlayField/SpawnLines/SpawnLine")]
 Enemies = Array[PackedScene]([ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("3_p37ai"), ExtResource("3_p37ai")])
+playFieldNode = NodePath("PlayField")
+tower = NodePath("PlayField/Tower")
 
 [node name="SpellBook" type="Node" parent="."]
 
