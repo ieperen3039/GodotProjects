@@ -8,10 +8,10 @@
 [ext_resource type="Texture2D" uid="uid://cdt02wnnq55d6" path="res://graphics/tower/bastion.png" id="5_02ac2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_x4hky"]
-radius = 29.0689
+radius = 48.0104
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3dso8"]
-radius = 41.0122
+radius = 64.0078
 
 [node name="Tower" type="StaticBody2D" node_paths=PackedStringArray("boltFireStartPosition", "directionIndicator")]
 collision_layer = 4
@@ -28,20 +28,20 @@ shape = SubResource("CircleShape2D_x4hky")
 
 [node name="TowerSpriteBack" type="Sprite2D" parent="."]
 z_index = 1
-position = Vector2(0.505, -13.805)
-scale = Vector2(0.135, 0.135)
+position = Vector2(0.825, -16.485)
+scale = Vector2(0.22, 0.22)
 texture = ExtResource("3_7twry")
 
 [node name="MageSprite" type="Sprite2D" parent="."]
 z_index = 2
-position = Vector2(0, -18)
-scale = Vector2(0.065, 0.065)
+position = Vector2(0, -24.295)
+scale = Vector2(0.125, 0.125)
 texture = ExtResource("4_bperu")
 
 [node name="TowerSpriteFront" type="Sprite2D" parent="."]
 z_index = 3
-position = Vector2(2.32831e-10, 0)
-scale = Vector2(0.135, 0.135)
+position = Vector2(0, 5.925)
+scale = Vector2(0.22, 0.22)
 texture = ExtResource("5_02ac2")
 
 [node name="HurtArea" type="Area2D" parent="."]
@@ -55,14 +55,13 @@ shape = SubResource("CircleShape2D_3dso8")
 
 [node name="PositionOfFire" type="Marker2D" parent="."]
 z_index = 5
-position = Vector2(0, -13.24)
+position = Vector2(0, -16.48)
 
 [node name="DirectionIndicator" type="Node2D" parent="PositionOfFire"]
 
 [node name="DirectionIndicatorSprite" type="Sprite2D" parent="PositionOfFire/DirectionIndicator"]
 modulate = Color(1, 1, 1, 0.517647)
-scale = Vector2(0.705, 0.705)
 texture = ExtResource("3_28moy")
-offset = Vector2(63.325, 1.17)
+offset = Vector2(80, 0)
 
 [connection signal="body_entered" from="HurtArea" to="." method="HandleBodyEntersHurtArea"]

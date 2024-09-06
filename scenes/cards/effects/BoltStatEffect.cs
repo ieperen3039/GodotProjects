@@ -1,7 +1,7 @@
 
-public partial class BoltStatEffect : IEffectSource
+public partial class BoltStatEffect : ICardEffect
 {
-    public bool OnlyOnPlayerFire = true;
+    public bool OnlyOnPlayerFire = false;
     public float SpeedAdditive = 0;
     public float SpeedMultiplicative = 1;
     public int DamageAdditive = 0;
@@ -10,20 +10,33 @@ public partial class BoltStatEffect : IEffectSource
 
     public string GetCardTitle() 
     {
-        return "Bolt Enhance";
+        return IsPointless() ? "Failure" : "Enhance Bolt";
+    }
+
+    public bool IsPointless()
+    {
+        return SpeedAdditive == 0 && SpeedMultiplicative == 1 && DamageAdditive == 0 && DamageMultiplicative == 1 && HomingDegPerSecond == 0;
     }
 
     public string GetCardText()
     {
-        string text = OnlyOnPlayerFire ? "Player bolts" : "All bolts";
-        if (SpeedAdditive != 0) text += string.Format("\n+{0} projectile speed", SpeedAdditive);
-        if (SpeedMultiplicative != 1) text += string.Format("\n{0}x projectile speed", SpeedMultiplicative);
-        if (DamageAdditive != 0) text += string.Format("\n+{0} projectile damage", DamageAdditive);
-        if (DamageMultiplicative != 1) text += string.Format("\n{0}x projectile damage", DamageMultiplicative);
-
-        if (HomingDegPerSecond > 90)
+        if (IsPointless())
         {
-            
+            return "This card has no effect";
+        }
+
+        string text = (OnlyOnPlayerFire ? "Player" : "All") + " bolts have:";
+        if (SpeedAdditive != 0) text += string.Format("\n+{0:F0} projectile speed", SpeedAdditive);
+        if (SpeedMultiplicative != 1) text += string.Format("\n{0:F2}x projectile speed", SpeedMultiplicative);
+        if (DamageAdditive != 0) text += string.Format("\n+{0:D} projectile damage", DamageAdditive);
+        if (DamageMultiplicative != 1) text += string.Format("\n{0:F2}x projectile damage", DamageMultiplicative);
+
+        if (HomingDegPerSecond > 180)
+        {
+            text += "\nsuperb homing";
+        }
+        else if (HomingDegPerSecond > 90)
+        {
             text += "\nmajor homing";
         }
         else if (HomingDegPerSecond > 45)

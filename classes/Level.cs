@@ -13,13 +13,16 @@ public partial class Level : Node2D
     private PackedScene[] Enemies;
 
     [Export]
+    private int[] SpawnOrder;
+
+    [Export]
     private Node playFieldNode;
     [Export]
     private Tower tower;
     
-    private int enemiesIndexToSpawn = 0;
+    private int enemyIndex = 0;
 
-    private IList<IEffectSource> effectSources;
+    private IList<ICardEffect> effectSources;
 
     private double spawnCooldown = 2;
     private double spawnCooldownRemaining = 0;
@@ -29,7 +32,7 @@ public partial class Level : Node2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        effectSources = new List<IEffectSource>();
+        effectSources = new List<ICardEffect>();
         spawnLocations = new SpawnLocations(SpawnAreas);
     }
 
@@ -47,28 +50,29 @@ public partial class Level : Node2D
 
     public void HandleEnemySpawn()
     {
-        if (enemiesIndexToSpawn >= Enemies.Length) return;
+        if (enemyIndex >= SpawnOrder.Length) return;
         
-        Enemy lEnemy = (Enemy) Enemies[enemiesIndexToSpawn++].Instantiate();
+        int indexToSpawn = SpawnOrder[enemyIndex++];
+        Enemy enemy = (Enemy) Enemies[indexToSpawn].Instantiate();
 
-        Vector2 lSpawnPosition = (FixedSpawn != null) ? FixedSpawn.Position : spawnLocations.GenerateSpawnLocation();
+        Vector2 spawnPosition = (FixedSpawn != null) ? FixedSpawn.Position : spawnLocations.GenerateSpawnLocation();
 
-        lEnemy.Position = lSpawnPosition;
-        lEnemy.MovementTarget = tower.Position;
+        enemy.Position = spawnPosition;
+        enemy.MovementTarget = tower.Position;
 
-        playFieldNode.AddChild(lEnemy);
+        playFieldNode.AddChild(enemy);
     }
 
     private void HandleTowerShootsBolt(Bolt aBolt) => HandleSpawnBolt(aBolt, true);
 
-    private void HandleSpawnBolt(Bolt aBolt, bool isPlayer)
+    private void HandleSpawnBolt(Bolt aBolt, bool aIsPlayer)
     {
         aBolt.BoltHitsEnemy += HandleBoltCollision;
 
         Bolt.SpawnModifiers mods = new();
-        foreach (IEffectSource lEffects in effectSources)
+        foreach (ICardEffect lEffects in effectSources)
         {
-            lEffects.OnBoltSpawn(aBolt, mods, isPlayer);
+            lEffects.OnBoltSpawn(aBolt, mods, aIsPlayer);
         }
 
         mods.Apply(aBolt);
@@ -80,7 +84,7 @@ public partial class Level : Node2D
         Enemy.CollisionModifiers enemyMod = new();
         Bolt.CollisionModifiers boltMod = new();
 
-        foreach (IEffectSource lEffect in effectSources)
+        foreach (ICardEffect lEffect in effectSources)
         {
             lEffect.OnEnemyBoltCollision(aBolt, aEnemy, boltMod, enemyMod);
         }
@@ -92,7 +96,7 @@ public partial class Level : Node2D
         // Only now we know whether we made a kill (or whether the bolt has despawned)
         
         CollisionModifiers levelMod = new();
-        foreach (IEffectSource lEffect in effectSources)
+        foreach (ICardEffect lEffect in effectSources)
         {
             lEffect.AfterEnemyBoltCollision(aBolt, aEnemy, levelMod);
         }

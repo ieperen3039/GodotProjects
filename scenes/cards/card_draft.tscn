@@ -1,0 +1,85 @@
+[gd_scene load_steps=5 format=3 uid="uid://by3fqjf3ti2qg"]
+
+[ext_resource type="Script" path="res://scenes/cards/CardDrafting.cs" id="1_qj55q"]
+[ext_resource type="Texture2D" uid="uid://ob1tlvhcwu10" path="res://graphics/levels/0_test_level/Backdrop.png" id="2_a5gls"]
+[ext_resource type="PackedScene" uid="uid://dnl2w3gc18nhp" path="res://scenes/cards/card/card.tscn" id="2_vxy52"]
+[ext_resource type="Texture2D" uid="uid://ctf6a1npmyefg" path="res://graphics/card_dealing/mana.png" id="4_rxynw"]
+
+[node name="CardDraft" type="Node2D" node_paths=PackedStringArray("manaDisplay")]
+script = ExtResource("1_qj55q")
+cardScene = ExtResource("2_vxy52")
+manaDisplay = NodePath("ManaResource/Label")
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="underground" type="Sprite2D" parent="Background"]
+modulate = Color(0.331366, 0.128788, 0.0176935, 1)
+z_index = -1
+position = Vector2(1000, 0)
+rotation = 1.5708
+texture = ExtResource("2_a5gls")
+centered = false
+
+[node name="Cards" type="Node" parent="."]
+
+[node name="CardPosition00" type="Marker2D" parent="Cards"]
+position = Vector2(68, 81)
+gizmo_extents = 35.0
+
+[node name="CardPosition01" type="Marker2D" parent="Cards"]
+position = Vector2(915, 76)
+gizmo_extents = 35.0
+
+[node name="CardPosition10" type="Marker2D" parent="Cards"]
+position = Vector2(89, 709)
+gizmo_extents = 35.0
+
+[node name="CardPosition11" type="Marker2D" parent="Cards"]
+position = Vector2(907, 658)
+gizmo_extents = 35.0
+
+[node name="DealerHand" type="Marker2D" parent="."]
+position = Vector2(784, -67)
+gizmo_extents = 35.0
+
+[node name="ManaResource" type="Node2D" parent="."]
+position = Vector2(833, 797)
+
+[node name="Sprite2D" type="Sprite2D" parent="ManaResource"]
+scale = Vector2(0.818, 1)
+texture = ExtResource("4_rxynw")
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="ManaResource"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = 50.0
+offset_right = 78.0
+offset_bottom = 117.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "100"
+horizontal_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Button" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 90.0
+offset_top = 829.0
+offset_right = 294.0
+offset_bottom = 909.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 36
+text = "Deal!"
+
+[connection signal="pressed" from="Button" to="." method="Deal"]

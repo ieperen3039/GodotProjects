@@ -9,7 +9,8 @@
 [node name="Level" type="Node2D" node_paths=PackedStringArray("SpawnAreas", "playFieldNode", "tower")]
 script = ExtResource("1_nsupi")
 SpawnAreas = [NodePath("PlayField/SpawnLines/SpawnLine")]
-Enemies = Array[PackedScene]([ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("2_70gic"), ExtResource("3_p37ai"), ExtResource("3_p37ai")])
+Enemies = Array[PackedScene]([ExtResource("2_70gic"), ExtResource("3_p37ai")])
+SpawnOrder = PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 1, 0, 1)
 playFieldNode = NodePath("PlayField")
 tower = NodePath("PlayField/Tower")
 

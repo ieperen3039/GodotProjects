@@ -1,10 +1,12 @@
 
 
-public interface IEffectSource
+public interface ICardEffect
 {
 	string GetCardTitle();
 
 	string GetCardText();
+
+    bool IsPointless();
 
     void OnBoltSpawn(in Bolt aBolt, Bolt.SpawnModifiers aMod, bool aPlayerFire);
 
