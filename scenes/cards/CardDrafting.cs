@@ -5,26 +5,22 @@ using System.Linq;
 
 public partial class CardDrafting : Node2D
 {
-    private const int CardPositionOffsetPx = 20;
-    
+    private const int CardPositionRandomOffsetPx = 5;
+    private const float CardRotationRandomRangeRad = 0;
+    private const float CardRotationRandomOffsetRad = -CardRotationRandomRangeRad / 2;
+    private const double CardDealAnimationDurationSec = 0.5;
+    private const double CardDealAnimationOverlap = 4.0;
+
     private const int NumCardsToDeal = 8;
     private const int NumRowsOfCards = 2;
     private const int NumColumnsOfCards = NumCardsToDeal / NumRowsOfCards;
 
     private const float FractionOfManaUseFuzzyness = 1.0f / NumCardsToDeal;
+    private const float FractionOfManaUseBias = 0.1f / NumCardsToDeal;
 
-    private const float SpeedAdditiveMax = 10;
-    private const float SpeedAdditiveCost = 1;
-    private const float SpeedMultiplicativeMax = 1;
-    private const float SpeedMultiplicativeCost = 10;
-    private const float DamageAdditiveMax = 5;
-    private const float DamageAdditiveCost = 10;
-    private const float DamageMultiplicativeMax = 1;
-    private const float DamageMultiplicativeCost = 20;
-    private const float HomingDegPerSecondMax = 50;
-    private const float HomingDegPerSecondCost = 5;
-
-
+    private const double ShowManaCatchUpRate = 100.0; 
+    private double ShownManaReal = 0;
+    private int ShownMana = 0;
     public int CurrentMana = 100;
 
     private Random rng = new();
@@ -34,6 +30,11 @@ public partial class CardDrafting : Node2D
 
     [Export]
     private Label manaDisplay;
+
+    [Export]
+    private Node2D dealerSource;
+    [Export]
+    private Node2D dealerSink;
 
     private Node cardNode;
 
@@ -61,32 +62,111 @@ public partial class CardDrafting : Node2D
         cardPositionZeroOffset = cardPosition01 - cardPosition00;
         cardPositionOneOffset = cardPosition11 - cardPosition10;
 
-        manaDisplay.Text = CurrentMana.ToString();
+        dealerSource.Position -= referenceRect.Size / 2;
+        dealerSink.Position -= referenceRect.Size / 2;
+
+        manaDisplay.Text = ShownMana.ToString();
+    }
+
+    public override void _Process(double delta)
+    {
+        // we juggle with ShownManaReal to avoid situations 
+        // where (ShowManaCatchUpRate * delta < 1)
+        if (ShownMana != CurrentMana)
+        {
+            if (ShownManaReal < CurrentMana)
+            {
+                ShownManaReal += ShowManaCatchUpRate * delta;
+                if (ShownManaReal > CurrentMana)
+                {
+                    ShownManaReal = CurrentMana;
+                }
+            }
+            else if (ShownManaReal > CurrentMana)
+            {
+                ShownManaReal -= ShowManaCatchUpRate * delta;
+                if (ShownManaReal < CurrentMana)
+                {
+                    ShownManaReal = CurrentMana;
+                }
+            }
+
+            ShownMana = (int) Math.Round(ShownManaReal);
+            manaDisplay.Text = ShownMana.ToString();
+        }
     }
 
     public void Deal()
     {
-        foreach(Node child in cardNode.GetChildren()) child.QueueFree();
+        RemoveCards();
 
         for (int currentCardIdx = 0; currentCardIdx < NumCardsToDeal; currentCardIdx++)
         {
             if (CurrentMana == 0) break;
 
             float baseFractionToUse = 1.0f / (NumCardsToDeal - currentCardIdx);
-            float randomOffset = GetRandomOffset(FractionOfManaUseFuzzyness);
-            float rawFractionToUse = baseFractionToUse + randomOffset;
+            float rawFractionToUse = baseFractionToUse + GetRandomOffset(FractionOfManaUseFuzzyness) + FractionOfManaUseBias;
             int manaToUse = (int)(CurrentMana * (float)Math.Clamp(rawFractionToUse, 0, 1));
             if (manaToUse == 0) manaToUse = CurrentMana;
 
             ICardEffect effectSource = Select(manaToUse);
-            CurrentMana -= manaToUse;
-
-            Card card = cardScene.Instantiate<Card>();
-            card.SetCardEffect(effectSource, manaToUse);
-            card.Position = GetCardPosition(currentCardIdx);
-            card.Position += new Vector2(rng.NextSingle(), rng.NextSingle()) * CardPositionOffsetPx;
-            cardNode.AddChild(card);
+            CurrentMana -= effectSource.GetManaCost();
+            SpawnCard(currentCardIdx, effectSource);
         }
+    }
+
+    public void RemoveCards()
+    {
+        int currentCardIdx = 0;
+        foreach (Node child in cardNode.GetChildren())
+        {
+            if (child is Card card)
+            {
+                RemoveCard(card, currentCardIdx);
+                currentCardIdx++;
+            }
+        };
+    }
+
+    private void RemoveCard(Card card, int delayIndex = 0)
+    {
+        double duration = CardDealAnimationDurationSec * (CardDealAnimationOverlap / NumCardsToDeal);
+        double startTime = (CardDealAnimationDurationSec - duration) * ((1.0 + delayIndex) / NumCardsToDeal);
+
+        CurrentMana += card.ManaCost;
+
+        Tween tween = GetTree().CreateTween();
+        tween.TweenProperty(card, "position", dealerSink.Position, duration)
+            .SetTrans(Tween.TransitionType.Cubic)
+            .SetDelay(startTime);
+
+        tween.TweenCallback(Callable.From(card.QueueFree));
+    }
+
+    private void SpawnCard(int currentCardIdx, ICardEffect effectSource)
+    {
+        Card card = cardScene.Instantiate<Card>();
+        card.SetCardEffect(effectSource);
+        card.Position = dealerSource.Position;
+        card.Rotation = CardRotationRandomOffsetRad + rng.NextSingle() * CardRotationRandomRangeRad;
+
+        Vector2 targetPosition = GetCardPosition(currentCardIdx);
+        targetPosition += new Vector2(rng.NextSingle(), rng.NextSingle()) * CardPositionRandomOffsetPx;
+
+        double duration = CardDealAnimationDurationSec * (CardDealAnimationOverlap / NumCardsToDeal);
+        double startTime = (CardDealAnimationDurationSec - duration) * ((1.0 + currentCardIdx) / NumCardsToDeal);
+
+        Tween tween = GetTree().CreateTween();
+        tween.TweenProperty(card, "position", targetPosition, duration)
+            .SetTrans(Tween.TransitionType.Cubic)
+            .SetDelay(startTime);
+
+        tween.TweenCallback(Callable.From(() => {
+            if (card.ManaCost == 0) RemoveCard(card);
+        }))
+            .SetDelay(1.0f);
+
+        cardNode.AddChild(card);
     }
 
     private Vector2 GetCardPosition(int aCurrentCardIdx)
@@ -106,87 +186,10 @@ public partial class CardDrafting : Node2D
     }
 
 
-    private float GetRandomOffset(float magnitude)
-    {
-        return (rng.NextSingle() * magnitude * 2.0f) - magnitude;
-    }
+    private float GetRandomOffset(float magnitude) => (rng.NextSingle() * magnitude * 2.0f) - magnitude;
 
     public ICardEffect Select(int manaToUse)
     {
-        BoltStatEffect effect = new();
-
-        int scaleMultpilier = 1 + (manaToUse / 20);
-
-        int[] table = {
-            5,  // 0: OnlyOnPlayerFire
-            5,  // 1: SpeedAdditive
-            30, // 2: SpeedMultiplicative
-            30, // 3: DamageAdditive
-            10, // 4: DamageMultiplicative
-            10, // 5: HomingDegPerSecond
-            1,  // 6: Anti SpeedMultiplicative
-            1,  // 7: Anti DamageMultiplicative
-        };
-
-        int manaLeftToUse = manaToUse;
-        while (manaLeftToUse > 0)
-        {
-            int effectIndex = -1;
-            int number = rng.Next() % table.Sum();
-            while (number >= 0) number -= table[++effectIndex];
-
-            float offsetModifier = scaleMultpilier * ((rng.Next() % 8) + 3) / 10.0f;
-
-            switch (effectIndex)
-            {
-                case 0:
-                    if (!effect.OnlyOnPlayerFire)
-                    {
-                        manaLeftToUse += manaToUse; // double the total mana worth
-                        effect.OnlyOnPlayerFire = true;
-                    }
-                    break;
-                case 1:
-                    manaLeftToUse -= (int) (offsetModifier * SpeedAdditiveCost);
-                    if (manaLeftToUse > 0) effect.SpeedAdditive += offsetModifier * SpeedAdditiveMax;
-                    break;
-                case 2:
-                    manaLeftToUse -= (int) (offsetModifier * SpeedMultiplicativeCost);
-                    if (manaLeftToUse > 0) effect.SpeedMultiplicative += offsetModifier * SpeedMultiplicativeMax;
-                    break;
-                case 3:
-                    manaLeftToUse -= (int) (offsetModifier * DamageAdditiveCost);
-                    if (manaLeftToUse > 0) effect.DamageAdditive += (int)(offsetModifier * DamageAdditiveMax);
-                    break;
-                case 4:
-                    manaLeftToUse -= (int) (offsetModifier * DamageMultiplicativeCost);
-                    if (manaLeftToUse > 0) effect.DamageMultiplicative += offsetModifier * DamageMultiplicativeMax;
-                    break;
-                case 5:
-                    manaLeftToUse -= (int) (offsetModifier * HomingDegPerSecondCost);
-                    if (manaLeftToUse > 0) effect.HomingDegPerSecond += offsetModifier * HomingDegPerSecondMax;
-                    break;
-                case 6:
-                    if (effect.SpeedMultiplicative == 0)
-                    {
-                        manaLeftToUse += (int) (offsetModifier * 2 * SpeedMultiplicativeCost);
-                        effect.SpeedMultiplicative -= offsetModifier * (SpeedMultiplicativeMax / 2);
-                        table[2] = 0;
-                    }
-                    break;
-                case 7:
-                    if (effect.DamageMultiplicative == 0)
-                    {
-                        manaLeftToUse += (int) (offsetModifier * 2 * DamageMultiplicativeCost);
-                        effect.DamageMultiplicative -= offsetModifier * (DamageMultiplicativeMax / 2);
-                        table[4] = 0;
-                    }
-                    break;
-                default:
-                    throw new Exception("Table index out of bounds");
-            }
-        }
-
-        return effect;
+        return BoltStatEffect.CreateWithCost(manaToUse);
     }
 }

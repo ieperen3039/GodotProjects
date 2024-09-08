@@ -6,7 +6,7 @@ public interface ICardEffect
 
 	string GetCardText();
 
-    bool IsPointless();
+    int GetManaCost();
 
     void OnBoltSpawn(in Bolt aBolt, Bolt.SpawnModifiers aMod, bool aPlayerFire);
 

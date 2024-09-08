@@ -5,10 +5,12 @@
 [ext_resource type="PackedScene" uid="uid://dnl2w3gc18nhp" path="res://scenes/cards/card/card.tscn" id="2_vxy52"]
 [ext_resource type="Texture2D" uid="uid://ctf6a1npmyefg" path="res://graphics/card_dealing/mana.png" id="4_rxynw"]
 
-[node name="CardDraft" type="Node2D" node_paths=PackedStringArray("manaDisplay")]
+[node name="CardDraft" type="Node2D" node_paths=PackedStringArray("manaDisplay", "dealerSource", "dealerSink")]
 script = ExtResource("1_qj55q")
 cardScene = ExtResource("2_vxy52")
 manaDisplay = NodePath("ManaResource/Label")
+dealerSource = NodePath("DealerSource")
+dealerSink = NodePath("DealerSink")
 
 [node name="Background" type="Node2D" parent="."]
 
@@ -38,8 +40,12 @@ gizmo_extents = 35.0
 position = Vector2(907, 658)
 gizmo_extents = 35.0
 
-[node name="DealerHand" type="Marker2D" parent="."]
-position = Vector2(784, -67)
+[node name="DealerSource" type="Marker2D" parent="."]
+position = Vector2(326, -127)
+gizmo_extents = 35.0
+
+[node name="DealerSink" type="Marker2D" parent="."]
+position = Vector2(767, -147)
 gizmo_extents = 35.0
 
 [node name="ManaResource" type="Node2D" parent="."]
@@ -67,7 +73,7 @@ text = "100"
 horizontal_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="Button" type="Button" parent="."]
+[node name="GetCards" type="Button" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -82,4 +88,20 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 36
 text = "Deal!"
 
-[connection signal="pressed" from="Button" to="." method="Deal"]
+[node name="RemoveCards" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 345.0
+offset_top = 831.0
+offset_right = 549.0
+offset_bottom = 911.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 36
+text = "Discard"
+
+[connection signal="pressed" from="GetCards" to="." method="Deal"]
+[connection signal="pressed" from="RemoveCards" to="." method="RemoveCards"]
