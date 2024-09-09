@@ -5,9 +5,17 @@ using System.Linq;
 public partial class BoltStatEffect : ICardEffect
 {
     private const float SpeedMultiplicativeCost = 10;
+    private const float SpeedMultiplicativeMax = 4.0f;
+    private const float SpeedMultiplicativeStep = 0.5f;
     private const float DamageAdditiveCost = 1;
+    private const float DamageAdditiveMax = 20;
+    private const float DamageAdditiveStep = 1;
     private const float DamageMultiplicativeCost = 20;
+    private const float DamageMultiplicativeMax = 2;
+    private const float DamageMultiplicativeStep = 0.2f;
     private const float HomingDegPerSecondCost = 0.2f;
+    private const float HomingDegPerSecondMax = 180;
+    private const float HomingDegPerSecondStep = 15;
     private const float OnPlayerFireManaMultiplier = 2f;
 
     public bool OnlyOnPlayerFire = false;
@@ -104,20 +112,13 @@ public partial class BoltStatEffect : ICardEffect
         const int NumDraws = 3;
         for (int drawIdx = 0; drawIdx < NumDraws; drawIdx++)
         {
-            int manaLeftToUse = targetTotalManaCost - effect.GetManaCost();
-            if (manaLeftToUse <= 0) break;
-
-            float fractionToUse = 1.0f / (NumDraws - drawIdx);
-
-            float offset = (rng.NextSingle() * 3.0f) + 1f;
-            int manaToUse = (int)(manaLeftToUse * fractionToUse * offset);
-
             int effectIndex = -1;
             int number = rng.Next() % effectWeights.Sum();
             while (number >= 0) number -= effectWeights[++effectIndex];
 
             BoltStatEffect newEffect = (BoltStatEffect)effect.MemberwiseClone();
 
+            float effectStrength;
             switch (effectIndex)
             {
                 case 0:
@@ -127,16 +128,20 @@ public partial class BoltStatEffect : ICardEffect
                     // unused
                     break;
                 case 2:
-                    newEffect.SpeedMultiplicative += manaToUse / SpeedMultiplicativeCost;
+                    effectStrength = RandomWithStep(rng, (int)(SpeedMultiplicativeMax / SpeedMultiplicativeStep));
+                    newEffect.SpeedMultiplicative += effectStrength * SpeedMultiplicativeMax;
                     break;
                 case 3:
-                    newEffect.DamageAdditive += (int)(manaToUse / DamageAdditiveCost);
+                    effectStrength = RandomWithStep(rng, (int)(DamageAdditiveMax / DamageAdditiveStep));
+                    newEffect.DamageAdditive += (int)(effectStrength * DamageAdditiveMax);
                     break;
                 case 4:
-                    newEffect.DamageMultiplicative += manaToUse / DamageMultiplicativeCost;
+                    effectStrength = RandomWithStep(rng, (int)(DamageMultiplicativeMax / DamageMultiplicativeStep));
+                    newEffect.DamageMultiplicative += effectStrength * DamageMultiplicativeMax;
                     break;
                 case 5:
-                    newEffect.HomingDegPerSecond += manaToUse / HomingDegPerSecondCost;
+                    effectStrength = RandomWithStep(rng, (int)(HomingDegPerSecondMax / HomingDegPerSecondStep));
+                    newEffect.HomingDegPerSecond += effectStrength * HomingDegPerSecondMax;
                     break;
                 default:
                     throw new Exception("Table index out of bounds");
@@ -150,4 +155,10 @@ public partial class BoltStatEffect : ICardEffect
 
         return effect;
     }
+
+    private static float RandomWithStep(Random rng, int step)
+    {
+        return ((rng.Next() % step) + 1.0f) / step;
+    }
+
 }
