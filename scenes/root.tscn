@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://wm04w6subhq1"]
+
+[ext_resource type="Script" path="res://scenes/Game.cs" id="1_0qkit"]
+[ext_resource type="PackedScene" uid="uid://dckgfion02a5s" path="res://scenes/levels/level.tscn" id="2_jwpff"]
+[ext_resource type="PackedScene" uid="uid://by3fqjf3ti2qg" path="res://scenes/cards/card_draft.tscn" id="3_u5ib5"]
+
+[node name="Root" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0qkit")
+sceneLevels = Array[PackedScene]([ExtResource("2_jwpff")])
+sceneCardDrafting = ExtResource("3_u5ib5")
+
+[node name="FadeToBlack" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+top_level = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

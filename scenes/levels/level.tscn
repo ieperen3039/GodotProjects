@@ -10,7 +10,7 @@
 script = ExtResource("1_nsupi")
 SpawnAreas = [NodePath("PlayField/SpawnLines/SpawnLine")]
 Enemies = Array[PackedScene]([ExtResource("2_70gic"), ExtResource("3_p37ai")])
-SpawnOrder = PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 1, 0, 1)
+SpawnOrder = PackedInt32Array(0)
 playFieldNode = NodePath("PlayField")
 tower = NodePath("PlayField/Tower")
 

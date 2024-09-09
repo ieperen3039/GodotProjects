@@ -3,6 +3,12 @@ using Godot;
 
 public partial class Level : Node2D
 {
+    [Signal]
+    public delegate void OnLevelFinishEventHandler();
+
+    public SpellBook Spellbook = new();
+    public int CurrentMana = 100;
+
     [Export]
     private Marker2D FixedSpawn;
 
@@ -22,17 +28,14 @@ public partial class Level : Node2D
     
     private int enemyIndex = 0;
 
-    private IList<ICardEffect> effectSources;
-
     private double spawnCooldown = 2;
-    private double spawnCooldownRemaining = 0;
+    private double spawnCooldownRemaining = 3;
 
     private SpawnLocations spawnLocations;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        effectSources = new List<ICardEffect>();
         spawnLocations = new SpawnLocations(SpawnAreas);
     }
 
@@ -46,7 +49,26 @@ public partial class Level : Node2D
             HandleEnemySpawn();
             spawnCooldownRemaining += spawnCooldown;
         }
+
+        if (IsLevelComplete())
+        {
+            EmitSignal(SignalName.OnLevelFinish);
+        }
     }
+
+    // true if no enemies left
+    private bool IsLevelComplete()
+    {
+        if (enemyIndex < SpawnOrder.Length) return false;
+
+        foreach (Node node in playFieldNode.GetChildren())
+        {
+            if (node is Enemy) return false;
+        }
+
+        return true;
+    }
+
 
     public void HandleEnemySpawn()
     {
@@ -70,7 +92,7 @@ public partial class Level : Node2D
         aBolt.OnBoltHitsEnemy += HandleBoltCollision;
 
         Bolt.SpawnModifiers mods = new();
-        foreach (ICardEffect lEffects in effectSources)
+        foreach (ICardEffect lEffects in Spellbook.Effects)
         {
             lEffects.OnBoltSpawn(aBolt, mods, aIsPlayer);
         }
@@ -84,7 +106,7 @@ public partial class Level : Node2D
         Enemy.CollisionModifiers enemyMod = new();
         Bolt.CollisionModifiers boltMod = new();
 
-        foreach (ICardEffect lEffect in effectSources)
+        foreach (ICardEffect lEffect in Spellbook.Effects)
         {
             lEffect.OnEnemyBoltCollision(aBolt, aEnemy, boltMod, enemyMod);
         }
@@ -96,7 +118,7 @@ public partial class Level : Node2D
         // Only now we know whether we made a kill (or whether the bolt has despawned)
         
         CollisionModifiers levelMod = new();
-        foreach (ICardEffect lEffect in effectSources)
+        foreach (ICardEffect lEffect in Spellbook.Effects)
         {
             lEffect.AfterEnemyBoltCollision(aBolt, aEnemy, levelMod);
         }
