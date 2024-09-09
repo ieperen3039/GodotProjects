@@ -15,7 +15,7 @@ dealerSink = NodePath("DealerSink")
 [node name="Background" type="Node2D" parent="."]
 
 [node name="underground" type="Sprite2D" parent="Background"]
-modulate = Color(0.331366, 0.128788, 0.0176935, 1)
+modulate = Color(0.520394, 0.218795, 0.0459814, 1)
 z_index = -1
 position = Vector2(1000, 0)
 rotation = 1.5708

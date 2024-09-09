@@ -18,7 +18,7 @@ public partial class CardDrafting : Node2D
     private const float FractionOfManaUseFuzzyness = 1.0f / NumCardsToDeal;
     private const float FractionOfManaUseBias = 0.1f / NumCardsToDeal;
 
-    private const double ShowManaCatchUpRate = 100.0; 
+    private const double ShowManaCatchUpRate = 100.0;
     private double ShownManaReal = 0;
     private int ShownMana = 0;
     public int CurrentMana = 100;
@@ -91,7 +91,7 @@ public partial class CardDrafting : Node2D
                 }
             }
 
-            ShownMana = (int) Math.Round(ShownManaReal);
+            ShownMana = (int)Math.Round(ShownManaReal);
             manaDisplay.Text = ShownMana.ToString();
         }
     }
@@ -143,6 +143,11 @@ public partial class CardDrafting : Node2D
         tween.TweenCallback(Callable.From(card.QueueFree));
     }
 
+    private void CheckFailureCard(Card card)
+    {
+        if (card.ManaCost == 0) RemoveCard(card);
+    }
+
     private void SpawnCard(int currentCardIdx, ICardEffect effectSource)
     {
         Card card = cardScene.Instantiate<Card>();
@@ -161,9 +166,7 @@ public partial class CardDrafting : Node2D
             .SetTrans(Tween.TransitionType.Cubic)
             .SetDelay(startTime);
 
-        tween.TweenCallback(Callable.From(() => {
-            if (card.ManaCost == 0) RemoveCard(card);
-        }))
+        tween.TweenCallback(Callable.From(() => CheckFailureCard(card)))
             .SetDelay(1.0f);
 
         cardNode.AddChild(card);
