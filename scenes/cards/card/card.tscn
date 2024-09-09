@@ -1,26 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnl2w3gc18nhp"]
+[gd_scene load_steps=6 format=3 uid="uid://dnl2w3gc18nhp"]
 
-[ext_resource type="Texture2D" uid="uid://cr7q5khamno37" path="res://graphics/card_dealing/card_back.png" id="1_jv5xt"]
 [ext_resource type="Script" path="res://scenes/cards/card/Card.cs" id="1_sm006"]
+[ext_resource type="Texture2D" uid="uid://cr7q5khamno37" path="res://graphics/card_dealing/card_bg_normal.png" id="2_8f1me"]
+[ext_resource type="Texture2D" uid="uid://dxew3vs6mmk1t" path="res://graphics/card_dealing/card_bg_pressed.png" id="3_rnab1"]
+[ext_resource type="Texture2D" uid="uid://bf5b4othqe0b2" path="res://graphics/card_dealing/card_bg_hover.png" id="4_1c7gj"]
+[ext_resource type="Texture2D" uid="uid://xqfefrmgelh1" path="res://graphics/card_dealing/card_bg_failure.png" id="5_jvk23"]
 
-[node name="Card" type="Node2D" node_paths=PackedStringArray("cardTitle", "cardManaCost", "cardText")]
+[node name="Card" type="Node2D" node_paths=PackedStringArray("cardTitle", "cardManaCost", "cardText", "clickListener")]
 script = ExtResource("1_sm006")
-cardTitle = NodePath("CardOutline/CardMargin/InnerArea/CardTitle")
-cardManaCost = NodePath("CardOutline/CardMargin/InnerArea/ManaCost")
-cardText = NodePath("CardOutline/CardMargin/InnerArea/CardText")
+cardTitle = NodePath("Background/CardMargin/InnerArea/CardTitle")
+cardManaCost = NodePath("Background/CardMargin/InnerArea/ManaCost")
+cardText = NodePath("Background/CardMargin/InnerArea/CardText")
+clickListener = NodePath("Background")
 
-[node name="CardVisual" type="Sprite2D" parent="."]
-scale = Vector2(2.03, 2.03)
-texture = ExtResource("1_jv5xt")
-centered = false
-
-[node name="CardOutline" type="ReferenceRect" parent="."]
+[node name="Background" type="TextureButton" parent="."]
 offset_right = 203.0
 offset_bottom = 284.0
-border_color = Color(0.143296, 0.52476, 0.980035, 1)
-border_width = 0.0
+keep_pressed_outside = true
+texture_normal = ExtResource("2_8f1me")
+texture_pressed = ExtResource("3_rnab1")
+texture_hover = ExtResource("4_1c7gj")
+texture_disabled = ExtResource("5_jvk23")
+stretch_mode = 0
 
-[node name="CardMargin" type="MarginContainer" parent="CardOutline"]
+[node name="CardMargin" type="MarginContainer" parent="Background"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,10 +35,11 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 10
 
-[node name="InnerArea" type="Control" parent="CardOutline/CardMargin"]
+[node name="InnerArea" type="Control" parent="Background/CardMargin"]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="CardTitle" type="Label" parent="CardOutline/CardMargin/InnerArea"]
+[node name="CardTitle" type="Label" parent="Background/CardMargin/InnerArea"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -44,7 +48,7 @@ grow_horizontal = 2
 theme_type_variation = &"HeaderMedium"
 text = "Card Template"
 
-[node name="CardText" type="RichTextLabel" parent="CardOutline/CardMargin/InnerArea"]
+[node name="CardText" type="RichTextLabel" parent="Background/CardMargin/InnerArea"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -52,12 +56,13 @@ anchor_bottom = 1.0
 offset_top = 53.161
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 text = "this card has no effect"
 scroll_active = false
 shortcut_keys_enabled = false
 meta_underlined = false
 
-[node name="ManaCost" type="Label" parent="CardOutline/CardMargin/InnerArea"]
+[node name="ManaCost" type="Label" parent="Background/CardMargin/InnerArea"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -68,3 +73,5 @@ theme_type_variation = &"HeaderMedium"
 text = "10"
 horizontal_alignment = 2
 vertical_alignment = 2
+
+[connection signal="pressed" from="Background" to="." method="OnClick"]

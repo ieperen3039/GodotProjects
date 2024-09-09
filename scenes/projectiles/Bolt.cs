@@ -6,7 +6,7 @@ using System.Linq;
 public partial class Bolt : CharacterBody2D
 {
     [Signal]
-    public delegate void BoltHitsEnemyEventHandler(Bolt aBolt, Enemy aTarget);
+    public delegate void OnBoltHitsEnemyEventHandler(Bolt aBolt, Enemy aTarget);
 
     [Export]
     public ulong TailElementDelayMs = 71;
@@ -122,7 +122,7 @@ public partial class Bolt : CharacterBody2D
 
             if (lCollidedObject is Enemy lEnemy)
             {
-                EmitSignal(SignalName.BoltHitsEnemy, this, lEnemy);
+                EmitSignal(SignalName.OnBoltHitsEnemy, this, lEnemy);
             }
             else
             {

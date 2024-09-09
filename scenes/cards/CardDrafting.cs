@@ -47,7 +47,7 @@ public partial class CardDrafting : Node2D
     public override void _Ready()
     {
         Card card = cardScene.Instantiate<Card>();
-        ReferenceRect referenceRect = card.GetNode<ReferenceRect>("CardOutline");
+        Control outline = card.GetNode<Control>("Background");
 
         cardNode = GetNode<Node>("Cards");
         cardPosition00 = GetNode<Node2D>("Cards/CardPosition00").Position;
@@ -55,20 +55,20 @@ public partial class CardDrafting : Node2D
         cardPosition10 = GetNode<Node2D>("Cards/CardPosition10").Position;
         Vector2 cardPosition11 = GetNode<Node2D>("Cards/CardPosition11").Position;
 
-        cardPosition01.X -= referenceRect.Size.X;
-        cardPosition10.Y -= referenceRect.Size.Y;
-        cardPosition11 -= referenceRect.Size;
+        cardPosition01.X -= outline.Size.X;
+        cardPosition10.Y -= outline.Size.Y;
+        cardPosition11 -= outline.Size;
 
         cardPositionZeroOffset = cardPosition01 - cardPosition00;
         cardPositionOneOffset = cardPosition11 - cardPosition10;
 
-        dealerSource.Position -= referenceRect.Size / 2;
-        dealerSink.Position -= referenceRect.Size / 2;
+        dealerSource.Position -= outline.Size / 2;
+        dealerSink.Position -= outline.Size / 2;
 
         manaDisplay.Text = ShownMana.ToString();
     }
 
-    public override void _Process(double delta)
+    public override void _Process(double aDelta)
     {
         // we juggle with ShownManaReal to avoid situations 
         // where (ShowManaCatchUpRate * delta < 1)
@@ -76,7 +76,7 @@ public partial class CardDrafting : Node2D
         {
             if (ShownManaReal < CurrentMana)
             {
-                ShownManaReal += ShowManaCatchUpRate * delta;
+                ShownManaReal += ShowManaCatchUpRate * aDelta;
                 if (ShownManaReal > CurrentMana)
                 {
                     ShownManaReal = CurrentMana;
@@ -84,7 +84,7 @@ public partial class CardDrafting : Node2D
             }
             else if (ShownManaReal > CurrentMana)
             {
-                ShownManaReal -= ShowManaCatchUpRate * delta;
+                ShownManaReal -= ShowManaCatchUpRate * aDelta;
                 if (ShownManaReal < CurrentMana)
                 {
                     ShownManaReal = CurrentMana;
@@ -115,6 +115,42 @@ public partial class CardDrafting : Node2D
         }
     }
 
+    private void SpawnCard(int aCurrentCardIdx, ICardEffect aEffectSource)
+    {
+        Card card = cardScene.Instantiate<Card>();
+        card.SetCardEffect(aEffectSource);
+        card.Position = dealerSource.Position;
+        card.Rotation = CardRotationRandomOffsetRad + rng.NextSingle() * CardRotationRandomRangeRad;
+        card.OnCardGetsChosen += ChooseCard;
+
+        Vector2 targetPosition = GetCardPosition(aCurrentCardIdx);
+        targetPosition += new Vector2(rng.NextSingle(), rng.NextSingle()) * CardPositionRandomOffsetPx;
+
+        double duration = CardDealAnimationDurationSec * (CardDealAnimationOverlap / NumCardsToDeal);
+        double startTime = (CardDealAnimationDurationSec - duration) * ((1.0 + aCurrentCardIdx) / NumCardsToDeal);
+
+        Tween tween = GetTree().CreateTween();
+        tween.TweenProperty(card, "position", targetPosition, duration)
+            .SetTrans(Tween.TransitionType.Cubic)
+            .SetDelay(startTime);
+
+        tween.TweenCallback(Callable.From(() => CheckFailureCard(card)))
+            .SetDelay(1.0f);
+
+        cardNode.AddChild(card);
+    }
+
+    private void ChooseCard(Card aCard)
+    {
+        // TODO
+        RemoveCard(aCard);
+    }
+
+    private void CheckFailureCard(Card aCard)
+    {
+        if (aCard.ManaCost == 0) RemoveCard(aCard);
+    }
+
     public void RemoveCards()
     {
         int currentCardIdx = 0;
@@ -141,35 +177,6 @@ public partial class CardDrafting : Node2D
             .SetDelay(startTime);
 
         tween.TweenCallback(Callable.From(card.QueueFree));
-    }
-
-    private void CheckFailureCard(Card card)
-    {
-        if (card.ManaCost == 0) RemoveCard(card);
-    }
-
-    private void SpawnCard(int currentCardIdx, ICardEffect effectSource)
-    {
-        Card card = cardScene.Instantiate<Card>();
-        card.SetCardEffect(effectSource);
-        card.Position = dealerSource.Position;
-        card.Rotation = CardRotationRandomOffsetRad + rng.NextSingle() * CardRotationRandomRangeRad;
-
-        Vector2 targetPosition = GetCardPosition(currentCardIdx);
-        targetPosition += new Vector2(rng.NextSingle(), rng.NextSingle()) * CardPositionRandomOffsetPx;
-
-        double duration = CardDealAnimationDurationSec * (CardDealAnimationOverlap / NumCardsToDeal);
-        double startTime = (CardDealAnimationDurationSec - duration) * ((1.0 + currentCardIdx) / NumCardsToDeal);
-
-        Tween tween = GetTree().CreateTween();
-        tween.TweenProperty(card, "position", targetPosition, duration)
-            .SetTrans(Tween.TransitionType.Cubic)
-            .SetDelay(startTime);
-
-        tween.TweenCallback(Callable.From(() => CheckFailureCard(card)))
-            .SetDelay(1.0f);
-
-        cardNode.AddChild(card);
     }
 
     private Vector2 GetCardPosition(int aCurrentCardIdx)

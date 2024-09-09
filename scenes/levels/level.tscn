@@ -39,4 +39,4 @@ default_color = Color(1, 1, 1, 0)
 [node name="FixedSpawn" type="Marker2D" parent="."]
 position = Vector2(903, 108)
 
-[connection signal="TowerShootsBolt" from="PlayField/Tower" to="." method="HandleTowerShootsBolt"]
+[connection signal="OnTowerShootsBolt" from="PlayField/Tower" to="." method="HandleTowerShootsBolt"]

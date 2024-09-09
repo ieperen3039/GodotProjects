@@ -3,6 +3,9 @@ using System;
 
 public partial class Card : Node2D
 {
+    [Signal]
+    public delegate void OnCardGetsChosenEventHandler(Card aCard);
+
     public ICardEffect Effect { get; private set; }
 
     public int ManaCost { get; private set; }
@@ -13,7 +16,8 @@ public partial class Card : Node2D
     private Label cardManaCost;
     [Export]
     private RichTextLabel cardText;
-
+    [Export]
+    private BaseButton clickListener;
 
     public void SetCardEffect(ICardEffect aEffect)
     {
@@ -28,9 +32,13 @@ public partial class Card : Node2D
         {
             cardTitle.Text = "Failure";
             cardText.Text = "This card has no effect";
-            // ManaCost = 0;
+            clickListener.Disabled = true;
         }
         cardManaCost.Text = ManaCost.ToString();
     }
+    
+    private void OnClick()
+    {
+        EmitSignal(SignalName.OnCardGetsChosen, this);
+    }
 }
-

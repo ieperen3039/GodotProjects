@@ -67,7 +67,7 @@ public partial class Level : Node2D
 
     private void HandleSpawnBolt(Bolt aBolt, bool aIsPlayer)
     {
-        aBolt.BoltHitsEnemy += HandleBoltCollision;
+        aBolt.OnBoltHitsEnemy += HandleBoltCollision;
 
         Bolt.SpawnModifiers mods = new();
         foreach (ICardEffect lEffects in effectSources)

@@ -5,7 +5,7 @@ using System.Diagnostics;
 public partial class Tower : StaticBody2D
 {
     [Signal]
-    public delegate void TowerShootsBoltEventHandler(Bolt aBolt);
+    public delegate void OnTowerShootsBoltEventHandler(Bolt aBolt);
 
     [Export]
     private Marker2D boltFireStartPosition;
@@ -54,7 +54,7 @@ public partial class Tower : StaticBody2D
         lBolt.Type = ProjectileElementType.Arcane;
         lBolt.Size = ProjectileSize.Primary;
 
-        EmitSignal(SignalName.TowerShootsBolt, lBolt);
+        EmitSignal(SignalName.OnTowerShootsBolt, lBolt);
     }
 
     private void HandleBodyEntersHurtArea(Node2D body)
