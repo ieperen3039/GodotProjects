@@ -51,7 +51,7 @@ public partial class Tower : StaticBody2D
         lBolt.Position = boltFireStartPosition.GlobalPosition;
         lBolt.Rotation = lClickDirection.Angle();
         lBolt.Velocity = lClickDirection;
-        lBolt.Type = ProjectileElementType.Arcane;
+        lBolt.Element = ProjectileElementType.Arcane;
         lBolt.Size = ProjectileSize.Primary;
 
         EmitSignal(SignalName.OnTowerShootsBolt, lBolt);

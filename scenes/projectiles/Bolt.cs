@@ -13,7 +13,7 @@ public partial class Bolt : CharacterBody2D
 
     public bool IsDead => deathTime < ulong.MaxValue;
 
-    public ProjectileElementType Type;
+    public ProjectileElementType Element;
     public ProjectileSize Size;
 
     private Node2D appearance;
