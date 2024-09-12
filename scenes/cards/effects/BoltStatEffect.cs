@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-public partial class BoltStatEffect : ICardEffect
+public class BoltStatEffect : ICardEffect
 {
     private const float SpeedMultiplicativeCost = 10;
     private const float SpeedMultiplicativeMax = 4.0f;
@@ -18,6 +18,8 @@ public partial class BoltStatEffect : ICardEffect
     private const float HomingDegPerSecondStep = 15;
     private const float OnPlayerFireManaMultiplier = 2f;
 
+    private enum Stat { SpeedMultiplicative, DamageAdditive, DamageMultiplicative, HomingDegPerSecond }
+
     public bool OnlyOnPlayerFire = false;
     public float SpeedAdditive = 0;
     public float SpeedMultiplicative = 1;
@@ -25,10 +27,7 @@ public partial class BoltStatEffect : ICardEffect
     public float DamageMultiplicative = 1;
     public float HomingDegPerSecond = 0;
 
-    public string GetCardTitle()
-    {
-        return "Enhance Bolt";
-    }
+    public string GetCardTitle() => "Enhance Bolt";
 
     public int GetManaCost()
     {
@@ -100,51 +99,36 @@ public partial class BoltStatEffect : ICardEffect
             targetTotalManaCost = (int)(targetTotalManaCost * OnPlayerFireManaMultiplier);
         };
 
-        int[] effectWeights = {
-            0,  // unused
-            0,  // unused
-            30, // 2: SpeedMultiplicative
-            30, // 3: DamageAdditive
-            10, // 4: DamageMultiplicative
-            10, // 5: HomingDegPerSecond
-        };
+        WeightTable<Stat> effectWeightsTable = new WeightTable<Stat>()
+            .Add(Stat.SpeedMultiplicative, 30)
+            .Add(Stat.DamageAdditive, 30)
+            .Add(Stat.DamageMultiplicative, 10)
+            .Add(Stat.HomingDegPerSecond, 10);
 
         const int NumDraws = 3;
         for (int drawIdx = 0; drawIdx < NumDraws; drawIdx++)
         {
-            int effectIndex = -1;
-            int number = rng.Next() % effectWeights.Sum();
-            while (number >= 0) number -= effectWeights[++effectIndex];
-
             BoltStatEffect newEffect = (BoltStatEffect)effect.MemberwiseClone();
 
             float effectStrength;
-            switch (effectIndex)
+            switch (effectWeightsTable.Get(rng))
             {
-                case 0:
-                    // unused
-                    break;
-                case 1:
-                    // unused
-                    break;
-                case 2:
+                case Stat.SpeedMultiplicative:
                     effectStrength = RandomWithStep(rng, (int)(SpeedMultiplicativeMax / SpeedMultiplicativeStep));
                     newEffect.SpeedMultiplicative += effectStrength * SpeedMultiplicativeMax;
                     break;
-                case 3:
+                case Stat.DamageAdditive:
                     effectStrength = RandomWithStep(rng, (int)(DamageAdditiveMax / DamageAdditiveStep));
                     newEffect.DamageAdditive += (int)(effectStrength * DamageAdditiveMax);
                     break;
-                case 4:
+                case Stat.DamageMultiplicative:
                     effectStrength = RandomWithStep(rng, (int)(DamageMultiplicativeMax / DamageMultiplicativeStep));
                     newEffect.DamageMultiplicative += effectStrength * DamageMultiplicativeMax;
                     break;
-                case 5:
+                case Stat.HomingDegPerSecond:
                     effectStrength = RandomWithStep(rng, (int)(HomingDegPerSecondMax / HomingDegPerSecondStep));
                     newEffect.HomingDegPerSecond += effectStrength * HomingDegPerSecondMax;
                     break;
-                default:
-                    throw new Exception("Table index out of bounds");
             }
 
             if (newEffect.GetManaCost() <= targetTotalManaCost)
