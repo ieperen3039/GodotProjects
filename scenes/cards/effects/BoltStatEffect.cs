@@ -96,7 +96,6 @@ public class BoltStatEffect : ICardEffect
         if (rng.Next() % 20 == 0)
         {
             effect.OnlyOnPlayerFire = true;
-            targetTotalManaCost = (int)(targetTotalManaCost * OnPlayerFireManaMultiplier);
         };
 
         WeightTable<Stat> effectWeightsTable = new WeightTable<Stat>()

@@ -152,7 +152,7 @@ public partial class CardDrafting : Node2D
     private void ChooseCard(Card aCard)
     {
         Spellbook.Add(aCard);
-        
+
         Tween tween = GetTree().CreateTween();
         tween.TweenProperty(aCard, "position", spellbookNode.Position, CardChooseAnimationDurationSec)
             .SetTrans(Tween.TransitionType.Cubic);
@@ -198,7 +198,7 @@ public partial class CardDrafting : Node2D
     private void StartNextLevel()
     {
         DiscardAll();
-        
+
         Tween tween = GetTree().CreateTween();
         tween.TweenCallback(Callable.From(() => EmitSignal(SignalName.OnNextLevel)))
             .SetDelay(CardDealAnimationDurationSec);
@@ -224,6 +224,17 @@ public partial class CardDrafting : Node2D
 
     public ICardEffect Select(int manaToUse)
     {
-        return BoltStatEffect.CreateWithCost(manaToUse);
+        ICardEffect cardEffect = new WeightTable<Func<int, ICardEffect>>()
+                    .Add(BoltStatEffect.CreateWithCost, 1)
+                    .Add(SpawnBoltEffect.CreateWithCost, 1)
+                    .Get(rng)(manaToUse);
+
+        if (cardEffect.GetManaCost() > manaToUse)
+        {
+            throw new Exception("Card over budget: " + cardEffect.GetCardTitle());
+        }
+
+
+        return cardEffect;
     }
 }

@@ -6,8 +6,8 @@ public enum ProjectileElementType {
 }
 
 public enum ProjectileSize {
-    Primary,
+    Tertiary,
     Secondary,
-    Tertiary
+    Primary,
 }
 

@@ -1,9 +1,11 @@
 
 using System;
+using Godot;
 
 public class SpawnBoltEffect : ICardEffect
 {
     private const float OnEnemyDeathManaMultiplier = 5.0f;
+    private const int BaseManaCost = 5;
 
     public ProjectileElementType SourceElement;
     public ProjectileSize SourceSize;
@@ -17,12 +19,49 @@ public class SpawnBoltEffect : ICardEffect
 
     public string GetCardText()
     {
-        throw new System.NotImplementedException();
+        return $"When a {SourceElement} {SourceSize} bolt "
+            + (OnlyOnEnemyDeath ? "kills" : "hits") + " a target, "
+            + $"spawn {TargetQuantity} {TargetElement} {TargetSize}";
     }
 
     public int GetManaCost()
     {
-        throw new System.NotImplementedException();
+        int manaCost = BaseManaCost;
+
+        if (SourceElement == TargetElement)
+        {
+            manaCost *= 2;
+        }
+
+        if (TargetSize == (SourceSize - 2))
+        {
+            manaCost *= 1;
+        }
+        else if (TargetSize == (SourceSize - 1))
+        {
+            manaCost *= 2;
+        }
+        else if (TargetSize == SourceSize)
+        {
+            manaCost *= 10;
+        }
+        else if (TargetSize == (SourceSize + 1))
+        {
+            manaCost *= 100;
+        }
+        else if (TargetSize == (SourceSize + 2))
+        {
+            manaCost *= 1000;
+        }
+
+        manaCost *= TargetQuantity * TargetQuantity;
+
+        if (OnlyOnEnemyDeath)
+        {
+            manaCost = (int)(manaCost / OnEnemyDeathManaMultiplier);
+        }
+
+        return manaCost;
     }
 
     public void OnBoltSpawn(in Bolt aBolt, Bolt.SpawnModifiers aMod, bool aPlayerFire)
@@ -56,7 +95,6 @@ public class SpawnBoltEffect : ICardEffect
         if (rng.Next() % 20 == 0)
         {
             effect.OnlyOnEnemyDeath = true;
-            targetTotalManaCost = (int)(targetTotalManaCost * OnEnemyDeathManaMultiplier);
         };
 
         WeightTable<ProjectileElementType> elementWeights = new WeightTable<ProjectileElementType>()
@@ -79,6 +117,22 @@ public class SpawnBoltEffect : ICardEffect
 
         effect.TargetElement = elementWeights.Get(rng);
         effect.TargetSize = targetSizesWeights.Get(rng);
+
+        while (true)
+        {
+            SpawnBoltEffect newEffect = (SpawnBoltEffect)effect.MemberwiseClone();
+
+            newEffect.TargetQuantity++;
+
+            if (newEffect.GetManaCost() <= targetTotalManaCost)
+            {
+                effect = newEffect;
+            }
+            else
+            {
+                break;
+            }
+        }
 
         return effect;
     }
