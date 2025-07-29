@@ -51,7 +51,7 @@ collision_layer = 8
 collision_mask = 13
 motion_mode = 1
 script = ExtResource("1_o8prs")
-MaxHitpoints = 2
+MaxHitpoints = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_b7rvt")
@@ -70,5 +70,5 @@ texture = ExtResource("3_s1ecj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_qbpt8")
+&"": SubResource("AnimationLibrary_qbpt8")
 }

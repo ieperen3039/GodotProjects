@@ -2,7 +2,7 @@
 public enum ProjectileElementType {
     Arcane,
     Fire,
-    Nature,
+    Water,
 }
 
 public enum ProjectileSize {

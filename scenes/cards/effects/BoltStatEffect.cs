@@ -4,26 +4,22 @@ using System.Linq;
 
 public class BoltStatEffect : ICardEffect
 {
-    private const float SpeedMultiplicativeCost = 10;
+    private const float SpeedMultiplicativeCost = 100;
     private const float SpeedMultiplicativeMax = 4.0f;
-    private const float SpeedMultiplicativeStep = 0.5f;
-    private const float DamageAdditiveCost = 1;
-    private const float DamageAdditiveMax = 20;
-    private const float DamageAdditiveStep = 1;
+    private const float SpeedMultiplicativeStep = 0.25f;
     private const float DamageMultiplicativeCost = 20;
     private const float DamageMultiplicativeMax = 2;
-    private const float DamageMultiplicativeStep = 0.2f;
+    private const float DamageMultiplicativeStep = 0.25f;
     private const float HomingDegPerSecondCost = 0.2f;
     private const float HomingDegPerSecondMax = 180;
     private const float HomingDegPerSecondStep = 15;
-    private const float OnPlayerFireManaMultiplier = 2f;
+    private const float OnPlayerFireManaMultiplier = 4f;
 
-    private enum Stat { SpeedMultiplicative, DamageAdditive, DamageMultiplicative, HomingDegPerSecond }
+    private enum Stat { SpeedMultiplicative, DamageMultiplicative, HomingDegPerSecond }
 
     public bool OnlyOnPlayerFire = false;
     public float SpeedAdditive = 0;
     public float SpeedMultiplicative = 1;
-    public int DamageAdditive = 0;
     public float DamageMultiplicative = 1;
     public float HomingDegPerSecond = 0;
 
@@ -32,7 +28,6 @@ public class BoltStatEffect : ICardEffect
     public int GetManaCost()
     {
         float baseCost = (SpeedMultiplicativeCost * (SpeedMultiplicative - 1))
-            + (DamageAdditiveCost * DamageAdditive)
             + (DamageMultiplicativeCost * (DamageMultiplicative - 1))
             + (HomingDegPerSecondCost * HomingDegPerSecond);
 
@@ -46,7 +41,6 @@ public class BoltStatEffect : ICardEffect
         string text = (OnlyOnPlayerFire ? "Player" : "All") + " bolts have:";
         if (SpeedAdditive != 0) text += $"\n+{SpeedAdditive} projectile speed";
         if (SpeedMultiplicative != 1) text += $"\n{SpeedMultiplicative}x projectile speed";
-        if (DamageAdditive != 0) text += $"\n+{DamageAdditive} projectile damage";
         if (DamageMultiplicative != 1) text += $"\n{DamageMultiplicative}x projectile damage";
 
         if (HomingDegPerSecond > 180)
@@ -75,7 +69,6 @@ public class BoltStatEffect : ICardEffect
 
         aMod.SpeedAdditive += SpeedAdditive;
         aMod.SpeedMultiplicative *= SpeedMultiplicative;
-        aMod.DamageAdditive += DamageAdditive;
         aMod.DamageMultiplicative *= DamageMultiplicative;
         aMod.HomingDegPerSecond += HomingDegPerSecond;
     }
@@ -85,7 +78,7 @@ public class BoltStatEffect : ICardEffect
     )
     { }
 
-    public void AfterEnemyBoltCollision(in Bolt aBolt, in Enemy aEnemy, Level.CollisionModifiers aLevelMod)
+    public void AfterEnemyBoltCollision(in Bolt aBolt, in Enemy aEnemy, Level.CollisionModifiers aLevelMod, ProjectileSpawner aProjectileSpawner)
     { }
 
     public static BoltStatEffect CreateWithCost(int targetTotalManaCost)
@@ -93,14 +86,13 @@ public class BoltStatEffect : ICardEffect
         BoltStatEffect effect = new();
         Random rng = new();
 
-        if (rng.Next() % 20 == 0)
+        if (rng.Next() % 5 == 0)
         {
             effect.OnlyOnPlayerFire = true;
         };
 
         WeightTable<Stat> effectWeightsTable = new WeightTable<Stat>()
             .Add(Stat.SpeedMultiplicative, 30)
-            .Add(Stat.DamageAdditive, 30)
             .Add(Stat.DamageMultiplicative, 10)
             .Add(Stat.HomingDegPerSecond, 10);
 
@@ -115,10 +107,6 @@ public class BoltStatEffect : ICardEffect
                 case Stat.SpeedMultiplicative:
                     effectStrength = RandomWithStep(rng, (int)(SpeedMultiplicativeMax / SpeedMultiplicativeStep));
                     newEffect.SpeedMultiplicative += effectStrength * SpeedMultiplicativeMax;
-                    break;
-                case Stat.DamageAdditive:
-                    effectStrength = RandomWithStep(rng, (int)(DamageAdditiveMax / DamageAdditiveStep));
-                    newEffect.DamageAdditive += (int)(effectStrength * DamageAdditiveMax);
                     break;
                 case Stat.DamageMultiplicative:
                     effectStrength = RandomWithStep(rng, (int)(DamageMultiplicativeMax / DamageMultiplicativeStep));

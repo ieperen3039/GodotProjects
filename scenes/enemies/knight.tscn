@@ -51,7 +51,7 @@ collision_layer = 8
 collision_mask = 13
 motion_mode = 1
 script = ExtResource("1_qbb3s")
-MaxHitpoints = 10
+MaxHitpoints = 50
 Speed = 0.5
 DamagePerAttack = 2
 AttacksPerSecond = 0.8
@@ -74,5 +74,5 @@ texture = ExtResource("3_07ryo")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_qbpt8")
+&"": SubResource("AnimationLibrary_qbpt8")
 }

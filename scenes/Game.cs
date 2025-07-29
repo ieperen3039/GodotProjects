@@ -56,8 +56,11 @@ public partial class Game : Control
         FadeTransition(() =>
         {
             SpellBook.TransitionToDraft(currentLevelNode, cardDraftingNode);
-            cardDraftingNode.CurrentMana = currentLevelNode.CurrentMana;
+            cardDraftingNode.CurrentMana += currentLevelNode.EarnedMana;
             currentLevelIdx++;
+
+            // repeat last level if we run out of levels
+            if (currentLevelIdx == sceneLevels.Length) currentLevelIdx--;
 
             cardDraftingNode.Visible = true;
             currentLevelNode.QueueFree();

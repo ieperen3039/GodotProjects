@@ -1,0 +1,12 @@
+[gd_scene load_steps=5 format=3 uid="uid://cc7nyhrwtx245"]
+
+[ext_resource type="Script" uid="uid://26ex5no7afyf" path="res://scenes/projectiles/ProjectileSpawner.cs" id="1_k75en"]
+[ext_resource type="PackedScene" uid="uid://bwgckgc4mkjpw" path="res://scenes/projectiles/arcane_bolt.tscn" id="2_seki1"]
+[ext_resource type="PackedScene" uid="uid://dlhp2j0ph3ak0" path="res://scenes/projectiles/fire_bolt.tscn" id="3_y5sly"]
+[ext_resource type="PackedScene" uid="uid://dqnbqlytgilpw" path="res://scenes/projectiles/water_bolt.tscn" id="4_koyfy"]
+
+[node name="ProjectileSpawner" type="Node"]
+script = ExtResource("1_k75en")
+arcaneBoltScene = ExtResource("2_seki1")
+fireBoltScene = ExtResource("3_y5sly")
+waterBoltScene = ExtResource("4_koyfy")

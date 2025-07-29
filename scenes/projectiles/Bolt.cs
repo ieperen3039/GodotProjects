@@ -5,16 +5,20 @@ using System.Linq;
 
 public partial class Bolt : CharacterBody2D
 {
+    private const int MaxCollisionRecursionDepth = 10;
+
     [Signal]
     public delegate void OnBoltHitsEnemyEventHandler(Bolt aBolt, Enemy aTarget);
 
     [Export]
-    public ulong TailElementDelayMs = 71;
+    public ulong TailElementDelayMs;
 
     public bool IsDead => deathTime < ulong.MaxValue;
 
-    public ProjectileElementType Element;
+    [Export]
+    public ProjectileElementType Element { get; private set; }
     public ProjectileSize Size;
+    public Enemy EnemyToIgnore = null;
 
     private Node2D appearance;
     private Area2D enemySearchArea;
@@ -22,11 +26,12 @@ public partial class Bolt : CharacterBody2D
     private Queue<Tuple<ulong, Vector2>> positions;
     private ulong maxTimeForPositions;
 
-    private int damage;
+    public int Damage;
     private float rotationRadPerSecond;
     private ulong deathTime = ulong.MaxValue;
 
     // Called when the node enters the scene tree for the first time.
+
     public override void _Ready()
     {
         appearance = GetNode<Node2D>("Appearance");
@@ -34,8 +39,8 @@ public partial class Bolt : CharacterBody2D
 
         positions = new Queue<Tuple<ulong, Vector2>>();
         RecordPosition(Position);
-        maxTimeForPositions = TailElementDelayMs * (ulong) (appearance.GetChildren().Count + 1);
-        
+        maxTimeForPositions = TailElementDelayMs * (ulong)(appearance.GetChildren().Count + 1);
+
         // child nodes are spread for editor visuals. We reset the positions here
         foreach (Node child in appearance.GetChildren())
         {
@@ -114,27 +119,14 @@ public partial class Bolt : CharacterBody2D
     public override void _PhysicsProcess(double aDelta)
     {
         if (IsDead) return;
+        RecursiveCollide(Velocity * (float)aDelta, MaxCollisionRecursionDepth);
 
-        KinematicCollision2D lCollision = MoveAndCollide(Velocity);
-        if (lCollision != null)
-        {
-            GodotObject lCollidedObject = lCollision.GetCollider();
-
-            if (lCollidedObject is Enemy lEnemy)
-            {
-                EmitSignal(SignalName.OnBoltHitsEnemy, this, lEnemy);
-            }
-            else
-            {
-                GD.Print("Collided with non-enemy " + lCollidedObject);
-            }
-        }
-        else if (rotationRadPerSecond > 0)
+        if (rotationRadPerSecond > 0)
         {
             Vector2 smallestRelativePosition = Vector2.Inf;
             foreach (Node2D body in enemySearchArea.GetOverlappingBodies())
             {
-                if (body is Enemy)
+                if (body is Enemy enemy && enemy != EnemyToIgnore)
                 {
                     Vector2 relativePosition = body.Position - Position;
                     if (relativePosition.LengthSquared() < smallestRelativePosition.LengthSquared())
@@ -144,19 +136,66 @@ public partial class Bolt : CharacterBody2D
                 }
             }
 
-            if (smallestRelativePosition != Vector2.Inf) 
+            if (smallestRelativePosition != Vector2.Inf)
             {
-                Velocity = HomeTowards(smallestRelativePosition, (float) aDelta);
+                Velocity = HomeTowards(smallestRelativePosition, (float)aDelta);
             }
         }
 
         RecordPosition(Position);
+        Rotation = Velocity.Angle();
     }
+
+    private void RecursiveCollide(Vector2 aMovement, int aRemainingCollisions)
+    {
+        KinematicCollision2D lCollision = MoveAndCollide(aMovement, true);
+        if (lCollision != null)
+        {
+            if (aRemainingCollisions == 0)
+            {
+                // too many collisions in a single frame == remove the projectile
+                Velocity = Vector2.Zero;
+                MyDespawn();
+                return;
+            }
+
+            GodotObject lCollidedObject = lCollision.GetCollider();
+
+            if (lCollidedObject is Enemy lEnemy)
+            {
+                if (lEnemy != EnemyToIgnore)
+                {
+                    Position = lCollision.GetPosition();
+                    EmitSignal(SignalName.OnBoltHitsEnemy, this, lEnemy);
+                }
+                else
+                {
+                    // ignore the collision
+                    Position += aMovement;
+                }
+            }
+            else
+            {
+                // bounce
+                Position = lCollision.GetPosition();
+                Velocity.Bounce(lCollision.GetNormal());
+                Vector2 lRemainder = lCollision.GetRemainder().Bounce(lCollision.GetNormal());
+
+                GD.Print("Collided with non-enemy " + lCollidedObject);
+                RecursiveCollide(lRemainder, aRemainingCollisions - 1);
+            }
+        }
+        else
+        {
+            Position += aMovement;
+        }
+    }
+
 
     private Vector2 HomeTowards(Vector2 relativePosition, float aDelta)
     {
         float angleRad = Velocity.AngleTo(relativePosition);
-        if (Mathf.IsZeroApprox(angleRad))
+        if (Math.Abs(angleRad) < (1f / 1024f))
         {
             return Velocity;
         }
@@ -164,7 +203,7 @@ public partial class Bolt : CharacterBody2D
         float maxRotationRad = rotationRadPerSecond * aDelta;
         if (Math.Abs(angleRad) < maxRotationRad)
         {
-            return relativePosition.LimitLength(Velocity.Length());
+            return relativePosition.Normalized() * Velocity.Length();
         }
         else if (angleRad > 0)
         {
@@ -172,11 +211,11 @@ public partial class Bolt : CharacterBody2D
         }
         else
         {
-            return Velocity.Rotated(- rotationRadPerSecond * aDelta);
+            return Velocity.Rotated(-maxRotationRad);
         }
     }
 
-    public void MyDespawn() 
+    public void MyDespawn()
     {
         deathTime = Time.GetTicksMsec();
         Tween tween = GetTree().CreateTween();
@@ -186,19 +225,19 @@ public partial class Bolt : CharacterBody2D
 
     public class SpawnModifiers
     {
-        public const float BaseBoltSpeed = 5.0f;
+        public const float BaseBoltSpeed = 100.0f;
+        public const float BaseDamage = 5;
         public float SpeedAdditive = BaseBoltSpeed;
         public float SpeedMultiplicative = 1;
-        public int DamageAdditive = 0;
         public float DamageMultiplicative = 1;
-        public float HomingDegPerSecond = 0;
+        public float HomingDegPerSecond = 10;
 
         public void Apply(Bolt aTarget)
         {
             float lBoltSpeed = SpeedAdditive * SpeedMultiplicative;
-            aTarget.Velocity = aTarget.Velocity.LimitLength(lBoltSpeed);
+            aTarget.Velocity = aTarget.Velocity.Normalized() * lBoltSpeed;
             aTarget.Rotation = aTarget.Velocity.Angle();
-            aTarget.damage = (int)(DamageAdditive * DamageMultiplicative);
+            aTarget.Damage = (int)(BaseDamage * DamageMultiplicative);
             aTarget.rotationRadPerSecond = Mathf.DegToRad(HomingDegPerSecond);
         }
     }

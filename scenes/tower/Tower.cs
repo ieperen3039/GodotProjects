@@ -11,7 +11,9 @@ public partial class Tower : StaticBody2D
     private Marker2D boltFireStartPosition;
 
     [Export]
-    private PackedScene boltBlueprint;
+    public PackedScene sceneProjectileSpawner;
+    public ProjectileSpawner ProjectileSpawner = null;
+    private ProjectileElementType boltType; 
 
     [Export]
     private Node2D directionIndicator;
@@ -23,6 +25,8 @@ public partial class Tower : StaticBody2D
     public override void _Ready()
     {
         Debug.Assert(directionIndicator.GlobalPosition == boltFireStartPosition.GlobalPosition);
+        boltType = ProjectileElementType.Arcane;
+        ProjectileSpawner = sceneProjectileSpawner.Instantiate<ProjectileSpawner>();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -43,16 +47,13 @@ public partial class Tower : StaticBody2D
         if (cooldownRemaining < 0) cooldownRemaining = 0;
     }
 
-    private void HandleBoltFire(Vector2 lClickDirection)
+    private void HandleBoltFire(Vector2 aClickDirection)
     {
-        Bolt lBolt = boltBlueprint.Instantiate<Bolt>();
-
-        // Velocity magnitude will be overridden
+        Bolt lBolt = ProjectileSpawner.SpawnBolt(boltType, ProjectileSize.Primary);
         lBolt.Position = boltFireStartPosition.GlobalPosition;
-        lBolt.Rotation = lClickDirection.Angle();
-        lBolt.Velocity = lClickDirection;
-        lBolt.Element = ProjectileElementType.Arcane;
-        lBolt.Size = ProjectileSize.Primary;
+        lBolt.Rotation = aClickDirection.Angle();
+        // Velocity magnitude will be overridden
+        lBolt.Velocity = aClickDirection;
 
         EmitSignal(SignalName.OnTowerShootsBolt, lBolt);
     }

@@ -11,13 +11,13 @@ public partial class SpellBook : Node
     {
         SpellBook spellBook = from.SpellBook;
         from.RemoveChild(spellBook);
-        to.Spellbook = spellBook;
+        to.SpellBook = spellBook;
         to.AddChild(spellBook);
     }
 
     public static void TransitionToDraft(Level from, CardDrafting to)
     {
-        SpellBook spellBook = from.Spellbook;
+        SpellBook spellBook = from.SpellBook;
         from.RemoveChild(spellBook);
         to.SpellBook = spellBook;
         to.AddChild(spellBook);

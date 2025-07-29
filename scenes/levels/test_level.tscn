@@ -6,8 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://dh0yvsc5riinq" path="res://scenes/enemies/farmer.tscn" id="2_70gic"]
 [ext_resource type="PackedScene" uid="uid://22ogfctme0ec" path="res://scenes/enemies/knight.tscn" id="3_p37ai"]
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("SpawnAreas", "playFieldNode", "tower")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("FixedSpawn", "SpawnAreas", "playFieldNode", "tower")]
 script = ExtResource("1_nsupi")
+FixedSpawn = NodePath("FixedSpawn")
 SpawnAreas = [NodePath("PlayField/SpawnLines/SpawnLine")]
 Enemies = Array[PackedScene]([ExtResource("2_70gic"), ExtResource("3_p37ai")])
 SpawnOrder = PackedInt32Array(0)
@@ -37,6 +38,6 @@ width = 0.0
 default_color = Color(1, 1, 1, 0)
 
 [node name="FixedSpawn" type="Marker2D" parent="."]
-position = Vector2(903, 108)
+position = Vector2(940, 66)
 
 [connection signal="OnTowerShootsBolt" from="PlayField/Tower" to="." method="HandleTowerShootsBolt"]

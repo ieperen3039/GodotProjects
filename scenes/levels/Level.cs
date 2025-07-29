@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Godot;
 
 public partial class Level : Node2D
@@ -8,8 +9,10 @@ public partial class Level : Node2D
     public delegate void OnLevelFinishEventHandler();
     private bool hasFinished = false;
 
-    public SpellBook Spellbook;
-    public int CurrentMana = 100;
+    public SpellBook SpellBook;
+
+    [Export]
+    public int EarnedMana = 50;
 
     [Export]
     private Marker2D FixedSpawn;
@@ -34,10 +37,13 @@ public partial class Level : Node2D
     private double spawnCooldownRemaining = 3;
 
     private SpawnLocations spawnLocations;
+    
+    public ProjectileSpawner ProjectileSpawner => tower.ProjectileSpawner;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        Debug.Assert(SpellBook != null);
         spawnLocations = new SpawnLocations(SpawnAreas);
     }
 
@@ -95,7 +101,7 @@ public partial class Level : Node2D
         aBolt.OnBoltHitsEnemy += HandleBoltCollision;
 
         Bolt.SpawnModifiers mods = new();
-        foreach (ICardEffect lEffects in Spellbook.Effects)
+        foreach (ICardEffect lEffects in SpellBook.Effects)
         {
             lEffects.OnBoltSpawn(aBolt, mods, aIsPlayer);
         }
@@ -109,7 +115,9 @@ public partial class Level : Node2D
         Enemy.CollisionModifiers enemyMod = new();
         Bolt.CollisionModifiers boltMod = new();
 
-        foreach (ICardEffect lEffect in Spellbook.Effects)
+        enemyMod.DamageAdditive = aBolt.Damage;
+
+        foreach (ICardEffect lEffect in SpellBook.Effects)
         {
             lEffect.OnEnemyBoltCollision(aBolt, aEnemy, boltMod, enemyMod);
         }
@@ -121,9 +129,9 @@ public partial class Level : Node2D
         // Only now we know whether we made a kill (or whether the bolt has despawned)
         
         CollisionModifiers levelMod = new();
-        foreach (ICardEffect lEffect in Spellbook.Effects)
+        foreach (ICardEffect lEffect in SpellBook.Effects)
         {
-            lEffect.AfterEnemyBoltCollision(aBolt, aEnemy, levelMod);
+            lEffect.AfterEnemyBoltCollision(aBolt, aEnemy, levelMod, ProjectileSpawner);
         }
         levelMod.Apply(this);
     }

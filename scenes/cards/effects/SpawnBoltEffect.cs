@@ -14,6 +14,8 @@ public class SpawnBoltEffect : ICardEffect
     public ProjectileSize TargetSize;
     public int TargetQuantity;
     public bool OnlyOnEnemyDeath;
+    private const float MaxRandomRotationRad = 0.5f;
+
 
     public string GetCardTitle() => "Multiply";
 
@@ -70,7 +72,7 @@ public class SpawnBoltEffect : ICardEffect
     public void OnEnemyBoltCollision(in Bolt aBolt, in Enemy aEnemy, Bolt.CollisionModifiers aBoltMod, Enemy.CollisionModifiers aEnemyMod)
     { }
 
-    public void AfterEnemyBoltCollision(in Bolt aBolt, in Enemy aEnemy, Level.CollisionModifiers aLevelMod)
+    public void AfterEnemyBoltCollision(in Bolt aBolt, in Enemy aEnemy, Level.CollisionModifiers aLevelMod, ProjectileSpawner aProjectileSpawner)
     {
         if (aBolt.Size != SourceSize || aBolt.Element != SourceElement) return;
 
@@ -78,12 +80,15 @@ public class SpawnBoltEffect : ICardEffect
 
         for (int i = 0; i < TargetQuantity; i++)
         {
-            Bolt newBolt = new()
-            {
-                Element = TargetElement,
-                Size = TargetSize
-            };
-            aLevelMod.NewEntities.Add(newBolt);
+            Bolt lBolt = aProjectileSpawner.SpawnBolt(TargetElement, TargetSize);
+            lBolt.Position = aBolt.Position;
+
+            // randomize velocity
+            float divergence = (float) aProjectileSpawner.Rng.NextSingle() * 2.0f - 1;
+            lBolt.Velocity = aBolt.Velocity.Rotated(divergence * MaxRandomRotationRad);
+
+            lBolt.EnemyToIgnore = aEnemy;
+            aLevelMod.NewEntities.Add(lBolt);
         }
     }
 
@@ -92,7 +97,7 @@ public class SpawnBoltEffect : ICardEffect
         SpawnBoltEffect effect = new();
         Random rng = new();
 
-        if (rng.Next() % 20 == 0)
+        if (rng.Next() % 10 == 0)
         {
             effect.OnlyOnEnemyDeath = true;
         };
@@ -100,17 +105,17 @@ public class SpawnBoltEffect : ICardEffect
         WeightTable<ProjectileElementType> elementWeights = new WeightTable<ProjectileElementType>()
             .Add(ProjectileElementType.Arcane, 1)
             .Add(ProjectileElementType.Fire, 1)
-            .Add(ProjectileElementType.Nature, 1);
+            .Add(ProjectileElementType.Water, 1);
 
         WeightTable<ProjectileSize> sourceSizesWeights = new WeightTable<ProjectileSize>()
-            .Add(ProjectileSize.Primary, 100)
+            .Add(ProjectileSize.Primary, 50)
             .Add(ProjectileSize.Secondary, 50)
             .Add(ProjectileSize.Tertiary, 1);
 
         WeightTable<ProjectileSize> targetSizesWeights = new WeightTable<ProjectileSize>()
             .Add(ProjectileSize.Primary, 1)
             .Add(ProjectileSize.Secondary, 50)
-            .Add(ProjectileSize.Tertiary, 100);
+            .Add(ProjectileSize.Tertiary, 50);
 
         effect.SourceElement = elementWeights.Get(rng);
         effect.SourceSize = sourceSizesWeights.Get(rng);

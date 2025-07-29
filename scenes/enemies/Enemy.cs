@@ -84,7 +84,7 @@ public partial class Enemy : CharacterBody2D
         {
             if (aThis.Speed > 0)
             {
-                aThis.Velocity = (aThis.MovementTarget - aThis.Position).LimitLength(aThis.Speed);
+                aThis.Velocity = (aThis.MovementTarget - aThis.Position).Normalized() * aThis.Speed;
                 aThis.MoveAndCollide(aThis.Velocity);
             }
 
@@ -134,8 +134,7 @@ public partial class Enemy : CharacterBody2D
 
     public class CollisionModifiers
     {
-        public const float BaseDamage = 1.0f;
-        public float DamageAdditive = BaseDamage;
+        public float DamageAdditive = 0.0f;
         public float DamageMultiplicative = 1;
 
         internal void Apply(Enemy aEnemy)
