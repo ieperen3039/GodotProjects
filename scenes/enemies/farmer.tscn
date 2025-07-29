@@ -50,6 +50,7 @@ _data = {
 collision_layer = 8
 collision_mask = 13
 motion_mode = 1
+wall_min_slide_angle = 1.52018
 script = ExtResource("1_o8prs")
 MaxHitpoints = 10
 
