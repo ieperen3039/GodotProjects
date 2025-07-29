@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 
@@ -5,8 +6,9 @@ public partial class Level : Node2D
 {
     [Signal]
     public delegate void OnLevelFinishEventHandler();
+    private bool hasFinished = false;
 
-    public SpellBook Spellbook = new();
+    public SpellBook Spellbook;
     public int CurrentMana = 100;
 
     [Export]
@@ -50,9 +52,10 @@ public partial class Level : Node2D
             spawnCooldownRemaining += spawnCooldown;
         }
 
-        if (IsLevelComplete())
+        if (IsLevelComplete() && !hasFinished)
         {
             EmitSignal(SignalName.OnLevelFinish);
+            hasFinished = true;
         }
     }
 

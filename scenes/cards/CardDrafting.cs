@@ -9,7 +9,7 @@ public partial class CardDrafting : Node2D
     public delegate void OnNextLevelEventHandler();
 
     private const int CardPositionRandomOffsetPx = 5;
-    private const float CardRotationRandomRangeRad = 0;
+    private const float CardRotationRandomRangeRad = 0.01f;
     private const float CardRotationRandomOffsetRad = -CardRotationRandomRangeRad / 2;
     private const double CardDealAnimationDurationSec = 0.5;
     private const double CardDealAnimationOverlap = 4.0;
@@ -28,7 +28,8 @@ public partial class CardDrafting : Node2D
     private double shownManaReal = 0;
     private int shownMana = 0;
 
-    public SpellBook Spellbook = new();
+    [Export]
+    public SpellBook SpellBook;
 
     [Export]
     private PackedScene cardScene;
@@ -41,7 +42,7 @@ public partial class CardDrafting : Node2D
     [Export]
     private Node2D dealerSink;
     [Export]
-    private Node2D spellbookNode;
+    private Node2D playerCardSink;
 
     private Random rng = new();
 
@@ -55,8 +56,9 @@ public partial class CardDrafting : Node2D
 
     public override void _Ready()
     {
-        Card card = cardScene.Instantiate<Card>();
-        Control outline = card.GetNode<Control>("Background");
+        // temporary card to get the dimensions of the cards
+        Card tempCard = cardScene.Instantiate<Card>();
+        Control outline = tempCard.GetNode<Control>("Background");
 
         dealtCardsNode = GetNode<Node>("Cards");
         cardPosition00 = GetNode<Node2D>("CardPosition00").Position;
@@ -151,10 +153,11 @@ public partial class CardDrafting : Node2D
 
     private void ChooseCard(Card aCard)
     {
-        Spellbook.Add(aCard);
+        dealtCardsNode.RemoveChild(aCard);
+        SpellBook.Add(aCard);
 
         Tween tween = GetTree().CreateTween();
-        tween.TweenProperty(aCard, "position", spellbookNode.Position, CardChooseAnimationDurationSec)
+        tween.TweenProperty(aCard, "position", playerCardSink.Position, CardChooseAnimationDurationSec)
             .SetTrans(Tween.TransitionType.Cubic);
     }
 

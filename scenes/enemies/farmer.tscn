@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://dh0yvsc5riinq"]
 
-[ext_resource type="Script" path="res://scenes/enemies/Enemy.cs" id="1_o8prs"]
+[ext_resource type="Script" uid="uid://b6o2n5j8edon5" path="res://scenes/enemies/Enemy.cs" id="1_o8prs"]
 [ext_resource type="Texture2D" uid="uid://bpvrv2isrhfvw" path="res://graphics/enemies/farmer/fork.png" id="2_c4jp7"]
 [ext_resource type="Texture2D" uid="uid://d4amuqgf8b21b" path="res://graphics/enemies/farmer/straw_hat.png" id="3_s1ecj"]
 [ext_resource type="PackedScene" uid="uid://skb5g2f0nvoq" path="res://scenes/healthbar/healthbar.tscn" id="4_x4alc"]
@@ -40,10 +40,10 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qbpt8"]
 _data = {
-"RESET": SubResource("Animation_mkd8x"),
-"attack": ExtResource("5_ynp4c"),
-"die": ExtResource("6_1jsfa"),
-"walk": ExtResource("7_l3vjv")
+&"RESET": SubResource("Animation_mkd8x"),
+&"attack": ExtResource("5_ynp4c"),
+&"die": ExtResource("6_1jsfa"),
+&"walk": ExtResource("7_l3vjv")
 }
 
 [node name="Entity" type="CharacterBody2D"]

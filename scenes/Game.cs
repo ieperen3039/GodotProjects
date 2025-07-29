@@ -40,12 +40,12 @@ public partial class Game : Control
 
     public void HandleNextLevel()
     {
-        currentLevelNode = sceneLevels[currentLevelIdx].Instantiate<Level>();
-        currentLevelNode.Spellbook = cardDraftingNode.Spellbook;
-        currentLevelNode.OnLevelFinish += HandleStartDraft;
-
         FadeTransition(() =>
         {
+            currentLevelNode = sceneLevels[currentLevelIdx].Instantiate<Level>();
+            SpellBook.TransitionToLevel(cardDraftingNode, currentLevelNode);
+            currentLevelNode.OnLevelFinish += HandleStartDraft;
+
             cardDraftingNode.Visible = false;
             AddChild(currentLevelNode);
         });
@@ -53,12 +53,12 @@ public partial class Game : Control
 
     public void HandleStartDraft()
     {
-        cardDraftingNode.Spellbook = currentLevelNode.Spellbook;
-        cardDraftingNode.CurrentMana = currentLevelNode.CurrentMana;
-        currentLevelIdx++;
-
         FadeTransition(() =>
         {
+            SpellBook.TransitionToDraft(currentLevelNode, cardDraftingNode);
+            cardDraftingNode.CurrentMana = currentLevelNode.CurrentMana;
+            currentLevelIdx++;
+
             cardDraftingNode.Visible = true;
             currentLevelNode.QueueFree();
         });

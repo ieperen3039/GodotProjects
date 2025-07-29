@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://22ogfctme0ec"]
 
-[ext_resource type="Script" path="res://scenes/enemies/Enemy.cs" id="1_qbb3s"]
+[ext_resource type="Script" uid="uid://b6o2n5j8edon5" path="res://scenes/enemies/Enemy.cs" id="1_qbb3s"]
 [ext_resource type="Texture2D" uid="uid://mowv5yrspvl5" path="res://graphics/enemies/knight/sword.png" id="2_mq4eg"]
 [ext_resource type="Texture2D" uid="uid://cjdr12hwjyf8q" path="res://graphics/enemies/knight/knight_head.png" id="3_07ryo"]
 [ext_resource type="PackedScene" uid="uid://skb5g2f0nvoq" path="res://scenes/healthbar/healthbar.tscn" id="4_qioc6"]
@@ -40,10 +40,10 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qbpt8"]
 _data = {
-"RESET": SubResource("Animation_mkd8x"),
-"attack": ExtResource("5_3a2jh"),
-"die": ExtResource("6_0uliq"),
-"walk": ExtResource("7_m4dtq")
+&"RESET": SubResource("Animation_mkd8x"),
+&"attack": ExtResource("5_3a2jh"),
+&"die": ExtResource("6_0uliq"),
+&"walk": ExtResource("7_m4dtq")
 }
 
 [node name="Entity" type="CharacterBody2D"]

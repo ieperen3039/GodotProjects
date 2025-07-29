@@ -1,17 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://by3fqjf3ti2qg"]
+[gd_scene load_steps=6 format=3 uid="uid://by3fqjf3ti2qg"]
 
-[ext_resource type="Script" path="res://scenes/cards/CardDrafting.cs" id="1_qj55q"]
+[ext_resource type="Script" uid="uid://chw6dbl8cy8hw" path="res://scenes/cards/CardDrafting.cs" id="1_qj55q"]
 [ext_resource type="Texture2D" uid="uid://ob1tlvhcwu10" path="res://graphics/levels/0_test_level/Backdrop.png" id="2_a5gls"]
 [ext_resource type="PackedScene" uid="uid://dnl2w3gc18nhp" path="res://scenes/cards/card/card.tscn" id="2_vxy52"]
 [ext_resource type="Texture2D" uid="uid://ctf6a1npmyefg" path="res://graphics/card_dealing/mana.png" id="4_rxynw"]
+[ext_resource type="Script" uid="uid://im0gjejp24m7" path="res://scenes/cards/SpellBook.cs" id="5_cvx87"]
 
-[node name="CardDraft" type="Node2D" node_paths=PackedStringArray("manaDisplay", "dealerSource", "dealerSink", "spellbookNode")]
+[node name="CardDraft" type="Node2D" node_paths=PackedStringArray("SpellBook", "manaDisplay", "dealerSource", "dealerSink", "playerCardSink")]
 script = ExtResource("1_qj55q")
+SpellBook = NodePath("SpellBook")
 cardScene = ExtResource("2_vxy52")
 manaDisplay = NodePath("ManaResource/Label")
 dealerSource = NodePath("DealerSource")
 dealerSink = NodePath("DealerSink")
-spellbookNode = NodePath("SpellBook")
+playerCardSink = NodePath("PlayerCardSink")
 
 [node name="Background" type="Node2D" parent="."]
 
@@ -24,11 +26,11 @@ texture = ExtResource("2_a5gls")
 centered = false
 
 [node name="CardPosition00" type="Marker2D" parent="."]
-position = Vector2(90, 311)
+position = Vector2(68, 248)
 gizmo_extents = 35.0
 
 [node name="CardPosition01" type="Marker2D" parent="."]
-position = Vector2(906, 38)
+position = Vector2(905, 183)
 gizmo_extents = 35.0
 
 [node name="CardPosition10" type="Marker2D" parent="."]
@@ -36,23 +38,24 @@ position = Vector2(106, 796)
 gizmo_extents = 35.0
 
 [node name="CardPosition11" type="Marker2D" parent="."]
-position = Vector2(905, 601)
+position = Vector2(917, 753)
 gizmo_extents = 35.0
 
 [node name="DealerSource" type="Marker2D" parent="."]
-position = Vector2(670, -159)
+position = Vector2(629, -155)
 gizmo_extents = 35.0
 
 [node name="DealerSink" type="Marker2D" parent="."]
 position = Vector2(884, -162)
 gizmo_extents = 35.0
 
-[node name="SpellBook" type="Marker2D" parent="."]
-position = Vector2(1138, 893)
+[node name="PlayerCardSink" type="Marker2D" parent="."]
+position = Vector2(1127, 912)
 gizmo_extents = 35.0
 
 [node name="ManaResource" type="Node2D" parent="."]
-position = Vector2(174, 161)
+position = Vector2(117, 119)
+scale = Vector2(0.7, 0.7)
 
 [node name="Sprite2D" type="Sprite2D" parent="ManaResource"]
 scale = Vector2(0.818, 1)
@@ -102,6 +105,9 @@ theme_override_font_sizes/font_size = 36
 text = "Next Level"
 
 [node name="Cards" type="Node2D" parent="."]
+
+[node name="SpellBook" type="Node" parent="."]
+script = ExtResource("5_cvx87")
 
 [connection signal="pressed" from="HBoxContainer/GetCards" to="." method="Deal"]
 [connection signal="pressed" from="HBoxContainer/RemoveCards" to="." method="DiscardAll"]
