@@ -100,7 +100,7 @@ public partial class Level : Node2D
     {
         aBolt.OnBoltHitsEnemy += HandleBoltCollision;
 
-        Bolt.SpawnModifiers mods = new();
+        Bolt.SpawnModifiers mods = new(aBolt);
         foreach (ICardEffect lEffects in SpellBook.Effects)
         {
             lEffects.OnBoltSpawn(aBolt, mods, aIsPlayer);

@@ -226,11 +226,30 @@ public partial class Bolt : CharacterBody2D
     public class SpawnModifiers
     {
         public const float BaseBoltSpeed = 100.0f;
-        public const float BaseDamage = 5;
+        public float BaseDamage;
         public float SpeedAdditive = BaseBoltSpeed;
         public float SpeedMultiplicative = 1;
         public float DamageMultiplicative = 1;
         public float HomingDegPerSecond = 10;
+
+        public SpawnModifiers(Bolt aTarget)
+        {
+            switch (aTarget.Size)
+            {
+                case ProjectileSize.Primary:
+                    BaseDamage = 5;
+                    break;
+                case ProjectileSize.Secondary:
+                    BaseDamage = 3;
+                    break;
+                case ProjectileSize.Tertiary:
+                    BaseDamage = 2;
+                    break;
+            }
+
+
+        }
+
 
         public void Apply(Bolt aTarget)
         {
@@ -238,6 +257,7 @@ public partial class Bolt : CharacterBody2D
             aTarget.Velocity = aTarget.Velocity.Normalized() * lBoltSpeed;
             aTarget.Rotation = aTarget.Velocity.Angle();
             aTarget.Damage = (int)(BaseDamage * DamageMultiplicative);
+
             aTarget.rotationRadPerSecond = Mathf.DegToRad(HomingDegPerSecond);
         }
     }
