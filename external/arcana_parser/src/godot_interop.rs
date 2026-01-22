@@ -1,18 +1,17 @@
-use godot::builtin::{Dictionary, GString};
-use crate::godot_interop;
+use godot::builtin as gd;
+use crate::{godot_interop, parser};
+use crate::rule_nodes::RuleNode;
 
 /// Example "parser": returns length and first line.
 /// Replace with your real parsing entrypoint.
-pub fn parse(input: &str) -> Result<Dictionary, GString> {
-    if input.trim().is_empty() {
-        return Err("Input is empty".into());
-    }
+pub fn convert_success(result: RuleNode) -> gd::Dictionary {
+    let mut out = gd::Dictionary::new();
 
-    let mut d = Dictionary::new();
-    d.set("length", input.len() as i64);
+    out
+}
 
-    let first_line = input.lines().next().unwrap_or("");
-    d.set("first_line", first_line);
+pub fn convert_failure(error: parser::Failure) -> gd::Dictionary {
+    let mut out = gd::Dictionary::new();
 
-    Ok(d)
+    out
 }

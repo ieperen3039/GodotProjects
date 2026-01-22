@@ -57,33 +57,33 @@ impl Grammar {
         let mut output_string = String::new();
         for (identifier, terms) in rules {
             output_string.push_str(&format!("{:30} = ", &identifier));
-            Grammar::to_string(&terms[0], &mut output_string);
+            Grammar::write_string(&terms[0], &mut output_string);
             for sub_term in &terms[1..] {
                 output_string.push_str(&format!("\n{:30} | ", ""));
-                Grammar::to_string(sub_term, &mut output_string);
+                Grammar::write_string(sub_term, &mut output_string);
             }
             output_string.push_str(";\n");
         }
         output_string
     }
 
-    fn to_string(term: &Term, target: &mut String) {
+    fn write_string(term: &Term, target: &mut String) {
         match term {
             Term::Concatenation(terms) => {
                 target.push_str("( ");
-                Grammar::to_string(&terms[0], target);
+                Grammar::write_string(&terms[0], target);
                 for t in &terms[1..] {
                     target.push_str(", ");
-                    Grammar::to_string(t, target);
+                    Grammar::write_string(t, target);
                 }
                 target.push_str(" )");
             },
             Term::Alternation(terms) => {
                 target.push_str("( ");
-                Grammar::to_string(&terms[0], target);
+                Grammar::write_string(&terms[0], target);
                 for t in &terms[1..] {
                     target.push_str(" | ");
-                    Grammar::to_string(t, target);
+                    Grammar::write_string(t, target);
                 }
                 target.push_str(" )");
             },

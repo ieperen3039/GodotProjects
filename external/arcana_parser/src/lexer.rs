@@ -20,26 +20,6 @@ impl Lexer {
         }
     }
 
-    pub fn new_faux_lexer() -> Lexer {
-        Lexer {
-            ignore_whitespace: true,
-            // any symbol here cannot be used as an operator.
-            // dot is illegal, because it makes them indistinguishable from method calls and scope references.
-            // slash is illegal, because operators may be chained to produce a start-of-comment.
-            // assignment is illegal, because the assignment operation is a special case in the language.
-            // dollar is kept as a reserve
-            symbols: vec!['(', ')', '[', ']', '{', '}', ';', '.', '=', '/', '$'],
-            keywords: vec![
-                "version", "type", "fn", "enum", "variant", "extern", "const", "this", "use", "as",
-                "impl", "flag"
-            ],
-        }
-    }
-
-    pub fn read_faux<'prog>(string: &'prog str) -> Result<Vec<Token<'prog>>, usize> {
-        Self::new_faux_lexer().read(string)
-    }
-
     pub fn read<'prog>(&self, string: &'prog str) -> Result<Vec<Token<'prog>>, usize> {
         let mut cursor = 0;
         let mut tokens = Vec::new();
@@ -204,15 +184,15 @@ pub struct StreamLexer {
 }
 
 impl StreamLexer {
-    pub fn new() -> StreamLexer {
+    pub fn new(base: Lexer) -> StreamLexer {
         StreamLexer {
-            base: Lexer::new_faux_lexer(),
+            base,
             buffer: String::new(),
             cursor: 0,
         }
     }
 
-    pub fn next_token<'lexer>(&'lexer mut self) -> Result<Token<'lexer>, (usize, &'lexer str)> {
+    pub fn next_token(&mut self) -> Result<Token, (usize, &str)> {
         loop {
             if self.cursor >= self.buffer.len() {
                 self.buffer.clear();

@@ -1,0 +1,8 @@
+sentence     = _, demand, _, [ "and", _, demand ], _;
+demand       = person, _, [ "must", _ ], action, _, how;
+person       = "you" | "I" | "he";
+action       = _meet_action | _walk_action;
+_walk_action = "stay" | "come" | "go";
+_meet_action = "meet", _, person;
+how          = "here" | "there" | "with", _, person;
+_            = { ? WHITESPACE ? | "," | "!" | "?" };
