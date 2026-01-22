@@ -4,11 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://dh0yvsc5riinq" path="res://scenes/enemies/farmer.tscn" id="2_td26x"]
 [ext_resource type="PackedScene" uid="uid://22ogfctme0ec" path="res://scenes/enemies/knight.tscn" id="3_a82vj"]
 [ext_resource type="PackedScene" uid="uid://ddl0cqe35gcc0" path="res://scenes/tower/tower.tscn" id="4_ei1ov"]
-[ext_resource type="Texture2D" uid="uid://ob1tlvhcwu10" path="res://graphics/levels/0_test_level/Backdrop.png" id="5_j6h50"]
+[ext_resource type="Texture2D" uid="uid://d3k5vjpbrou4x" path="res://graphics/levels/path_background.svg" id="5_caxio"]
 
 [node name="Level" type="Node2D" node_paths=PackedStringArray("SpawnAreas", "playFieldNode", "tower")]
 script = ExtResource("1_caxio")
-SpawnAreas = [NodePath("PlayField/SpawnLines/SpawnLine")]
+SpawnAreas = [null]
 Enemies = Array[PackedScene]([ExtResource("2_td26x"), ExtResource("3_a82vj")])
 SpawnOrder = PackedInt32Array(0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0)
 playFieldNode = NodePath("PlayField")
@@ -18,22 +18,19 @@ tower = NodePath("PlayField/Tower")
 
 [node name="PlayField" type="Node" parent="."]
 
-[node name="Tower" parent="PlayField" instance=ExtResource("4_ei1ov")]
-position = Vector2(500, 500)
-
 [node name="Background" type="Node2D" parent="PlayField"]
 
-[node name="underground" type="Sprite2D" parent="PlayField/Background"]
+[node name="Polygon2D" type="Polygon2D" parent="PlayField/Background"]
 z_index = -1
-texture = ExtResource("5_j6h50")
+scale = Vector2(1920, 1080)
+color = Color(0.175422, 0.757614, 0.808293, 1)
+polygon = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
+
+[node name="underground" type="Sprite2D" parent="PlayField/Background"]
+texture = ExtResource("5_caxio")
 centered = false
 
-[node name="SpawnLines" type="Node" parent="PlayField"]
-
-[node name="SpawnLine" type="Line2D" parent="PlayField/SpawnLines"]
-points = PackedVector2Array(7, 992, 992, 996, 992, 8, 5, 6)
-closed = true
-width = 0.0
-default_color = Color(1, 1, 1, 0)
+[node name="Tower" parent="PlayField" instance=ExtResource("4_ei1ov")]
+position = Vector2(132, 907)
 
 [connection signal="OnTowerShootsBolt" from="PlayField/Tower" to="." method="HandleTowerShootsBolt"]
