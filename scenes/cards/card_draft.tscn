@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://by3fqjf3ti2qg"]
+[gd_scene load_steps=5 format=3 uid="uid://by3fqjf3ti2qg"]
 
 [ext_resource type="Script" uid="uid://chw6dbl8cy8hw" path="res://scenes/cards/CardDrafting.cs" id="1_qj55q"]
-[ext_resource type="Texture2D" uid="uid://ob1tlvhcwu10" path="res://graphics/levels/0_test_level/Backdrop.png" id="2_a5gls"]
 [ext_resource type="PackedScene" uid="uid://dnl2w3gc18nhp" path="res://scenes/cards/card/card.tscn" id="2_vxy52"]
 [ext_resource type="Texture2D" uid="uid://ctf6a1npmyefg" path="res://graphics/card_dealing/mana.png" id="4_rxynw"]
 [ext_resource type="Script" uid="uid://im0gjejp24m7" path="res://scenes/cards/SpellBook.cs" id="5_cvx87"]
@@ -22,7 +21,6 @@ modulate = Color(0.520394, 0.218795, 0.0459814, 1)
 z_index = -1
 position = Vector2(1000, 0)
 rotation = 1.5708
-texture = ExtResource("2_a5gls")
 centered = false
 
 [node name="CardPosition00" type="Marker2D" parent="."]
