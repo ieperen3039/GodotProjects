@@ -6,12 +6,11 @@ use std::{
 
 use simple_error::SimpleError;
 
-use crate::{
+use crate::faux_parser::{
     grammar::{Grammar, RuleId, RuleStorage, Term, Terminal},
     rule_name_generator::RuleNameGenerator,
-    parser::{Failure, ParseNode}
+    parser::{Failure, ParseNode, self},
 };
-use crate::parser;
 use super::{
     rule_nodes::RuleNode,
     token::{Token, TokenClass},

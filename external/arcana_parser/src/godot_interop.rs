@@ -1,6 +1,5 @@
+use crate::faux_parser::{parser, rule_nodes::RuleNode};
 use godot::builtin as gd;
-use crate::{godot_interop, parser};
-use crate::rule_nodes::RuleNode;
 
 /// Example "parser": returns length and first line.
 /// Replace with your real parsing entrypoint.

@@ -1,4 +1,4 @@
-use crate::ebnf_ast::{self, EbnfAst};
+use crate::faux_parser::ebnf_ast::{self, EbnfAst};
 
 use super::grammar::{self, Grammar, RuleId, RuleStorage};
 use super::rule_name_generator::RuleNameGenerator;

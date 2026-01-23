@@ -1,5 +1,5 @@
 use super::rule_name_generator::RuleNameGenerator;
-use crate::token::TokenClass;
+use crate::faux_parser::token::TokenClass;
 use std::{collections::HashMap, rc::Rc};
 
 pub type RuleId = Rc<str>;
