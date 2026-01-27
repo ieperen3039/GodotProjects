@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="134.13428"
+   height="186.76474"
+   viewBox="0 0 35.489695 49.414838"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="angry_farmer_weapon.svg"
+   inkscape:export-filename="bastion_back.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="5.17549"
+     inkscape:cx="106.75318"
+     inkscape:cy="96.126164"
+     inkscape:window-width="2560"
+     inkscape:window-height="1361"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="front"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline"
+     transform="translate(-134.89898,-156.10579)">
+    <path
+       style="fill:#5b2a04;fill-opacity:1;stroke:#000000;stroke-width:1.32292;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       d="m 146.95194,173.05895 12.91663,28.43891 2.76559,-1.15051 -13.05318,-28.75349 z"
+       id="path4099"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#e2cbc3;fill-opacity:1;stroke:#000000;stroke-width:1.32292;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       d="m 153.66207,181.15085 c 2.57153,0.0238 4.46657,2.76053 2.79277,4.81494 -1.6738,2.05441 -4.85407,1.69886 -5.8185,-0.43981 -0.96444,-2.13868 0.45421,-4.39895 3.02573,-4.37513 z"
+       id="path4012"
+       sodipodi:nodetypes="zzzz" />
+    <path
+       style="fill:#9b9b9b;fill-opacity:1;stroke:#000000;stroke-width:1.32292;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       d="m 136.90198,164.93832 c 4.26252,9.59096 4.46725,11.90363 8.29592,9.96345 l 8.20446,-4.29307 c 3.81528,-1.84919 1.6308,-4.20653 -3.43069,-14.27623 0,0 -1.9848,1.41457 -2.05658,1.63164 -0.0718,0.21704 3.89032,9.35328 3.89032,9.35328 l -2.88559,1.85881 -4.13412,-8.96226 c 0,0 -3.1055,1.38111 -2.8151,1.8865 0.2904,0.50538 3.88013,8.56521 3.88013,8.56521 l -2.13176,1.22589 -4.68723,-8.22353 z"
+       id="path4731"
+       sodipodi:nodetypes="ccccscccccccc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="back"
+     style="display:inline"
+     transform="translate(-134.89898,-156.10579)" />
+</svg>

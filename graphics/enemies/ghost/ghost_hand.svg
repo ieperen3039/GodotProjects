@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="134.13428"
+   height="186.76474"
+   viewBox="0 0 35.489695 49.414838"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="ghost_hand.svg"
+   inkscape:export-filename="bastion_back.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="5.17549"
+     inkscape:cx="73.133172"
+     inkscape:cy="87.817772"
+     inkscape:window-width="2560"
+     inkscape:window-height="1361"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="front"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline"
+     transform="translate(-134.89898,-156.10579)">
+    <path
+       style="display:inline;fill:#8838c5;fill-opacity:0.587963;stroke:#000000;stroke-width:1.32292;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:fill markers stroke"
+       d="m 149.34849,176.85134 c 2.60375,-0.40704 6.9609,1.52417 6.2352,4.02489 -0.95189,3.28013 -1.51409,1.50862 -1.46621,6.01211 -2.37405,-1.03911 -2.11872,-3.04881 -2.11872,-3.04881 0,0 -0.66471,0.1729 -0.97672,3.39077 -3.06072,-2.27236 -1.17609,-4.82385 -1.17609,-4.82385 0,0 -1.19891,0.10208 -2.32878,3.67093 -2.97781,-2.93189 0.3206,-5.48852 0.3206,-5.48852 0,0 -1.08045,-1.00884 -2.94872,2.24617 -1.76515,-2.75489 1.22688,-5.51843 4.45944,-5.98369 z"
+       id="path13244-2"
+       sodipodi:nodetypes="cscccccccc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="back"
+     style="display:inline"
+     transform="translate(-134.89898,-156.10579)" />
+</svg>
