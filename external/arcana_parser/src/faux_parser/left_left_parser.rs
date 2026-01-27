@@ -64,7 +64,7 @@ impl<'c> ParseTable {
 impl<'c> Parser {
     pub fn new(grammar: Grammar, xml_out: Option<std::fs::File>) -> Parser {
         let start_rule = grammar.start_rule.clone();
-        let parse_table = construct_parse_table(grammar);
+        let parse_table = construct_parse_table(grammar, xml_out.is_some());
         Parser {
             start_rule,
             parse_table,
@@ -94,10 +94,7 @@ impl<'c> Parser {
                 Err(failure) => {
                     let search_result =
                         failures.binary_search_by(|other| parser::compare_err_result(other, &failure));
-                    let index = match search_result {
-                        Ok(v) => v,
-                        Err(v) => v,
-                    };
+                    let index = search_result.unwrap_or_else(|v| v);
                     if failures.len() < parser::MAX_ERRORS_PER_RULE {
                         failures.insert(index, failure);
                     } else if index > 0 {
@@ -307,7 +304,7 @@ impl<'c> Parser {
             }
 
             let new_slice = token.slice.replace(char::is_whitespace, " ");
-            let _ = writeln!(file, "\"{}\"", &new_slice);
+            let _ = writeln!(file, "{}", &new_slice);
         }
     }
 }
@@ -329,14 +326,11 @@ fn is_transparent(rule_name: &str) -> bool {
 /// `T[A,a]` contains the rule "A => w" if and only if
 /// (`w` may start with an `a`) &&
 /// (`w` may be empty and `A` may be followed by an `a`)
-fn construct_parse_table(grammar: Grammar) -> ParseTable {
+fn construct_parse_table(grammar: Grammar, print_debug: bool) -> ParseTable {
     let mut lookup_table: HashMap<RuleId, Vec<(Terminal, usize)>> = HashMap::new();
     let mut patterns: Vec<Term> = Vec::new();
 
     let grammar = remove_alterations(grammar);
-
-    let mut converted_out = std::fs::File::create("grammar.ebnf").unwrap();
-    write!(converted_out, "{}\n\n", Grammar::write(&grammar)).unwrap();
 
     let follow_sets = get_follow_terminals(&grammar);
 
@@ -375,14 +369,10 @@ fn construct_parse_table(grammar: Grammar) -> ParseTable {
         }
     }
 
-    if false {
-        println!("");
+    if print_debug {
         println!("first_sets = {:?}", first_terminal_map_copy);
-        println!("");
         println!("follow_sets = {:?}", follow_sets);
-        println!("");
         println!("lookup_table = {:?}", lookup_table);
-        println!("");
     }
 
     // note that the original grammar is destroyed

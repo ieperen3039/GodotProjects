@@ -1,53 +1,5 @@
 use super::grammar::*;
 
-pub fn transform_top_down<Transformation>(term: &mut Term, transformation: &Transformation)
-where
-    Transformation: Fn(&mut Term),
-{
-    transformation(term);
-
-    match term {
-        Term::Concatenation(terms) | Term::Alternation(terms) => {
-            for t in terms {
-                transform_top_down(t, transformation);
-            }
-        },
-        _ => {},
-    };
-}
-
-pub fn transform_bottom_up<TermReader>(term: &mut Term, function: &TermReader)
-where
-    TermReader: Fn(&mut Term),
-{
-    match term {
-        Term::Concatenation(terms) | Term::Alternation(terms) => {
-            for t in terms {
-                transform_bottom_up(t, function);
-            }
-        },
-        _ => {},
-    };
-
-    function(term);
-}
-
-pub fn iterate_recursively<TermReader>(term: &Term, function: &mut TermReader)
-where
-    TermReader: FnMut(&Term),
-{
-    match term {
-        Term::Concatenation(terms) | Term::Alternation(terms) => {
-            for t in terms {
-                iterate_recursively(t, function);
-            }
-        },
-        _ => {},
-    };
-
-    function(term);
-}
-
 impl Grammar {
     pub fn write(grammar: &Grammar) -> String {
         Grammar::write_rules(&grammar.rules)

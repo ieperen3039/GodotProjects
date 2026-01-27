@@ -5,10 +5,10 @@ use simple_error::SimpleError;
 use super::{rule_nodes::RuleNode, token::Token};
 
 pub const MAX_NUM_TOKENS_BACKTRACE_ON_ERROR: i32 = 2;
-pub const MAX_NUM_TOKENS_BACKTRACE_ON_SUCCESS: usize = 50;
 pub const MAX_ERRORS_PER_RULE: usize = 10;
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub enum Failure<'bnf> {
     // the evaluation of this function could not complete for these tokens
     // this is a normal negative return value
@@ -86,6 +86,7 @@ impl<'prog, 'bnf> std::fmt::Debug for Interpretation<'prog, 'bnf> {
 }
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub enum ParseNode<'prog, 'bnf> {
     Rule(RuleNode<'prog, 'bnf>),
     EmptyNode,

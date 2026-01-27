@@ -177,12 +177,14 @@ impl Lexer {
     }
 }
 
+#[allow(dead_code)]
 pub struct StreamLexer {
     base: Lexer,
     buffer: String,
     cursor: usize,
 }
 
+#[allow(dead_code)]
 impl StreamLexer {
     pub fn new(base: Lexer) -> StreamLexer {
         StreamLexer {

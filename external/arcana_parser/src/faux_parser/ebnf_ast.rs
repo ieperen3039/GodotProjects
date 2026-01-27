@@ -34,5 +34,4 @@ pub struct Rule {
 #[derive(Debug)]
 pub struct EbnfAst {
     pub rules : Vec<Rule>,
-    pub ignore_rule : Option<Term>,
 }

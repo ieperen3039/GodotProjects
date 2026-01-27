@@ -1,11 +1,15 @@
-spell       = element;
+spell       = element, element, element;
+
+
 
 element     = earth | water | fire | air;
+
 air         = "A";
 bind        = "B";
 chaos       = "C";
 earth       = "E";
 fire        = "F";
+invert      = "I";
 order       = "O";
 water       = "W";
 release     = "R";

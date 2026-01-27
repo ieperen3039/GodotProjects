@@ -43,6 +43,7 @@ impl<'prog, 'bnf> std::fmt::Debug for RuleNode<'prog, 'bnf> {
     }
 }
 
+#[allow(dead_code)]
 impl<'prog, 'bnf> RuleNode<'prog, 'bnf> {
     pub fn tokens_as_string(&self) -> String {
         self.tokens
@@ -64,7 +65,6 @@ impl<'prog, 'bnf> RuleNode<'prog, 'bnf> {
 
     // returns true if this rule node is syntactically equivalent.
     // this check is more expensive than eq
-    #[allow(dead_code)]
     pub fn is_similar_to(&self, other: &Self) -> bool {
         if self.rule_name != other.rule_name {
             return false;
@@ -107,13 +107,13 @@ impl<'prog, 'bnf> RuleNode<'prog, 'bnf> {
         true
     }
 
-    pub fn find_node<'r>(&'r self, expected: &str) -> Option<&'r RuleNode> {
+    pub fn find_node(&self, expected: &str) -> Option<&RuleNode> {
         self.sub_rules
             .iter()
             .find(|rule| rule.rule_name == expected)
     }
 
-    pub fn find_nodes<'r>(&'r self, expected: &str) -> Vec<&'r RuleNode> {
+    pub fn find_nodes(&self, expected: &str) -> Vec<&RuleNode> {
         self.sub_rules
             .iter()
             .filter(|rule| rule.rule_name == expected)

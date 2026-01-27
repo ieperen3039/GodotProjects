@@ -16,6 +16,7 @@ struct OkResult<'a, T: std::fmt::Debug> {
 }
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum GrammarError {
     // the worst error of no errors at all
     EmptyError {
@@ -38,16 +39,14 @@ pub enum GrammarError {
     // the program or grammar has some unspecified syntax error
     Error(SimpleError),
     // the parser has a bug
-    #[allow(dead_code)]
     InternalError(SimpleError),
 }
 
+#[allow(dead_code)]
 pub fn error_string(error: &GrammarError, source: &str) -> String {
     match error {
         GrammarError::EmptyError { tokens_remaining }
-        | GrammarError::UnexpectedToken {
-            tokens_remaining, ..
-        }
+        | GrammarError::UnexpectedToken { tokens_remaining, .. }
         | GrammarError::UnclosedGroup { tokens_remaining } => {
             let offset = source.len() - tokens_remaining;
             let line_number = source[..=offset].bytes().filter(|c| c == &b'\n').count();
@@ -74,23 +73,12 @@ pub fn error_string(error: &GrammarError, source: &str) -> String {
 pub fn parse_ebnf(definition: &str) -> Result<EbnfAst, GrammarError> {
     let mut rules = process_repeated(skip_ignored(definition), process_rule)?;
 
-    let ignore_rule = rules
-        .val
-        .iter()
-        .position(|rule| rule.identifier == "ignored")
-        .map(|index_of_ignored| {
-            let ignore_rule = rules.val[index_of_ignored].clone();
-            rules.val.remove(index_of_ignored);
-            ignore_rule.pattern
-        });
-
     let remaining_tokens = skip_ignored(rules.remaining_tokens);
 
     if remaining_tokens.is_empty() {
         rules.val.reverse();
         Ok(EbnfAst {
             rules: rules.val,
-            ignore_rule,
         })
     } else {
         // if we remove remaining_tokens, then we have a valid program.
