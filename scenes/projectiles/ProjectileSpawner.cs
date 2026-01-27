@@ -1,18 +1,22 @@
 using Godot;
 using System;
 
-public partial class ProjectileSpawner : Node
+public class ProjectileSpawner
 {
     public Random Rng = new();
 
-    [Export]
     private PackedScene arcaneBoltScene;
-    [Export]
     private PackedScene fireBoltScene;
-    [Export]
     private PackedScene waterBoltScene;
 
-    public Bolt SpawnBolt(ProjectileElementType type, ProjectileSize size)
+    public ProjectileSpawner()
+    {
+        arcaneBoltScene = ResourceLoader.Load<PackedScene>("res://scenes/projectiles/arcane_bolt.tscn");
+        fireBoltScene = ResourceLoader.Load<PackedScene>("res://scenes/projectiles/fire_bolt.tscn");
+        waterBoltScene = ResourceLoader.Load<PackedScene>("res://scenes/projectiles/water_bolt.tscn");
+    }
+
+    public Bolt SpawnBolt(Vector2 aDirection, ProjectileElementType type)
     {
         Bolt lBolt = null;
         switch (type)
@@ -26,9 +30,10 @@ public partial class ProjectileSpawner : Node
             case ProjectileElementType.Water:
                 lBolt = waterBoltScene.Instantiate<Bolt>();
                 break;
-
         }
-        lBolt.Size = size;
+
+        lBolt.Velocity = aDirection.Normalized();
+        lBolt.Rotation = aDirection.Angle();
 
         return lBolt;
     }

@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://wm04w6subhq1"]
+[gd_scene load_steps=4 format=3 uid="uid://wm04w6subhq1"]
 
 [ext_resource type="Script" uid="uid://dywbu3tpvorke" path="res://scenes/Game.cs" id="1_0qkit"]
-[ext_resource type="PackedScene" uid="uid://bo2whvu3cgsd7" path="res://scenes/levels/wave_1.tscn" id="3_sqa0i"]
 [ext_resource type="PackedScene" uid="uid://by3fqjf3ti2qg" path="res://scenes/cards/card_draft.tscn" id="3_u5ib5"]
-[ext_resource type="PackedScene" uid="uid://b1bdbpegu5tbb" path="res://scenes/levels/wave_2.tscn" id="4_jh1ax"]
+[ext_resource type="PackedScene" uid="uid://b1bdbpegu5tbb" path="res://scenes/levels/default_level.tscn" id="4_jh1ax"]
 
 [node name="Root" type="Control"]
 layout_mode = 3
@@ -13,7 +12,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0qkit")
-sceneLevels = Array[PackedScene]([ExtResource("3_sqa0i"), ExtResource("4_jh1ax")])
+sceneLevels = Array[PackedScene]([null, ExtResource("4_jh1ax")])
 sceneCardDrafting = ExtResource("3_u5ib5")
 
 [node name="FadeToBlack" type="ColorRect" parent="."]

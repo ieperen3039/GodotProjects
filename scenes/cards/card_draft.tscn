@@ -3,7 +3,9 @@
 [ext_resource type="Script" uid="uid://chw6dbl8cy8hw" path="res://scenes/cards/CardDrafting.cs" id="1_qj55q"]
 [ext_resource type="PackedScene" uid="uid://dnl2w3gc18nhp" path="res://scenes/cards/card/card.tscn" id="2_vxy52"]
 [ext_resource type="Texture2D" uid="uid://ctf6a1npmyefg" path="res://graphics/card_dealing/mana.png" id="4_rxynw"]
-[ext_resource type="Script" uid="uid://im0gjejp24m7" path="res://scenes/cards/SpellBook.cs" id="5_cvx87"]
+
+[sub_resource type="Resource" id="Resource_d77sb"]
+metadata/__load_path__ = "res://scenes/cards/SpellBook.cs"
 
 [node name="CardDraft" type="Node2D" node_paths=PackedStringArray("SpellBook", "manaDisplay", "dealerSource", "dealerSink", "playerCardSink")]
 script = ExtResource("1_qj55q")
@@ -105,7 +107,7 @@ text = "Next Level"
 [node name="Cards" type="Node2D" parent="."]
 
 [node name="SpellBook" type="Node" parent="."]
-script = ExtResource("5_cvx87")
+script = SubResource("Resource_d77sb")
 
 [connection signal="pressed" from="HBoxContainer/GetCards" to="." method="Deal"]
 [connection signal="pressed" from="HBoxContainer/RemoveCards" to="." method="DiscardAll"]

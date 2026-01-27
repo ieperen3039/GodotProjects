@@ -7,19 +7,14 @@ public partial class Tower : StaticBody2D
     [Signal]
     public delegate void OnTowerShootsBoltEventHandler(Bolt aBolt);
 
-    [Export]
-    private Marker2D boltFireStartPosition;
+    private Node2D boltFireStartPosition;
 
-    [Export]
-    public PackedScene SceneProjectileSpawner;
-    public ProjectileSpawner ProjectileSpawner = null;
-    private ProjectileElementType boltType; 
+    public ProjectileSpawner ProjectileSpawner = new();
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        boltType = ProjectileElementType.Arcane;
-        ProjectileSpawner = sceneProjectileSpawner.Instantiate<ProjectileSpawner>();
+        boltFireStartPosition = GetNode<Node2D>("BoltFireStartPosition");
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -29,11 +24,9 @@ public partial class Tower : StaticBody2D
 
     private void HandleBoltFire(Vector2 aDirection)
     {
-        Bolt lBolt = ProjectileSpawner.SpawnBolt(boltType, ProjectileSize.Primary);
+        // TODO parse current runes
+        Bolt lBolt = ProjectileSpawner.SpawnBolt(aDirection, ProjectileElementType.Arcane);
         lBolt.Position = boltFireStartPosition.GlobalPosition;
-        lBolt.Rotation = aDirection.Angle();
-        // Velocity magnitude will be overridden
-        lBolt.Velocity = aDirection;
 
         EmitSignal(SignalName.OnTowerShootsBolt, lBolt);
     }

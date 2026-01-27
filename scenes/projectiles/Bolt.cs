@@ -10,14 +10,11 @@ public partial class Bolt : CharacterBody2D
     [Signal]
     public delegate void OnBoltHitsEnemyEventHandler(Bolt aBolt, Enemy aTarget);
 
-    [Export]
     public ulong TailElementDelayMs;
 
     public bool IsDead => deathTime < ulong.MaxValue;
 
-    [Export]
-    public ProjectileElementType Element { get; private set; }
-    public ProjectileSize Size;
+    public Vector2 Target;
     public Enemy EnemyToIgnore = null;
 
     private Node2D appearance;
@@ -226,29 +223,11 @@ public partial class Bolt : CharacterBody2D
     public class SpawnModifiers
     {
         public const float BaseBoltSpeed = 100.0f;
-        public float BaseDamage;
+        public float BaseDamage = 1;
         public float SpeedAdditive = BaseBoltSpeed;
         public float SpeedMultiplicative = 1;
         public float DamageMultiplicative = 1;
         public float HomingDegPerSecond = 10;
-
-        public SpawnModifiers(Bolt aTarget)
-        {
-            switch (aTarget.Size)
-            {
-                case ProjectileSize.Primary:
-                    BaseDamage = 5;
-                    break;
-                case ProjectileSize.Secondary:
-                    BaseDamage = 3;
-                    break;
-                case ProjectileSize.Tertiary:
-                    BaseDamage = 2;
-                    break;
-            }
-
-
-        }
 
 
         public void Apply(Bolt aTarget)

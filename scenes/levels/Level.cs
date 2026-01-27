@@ -9,7 +9,7 @@ public partial class Level : Node2D
     public delegate void OnLevelFinishEventHandler();
     private bool hasFinished = false;
 
-    public SpellBook SpellBook;
+    public Deck SpellBook;
 
     [Export]
     public int EarnedMana = 50;

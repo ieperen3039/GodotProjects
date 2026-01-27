@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cc7nyhrwtx245"]
+[gd_scene load_steps=5 format=3 uid="uid://c0cpuoq0svkd5"]
 
 [ext_resource type="Script" uid="uid://26ex5no7afyf" path="res://scenes/projectiles/ProjectileSpawner.cs" id="1_k75en"]
 [ext_resource type="PackedScene" uid="uid://bwgckgc4mkjpw" path="res://scenes/projectiles/arcane_bolt.tscn" id="2_seki1"]

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-public partial class SpellBook : Node
+public partial class Deck : Node
 {
     private List<Card> cards = new();
 
     public static void TransitionToLevel(CardDrafting from, Level to)
     {
-        SpellBook spellBook = from.SpellBook;
+        Deck spellBook = from.Deck;
         from.RemoveChild(spellBook);
         to.SpellBook = spellBook;
         to.AddChild(spellBook);
@@ -17,9 +17,9 @@ public partial class SpellBook : Node
 
     public static void TransitionToDraft(Level from, CardDrafting to)
     {
-        SpellBook spellBook = from.SpellBook;
+        Deck spellBook = from.SpellBook;
         from.RemoveChild(spellBook);
-        to.SpellBook = spellBook;
+        to.Deck = spellBook;
         to.AddChild(spellBook);
     }
 

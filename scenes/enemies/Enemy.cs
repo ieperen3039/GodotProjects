@@ -18,8 +18,6 @@ public partial class Enemy : CharacterBody2D
 
     public bool IsDead => state is Dieing;
 
-    public Vector2 MovementTarget;
-
     private AnimationPlayer animationPlayer;
     private Healthbar healthbar;
     private int currentHitpoints;
@@ -84,13 +82,7 @@ public partial class Enemy : CharacterBody2D
         {
             if (aThis.Speed > 0)
             {
-                aThis.Velocity = (aThis.MovementTarget - aThis.Position).Normalized() * aThis.Speed;
-                aThis.MoveAndCollide(aThis.Velocity);
-            }
-
-            if (aThis.Velocity.LengthSquared() > 0)
-            {
-                aThis.Rotation = aThis.Velocity.Angle();
+                aThis.Position = new Vector2(aThis.Position.X, aThis.Position.Y + aThis.Speed);
             }
         }
     }

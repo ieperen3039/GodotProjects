@@ -28,20 +28,14 @@ public partial class CardDrafting : Node2D
     private double shownManaReal = 0;
     private int shownMana = 0;
 
-    [Export]
-    public SpellBook SpellBook;
+    public Deck Deck;
 
-    [Export]
     private PackedScene cardScene;
 
-    [Export]
     private Label manaDisplay;
 
-    [Export]
     private Node2D dealerSource;
-    [Export]
     private Node2D dealerSink;
-    [Export]
     private Node2D playerCardSink;
 
     private Random rng = new();
@@ -56,6 +50,13 @@ public partial class CardDrafting : Node2D
 
     public override void _Ready()
     {
+        Deck = GetNode<Deck>("Deck");
+        cardScene = ResourceLoader.Load<PackedScene>("res://scenes/cards/card/card.tscn");
+        manaDisplay = GetNode<Label>("ManaDisplay");
+        dealerSource = GetNode<Node2D>("DealerSource");
+        dealerSink = GetNode<Node2D>("DealerSink");
+        playerCardSink = GetNode<Node2D>("PlayerCardSink");
+
         // temporary card to get the dimensions of the cards
         Card tempCard = cardScene.Instantiate<Card>();
         Control outline = tempCard.GetNode<Control>("Background");
@@ -154,7 +155,7 @@ public partial class CardDrafting : Node2D
     private void ChooseCard(Card aCard)
     {
         dealtCardsNode.RemoveChild(aCard);
-        SpellBook.Add(aCard);
+        Deck.Add(aCard);
 
         Tween tween = GetTree().CreateTween();
         tween.TweenProperty(aCard, "position", playerCardSink.Position, CardChooseAnimationDurationSec)

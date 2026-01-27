@@ -6,9 +6,8 @@ public partial class Game : Control
     private const double FadeDuration = 1.0f;
 
     [Export]
-    private PackedScene[] sceneLevels;
+    private PackedScene[] levelScenes;
 
-    [Export]
     private PackedScene sceneCardDrafting;
 
     int currentLevelIdx = 0;
@@ -21,6 +20,7 @@ public partial class Game : Control
     {
         fader = GetNode<ColorRect>("FadeToBlack");
 
+        sceneCardDrafting = ResourceLoader.Load<PackedScene>("res://scenes/cards/card_draft.tscn");
         cardDraftingNode = sceneCardDrafting.Instantiate<CardDrafting>();
         cardDraftingNode.OnNextLevel += HandleNextLevel;
         AddChild(cardDraftingNode);
@@ -42,8 +42,8 @@ public partial class Game : Control
     {
         FadeTransition(() =>
         {
-            currentLevelNode = sceneLevels[currentLevelIdx].Instantiate<Level>();
-            SpellBook.TransitionToLevel(cardDraftingNode, currentLevelNode);
+            currentLevelNode = levelScenes[currentLevelIdx].Instantiate<Level>();
+            Deck.TransitionToLevel(cardDraftingNode, currentLevelNode);
             currentLevelNode.OnLevelFinish += HandleStartDraft;
 
             cardDraftingNode.Visible = false;
@@ -55,12 +55,12 @@ public partial class Game : Control
     {
         FadeTransition(() =>
         {
-            SpellBook.TransitionToDraft(currentLevelNode, cardDraftingNode);
+            Deck.TransitionToDraft(currentLevelNode, cardDraftingNode);
             cardDraftingNode.CurrentMana += currentLevelNode.EarnedMana;
             currentLevelIdx++;
 
             // repeat last level if we run out of levels
-            if (currentLevelIdx == sceneLevels.Length) currentLevelIdx--;
+            if (currentLevelIdx == levelScenes.Length) currentLevelIdx--;
 
             cardDraftingNode.Visible = true;
             currentLevelNode.QueueFree();
